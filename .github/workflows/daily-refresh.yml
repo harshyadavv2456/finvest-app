@@ -39,9 +39,12 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install -r FinSight/backend/requirements.txt
-      - name: Update stock prices, fundamentals, technicals -> R2
+      - name: Update stock prices, fundamentals, technicals
         working-directory: FinSight
         run: python update_all_data.py --tickers tickers.txt
+      - name: Upload to R2
+        working-directory: FinSight/backend/scripts
+        run: python upload_data_to_r2.py
 
   screener:
     runs-on: ubuntu-latest
@@ -105,10 +108,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - run: pip install -r FinSight/backend/requirements.txt
-      - name: 9-layer quant intelligence pipeline -> Supabase
+      - run: pip install -r FinSight/backend/requirements.txt pytest
+      - name: 9-layer quant intelligence pipeline
         working-directory: FinSight
         run: python quant_system/run_full_daily_intelligence.py --full-universe
+      - name: Regression tests - gate before publishing
+        working-directory: FinSight/quant_system
+        run: python -m pytest tests/ -v
+      - name: Sync intelligence to Supabase
+        working-directory: FinSight/backend/scripts
+        run: python sync_intelligence_to_supabase.py
 
   notify-status:
     runs-on: ubuntu-latest
