@@ -43,6 +43,8 @@ class Settings(BaseSettings):
         env_file = ".env"
         env_file_encoding = "utf-8"
         case_sensitive = True
+        extra = "ignore"  # .env now also carries R2/Supabase/Render/Vercel deploy
+        # credentials unrelated to this Settings model - don't crash on their presence
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

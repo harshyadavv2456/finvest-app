@@ -1,6 +1,7 @@
 """Data access layer for reading local parquet and JSON files."""
 import json
 import logging
+import os
 from pathlib import Path
 from typing import Optional, List, Dict, Any
 import pandas as pd
@@ -10,21 +11,53 @@ from app.utils.time_utils import ensure_utc_index
 
 logger = logging.getLogger(__name__)
 
+# In-process cache for the R2 manifest fallback (see _list_tickers_from_r2) -
+# it's one file but no need to re-fetch it on every request.
+_R2_MANIFEST_CACHE: Optional[List[Dict[str, Any]]] = None
+
+
+def _list_tickers_from_r2() -> List[Dict[str, Any]]:
+    """Fallback for when FinSight/data/ isn't on local disk at all (e.g.
+    Render, where the repo no longer ships data/ - see REPO_AUDIT_REPORT.md
+    §6/§7). Reads the single manifest object uploaded by
+    scripts/upload_tickers_manifest.py instead of walking a local dir that
+    doesn't exist. Cached per-process; never raises - a miss here just
+    means an empty ticker list, same as the old local-only behavior."""
+    global _R2_MANIFEST_CACHE
+    if _R2_MANIFEST_CACHE is not None:
+        return _R2_MANIFEST_CACHE
+    if not os.environ.get("R2_ACCESS_KEY_ID"):
+        return []
+    try:
+        from app.storage.r2_client import get_r2_client
+        manifest = get_r2_client().get_json("meta/tickers_manifest.json")
+        tickers = (manifest or {}).get("tickers", [])
+        if tickers:
+            logger.info(f"Loaded {len(tickers)} tickers from R2 manifest (local data/ not found)")
+            _R2_MANIFEST_CACHE = tickers
+        return tickers
+    except Exception as e:
+        logger.warning(f"R2 tickers manifest fallback failed: {e}")
+        return []
+
 
 def list_tickers() -> List[Dict[str, Any]]:
     """
     Walk data/*/*/metadata.json and return list of tickers with metadata.
-    
+    Falls back to the R2 manifest (_list_tickers_from_r2) if the local
+    data directory is missing or empty, e.g. in production where
+    FinSight/data/ is no longer part of the git repo.
+
     Returns:
         List of dicts with keys: ticker, market, exchange_tz, updated_utc, daily_rows, minute_rows
     """
     tickers = []
     data_dir = settings.DATA_DIR
-    
+
     if not data_dir.exists():
         logger.warning(f"Data directory not found: {data_dir}")
-        return tickers
-    
+        return _list_tickers_from_r2()
+
     logger.info(f"Scanning data directory: {data_dir}")
     market_count = 0
     ticker_count = 0
@@ -66,6 +99,8 @@ def list_tickers() -> List[Dict[str, Any]]:
             logger.info(f"Found {market_ticker_count} tickers in market {market}")
     
     logger.info(f"Total: {market_count} markets, {ticker_count} tickers found, {skipped_count} skipped")
+    if ticker_count == 0:
+        return _list_tickers_from_r2()
     return tickers
 
 
