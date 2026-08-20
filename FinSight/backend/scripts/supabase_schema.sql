@@ -144,3 +144,59 @@ CREATE POLICY "public read" ON intelligence_history FOR SELECT USING (true);
 
 -- No public INSERT/UPDATE/DELETE policies are defined — writes only happen
 -- via the service_role key (backend + sync scripts), which bypasses RLS.
+
+-- ============================================================
+-- Phase 1 hardening (FinSight/IMPLEMENTATION_NOTES.md) — decision
+-- call tracking. Every layer6_decision_engine.py call gets a row here,
+-- with the exact signal state that produced it (decision_logger.py),
+-- so it can be revisited later and scored against what actually
+-- happened (score_decision_outcomes.py).
+--
+-- HONEST CAPACITY NOTE, unlike every other table in this file: this
+-- one is NOT pruned. An audit trail that gets deleted isn't an audit
+-- trail. At ~1,473 tickers/day this is real, permanent growth -
+-- roughly 500K+ rows/year, competing for the same 500MB free tier as
+-- everything else here. check_free_tier_usage.py already alerts at
+-- 80% of the DB cap; watch that alert specifically once this table is
+-- live. If it becomes the actual constraint, the deferred fix is
+-- compressing signal_state (not deleting the row) once a call's
+-- outcome has been scored - full precision only matters while the
+-- prediction is still open.
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS decision_calls (
+    call_id UUID PRIMARY KEY,
+    ticker TEXT NOT NULL,
+    market TEXT NOT NULL,
+    called_at_utc TIMESTAMPTZ NOT NULL,
+    review_after_utc TIMESTAMPTZ NOT NULL,
+    model_version TEXT NOT NULL,
+    decision JSONB NOT NULL,       -- the Decision.to_dict() output
+    signal_state JSONB NOT NULL,   -- outcome + efficacy_report at call time (point-in-time snapshot)
+    status TEXT NOT NULL DEFAULT 'open',  -- 'open' | 'closed'
+    synced_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_decision_calls_status_review ON decision_calls (status, review_after_utc) WHERE status = 'open';
+CREATE INDEX IF NOT EXISTS idx_decision_calls_ticker ON decision_calls (market, ticker, called_at_utc DESC);
+
+CREATE TABLE IF NOT EXISTS decision_outcomes (
+    call_id UUID PRIMARY KEY REFERENCES decision_calls(call_id),
+    scored_at_utc TIMESTAMPTZ NOT NULL DEFAULT now(),
+    price_at_call NUMERIC,
+    price_at_review NUMERIC,
+    actual_return NUMERIC,          -- (price_at_review - price_at_call) / price_at_call
+    expected_return NUMERIC,        -- copied from decision_calls.decision at scoring time, for convenience
+    direction_correct BOOLEAN,      -- did actual move agree with the decision's direction?
+    magnitude_error NUMERIC,        -- abs(actual_return - expected_return)
+    notes TEXT
+);
+
+ALTER TABLE decision_calls ENABLE ROW LEVEL SECURITY;
+ALTER TABLE decision_outcomes ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "public read" ON decision_calls;
+CREATE POLICY "public read" ON decision_calls FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "public read" ON decision_outcomes;
+CREATE POLICY "public read" ON decision_outcomes FOR SELECT USING (true);

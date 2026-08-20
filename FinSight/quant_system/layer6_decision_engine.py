@@ -135,9 +135,18 @@ class Decision:
     downgrade_conditions: List[str] # What would decrease conviction
     stop_loss_level: Optional[float]
     take_profit_level: Optional[float]
-    
+
+    # Phase 1 hardening (FinSight/IMPLEMENTATION_NOTES.md): unique ID +
+    # model version, so this specific call can be revisited later and
+    # scored against what actually happened. Must come after every
+    # non-default field above per dataclass ordering rules.
+    call_id: str = field(default_factory=lambda: "")
+    model_version: str = field(default="")
+
     def to_dict(self) -> Dict[str, Any]:
         return {
+            'call_id': self.call_id,
+            'model_version': self.model_version,
             'ticker': self.ticker,
             'date': self.date.isoformat(),
             'intent': self.intent.value,
@@ -737,7 +746,7 @@ class DecisionEngine:
         # Catalysts (simplified - would come from news/events in full system)
         catalysts = [f"Regime shift to {outcome.asset_regime} suggests directional bias"]
         
-        return Decision(
+        decision = Decision(
             ticker=ticker,
             date=current_date,
             intent=intent,
@@ -765,6 +774,21 @@ class DecisionEngine:
             stop_loss_level=stop_loss,
             take_profit_level=take_profit
         )
+
+        # Phase 1 hardening: log this call with a unique ID + the exact
+        # signal state that produced it, before returning. See
+        # FinSight/quant_system/decision_logger.py and
+        # FinSight/IMPLEMENTATION_NOTES.md.
+        from .decision_logger import log_decision_call, _model_version
+        decision.model_version = _model_version()
+        decision.call_id = log_decision_call(
+            ticker=ticker,
+            market=getattr(self, "market", None),
+            decision=decision,
+            outcome=outcome,
+            efficacy_report=efficacy_report,
+        )
+        return decision
     
     def update_position(self, ticker: str, position_pct: float):
         """Update tracked position."""

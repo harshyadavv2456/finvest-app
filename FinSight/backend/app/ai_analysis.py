@@ -611,6 +611,13 @@ IMPORTANT:
                     max_tokens=4000,
                     timeout=90.0,  # Increased timeout for reliability
                 )
+                # Phase 4 hardening (IMPLEMENTATION_NOTES.md): track usage
+                # so a bug here can't silently burn through Groq's limits.
+                try:
+                    from app.groq_usage_tracker import track_groq_call
+                    track_groq_call(caller="ai_analysis", response=response)
+                except Exception:
+                    pass  # tracking must never break the actual AI call
                 # Success - break out of retry loop
                 break
             except Exception as api_error:
