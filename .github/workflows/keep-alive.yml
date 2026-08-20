@@ -1,0 +1,26 @@
+name: Keep Render backend warm
+
+# Render's free tier spins the service down after 15 minutes of no
+# inbound traffic, and the next request pays a ~30-60s cold-start
+# penalty. That was the "render was slow" issue reported after the
+# storage-migration work. This workflow is a free, zero-infra fix:
+# ping the backend's health endpoint often enough that it never goes
+# idle long enough to sleep. Runs on GitHub Actions' free scheduled-job
+# minutes - no new paid infrastructure introduced.
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping /api/health
+        run: |
+          set -e
+          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 25 https://finvest-api-gwkz.onrender.com/api/health || echo "000")
+          echo "Health check responded: $code"
+          if [ "$code" != "200" ]; then
+            echo "::warning::Render backend health check returned $code (may be mid cold-start, next ping will retry)"
+          fi
