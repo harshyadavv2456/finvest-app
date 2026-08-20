@@ -1,0 +1,133 @@
+name: Daily Data Refresh
+
+# Replaces the local, manually-run daily_refresh*.py scripts (see
+# REPO_AUDIT_REPORT.md §6A/§7 Phase 4). Runs on GitHub-hosted runners —
+# free and unlimited on a public repo, capped at 6h/job on any plan.
+#
+# Split into independent jobs (not one 2-4h monolith) so a slow/failing
+# step doesn't block the rest, reusing the incremental flags already
+# built into the pipeline (InsiderFlow's --incremental/--max-age-hours).
+#
+# Every job writes to R2/Supabase only — none of them touch git. That is
+# the structural fix: the "forgot to exclude a folder" failure mode that
+# put 173.7GB into this repo's history can't recur if the automated job
+# has no code path that runs `git add`/`commit`/`push` for data at all.
+
+on:
+  schedule:
+    # 00:30 UTC = 06:00 IST, matching the time the README always claimed
+    # this ran at (it never actually did — no workflow existed until now).
+    - cron: "30 0 * * *"
+  workflow_dispatch: {}  # manual trigger, for testing before trusting the schedule
+
+env:
+  R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+  R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+  R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+  R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+  R2_ENDPOINT_URL: ${{ secrets.R2_ENDPOINT_URL }}
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
+jobs:
+  market-data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r FinSight/backend/requirements.txt
+      - name: Update stock prices, fundamentals, technicals -> R2
+        working-directory: FinSight
+        run: python update_all_data.py --tickers tickers.txt
+
+  screener:
+    runs-on: ubuntu-latest
+    needs: market-data
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r FinSight/backend/requirements.txt
+      - name: Build screener snapshot
+        working-directory: FinSight/backend
+        run: python -c "from app.screener_snapshot import build_screener_snapshot; build_screener_snapshot()"
+
+  insider-flow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90  # matches the existing 90-min cap in daily_refresh2.py
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r FinSight/backend/requirements.txt
+      - name: SEC Form 4 + 13F (incremental)
+        working-directory: FinSight/InsiderFlow
+        run: python run_finsight_pipeline.py --incremental --max-age-hours 24
+
+  fii-dii:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r FinSight/backend/requirements.txt
+      - name: FII/DII flows
+        working-directory: "FinSight/Smart Money Flow"
+        run: python fii_dii_pipeline.py
+
+  indian-announcements:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r FinSight/backend/requirements.txt
+      - name: NSE corporate announcements
+        working-directory: FinSight/Indian_Announcements
+        run: python run_collector_fixed.py
+
+  intelligence:
+    runs-on: ubuntu-latest
+    needs: [market-data, insider-flow, fii-dii]
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r FinSight/backend/requirements.txt
+      - name: 9-layer quant intelligence pipeline -> Supabase
+        working-directory: FinSight
+        run: python quant_system/run_full_daily_intelligence.py --full-universe
+
+  notify-status:
+    runs-on: ubuntu-latest
+    needs: [market-data, screener, insider-flow, fii-dii, indian-announcements, intelligence]
+    if: always()  # run even if an earlier job failed, so failures get reported
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r FinSight/backend/requirements.txt
+      - name: Report pipeline status via existing notifications_api
+        working-directory: FinSight/backend
+        env:
+          JOB_STATUS: ${{ toJSON(needs) }}
+        run: |
+          python -c "
+          import json, os
+          from app.notifications_api import send_pipeline_status_alert
+          send_pipeline_status_alert(json.loads(os.environ['JOB_STATUS']))
+          "

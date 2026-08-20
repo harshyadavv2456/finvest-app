@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Authority banner animation */
+@keyframes pulse-authority {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-authority-pulse {
+  animation: pulse-authority 2s ease-in-out infinite;
+}
+
+/* Glass effect */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Intent badge colors */
+.intent-initiate {
+  @apply bg-green-500/20 text-green-400 border-green-500/30;
+}
+
+.intent-accumulate {
+  @apply bg-blue-500/20 text-blue-400 border-blue-500/30;
+}
+
+.intent-hold {
+  @apply bg-gray-500/20 text-gray-400 border-gray-500/30;
+}
+
+.intent-reduce {
+  @apply bg-amber-500/20 text-amber-400 border-amber-500/30;
+}
+
+.intent-avoid {
+  @apply bg-red-500/20 text-red-400 border-red-500/30;
+}
+

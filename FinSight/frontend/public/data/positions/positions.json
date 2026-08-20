@@ -1,0 +1,129 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2025-12-23T21:53:17.573951",
+  "positions": [
+    {
+      "position_id": "POS-DEMO-001",
+      "version": 4,
+      "snapshot_id_origin": "SNAP-INIT-001",
+      "entry_rationale_hash": "HASH-INIT-001",
+      "symbol": "RELIANCE",
+      "demat_account_id": "DEMAT-ZERODHA-001",
+      "exchange": "NSE",
+      "quantity": 50,
+      "average_cost": 2450,
+      "entry_date": "2024-11-01",
+      "current_price": 2582.28,
+      "current_value": 129114.22,
+      "unrealized_pnl": 6614.22,
+      "unrealized_pnl_percent": 5.4,
+      "tax_lots": [
+        {
+          "lot_id": "LOT-DEMO-001-1",
+          "quantity": 50,
+          "purchase_date": "2024-11-01",
+          "purchase_price": 2450,
+          "days_held": 52,
+          "is_ltcg_eligible": false,
+          "days_to_ltcg": 313,
+          "unrealized_gain_loss": 6500,
+          "tax_implication": "STCG"
+        }
+      ],
+      "total_tax_liability_if_sold": 975,
+      "risk_allocation": {
+        "risk_units": 15,
+        "max_loss_allowed": 12250,
+        "current_drawdown": 0,
+        "stop_loss_price": 2200,
+        "position_size_percent": 6
+      },
+      "lifecycle_state": "OPEN",
+      "last_decision": "HOLD",
+      "last_decision_date": "2025-12-25",
+      "last_decision_reason": "Thesis intact, risk acceptable"
+    },
+    {
+      "position_id": "POS-DEMO-002",
+      "version": 4,
+      "snapshot_id_origin": "SNAP-INIT-002",
+      "entry_rationale_hash": "HASH-INIT-002",
+      "symbol": "TCS",
+      "demat_account_id": "DEMAT-ZERODHA-001",
+      "exchange": "NSE",
+      "quantity": 30,
+      "average_cost": 3800,
+      "entry_date": "2024-10-15",
+      "current_price": 4053.58,
+      "current_value": 121607.44,
+      "unrealized_pnl": 7607.44,
+      "unrealized_pnl_percent": 6.67,
+      "tax_lots": [
+        {
+          "lot_id": "LOT-DEMO-002-1",
+          "quantity": 30,
+          "purchase_date": "2024-10-15",
+          "purchase_price": 3800,
+          "days_held": 69,
+          "is_ltcg_eligible": false,
+          "days_to_ltcg": 296,
+          "unrealized_gain_loss": 7500,
+          "tax_implication": "STCG"
+        }
+      ],
+      "total_tax_liability_if_sold": 1125,
+      "risk_allocation": {
+        "risk_units": 12,
+        "max_loss_allowed": 11400,
+        "current_drawdown": 0,
+        "stop_loss_price": 3420,
+        "position_size_percent": 5
+      },
+      "lifecycle_state": "OPEN",
+      "last_decision": "HOLD",
+      "last_decision_date": "2025-12-25",
+      "last_decision_reason": "Thesis intact, risk acceptable"
+    },
+    {
+      "position_id": "POS-DEMO-003",
+      "version": 4,
+      "snapshot_id_origin": "SNAP-INIT-003",
+      "entry_rationale_hash": "HASH-INIT-003",
+      "symbol": "HDFCBANK",
+      "demat_account_id": "DEMAT-GROWW-001",
+      "exchange": "NSE",
+      "quantity": 100,
+      "average_cost": 1650,
+      "entry_date": "2024-09-01",
+      "current_price": 1721.52,
+      "current_value": 172152.29,
+      "unrealized_pnl": 7152.29,
+      "unrealized_pnl_percent": 4.33,
+      "tax_lots": [
+        {
+          "lot_id": "LOT-DEMO-003-1",
+          "quantity": 100,
+          "purchase_date": "2024-09-01",
+          "purchase_price": 1650,
+          "days_held": 113,
+          "is_ltcg_eligible": false,
+          "days_to_ltcg": 252,
+          "unrealized_gain_loss": 7000,
+          "tax_implication": "STCG"
+        }
+      ],
+      "total_tax_liability_if_sold": 1050,
+      "risk_allocation": {
+        "risk_units": 18,
+        "max_loss_allowed": 16500,
+        "current_drawdown": 0,
+        "stop_loss_price": 1485,
+        "position_size_percent": 8
+      },
+      "lifecycle_state": "OPEN",
+      "last_decision": "HOLD",
+      "last_decision_date": "2025-12-25",
+      "last_decision_reason": "Thesis intact, risk acceptable"
+    }
+  ]
+}

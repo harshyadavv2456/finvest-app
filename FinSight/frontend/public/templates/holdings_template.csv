@@ -1,0 +1,8 @@
+symbol,company_name,isin,quantity,avg_buy_price,buy_date,current_price,exchange,demat_account,remarks
+RELIANCE,Reliance Industries Ltd,INE002A01018,10,2450.50,2024-01-15,,NSE,Main Account,
+INFY,Infosys Limited,INE009A01021,25,1520.00,2024-02-20,,NSE,Main Account,Long term hold
+TCS,Tata Consultancy Services,INE467B01029,15,3800.25,2024-03-10,,NSE,Main Account,
+HDFCBANK,HDFC Bank Limited,INE040A01034,20,1645.00,2024-04-01,,NSE,Main Account,Banking sector
+AAPL,Apple Inc.,US0378331005,5,178.50,2024-01-05,,NASDAQ,US Account,Tech position
+MSFT,Microsoft Corporation,US5949181045,8,375.00,2024-02-15,,NASDAQ,US Account,
+GOOGL,Alphabet Inc.,US02079K3059,3,142.50,2024-03-01,,NASDAQ,US Account,

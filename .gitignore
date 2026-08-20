@@ -1,0 +1,98 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Legacy folders (do not deploy)
+apps/finsight/
+
+# Build outputs
+dist/
+build/
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+*.bak
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Cache
+.cache/
+.parcel-cache/
+.turbo/
+
+# Vercel
+.vercel/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Large data files (keep in git-lfs or separate)
+# *.parquet
+# *.csv
+
+# Secrets (NEVER commit these)
+*.pem
+*.key
+secrets/
+credentials/
+
+.vercel
+.env*.local
+
+FinSight/data/
+FinSight/public/
+*.parquet
+*.CORRUPTED_*
+
+# FinDash - contains hardcoded API keys in source (found during the
+# public-repo secret scan, 2026-08-20). Deprioritized per instruction
+# anyway ("bloated, nearly never useful"). Excluded from the fresh
+# public repo entirely rather than scrubbed - not worth carrying
+# forward either way.
+FinSight/FinDash/
+apps/FinDash/
+
+# Old deployment-session scratch docs with real API keys pasted into
+# them for reference (found during the public-repo secret scan,
+# 2026-08-20). Same doc-sprawl category flagged in the original audit -
+# excluding rather than scrubbing, since none of it is current/useful.
+FinSight/DEPLOYMENT_INSTRUCTIONS.md
+FinSight/DEPLOYMENT_VERIFICATION.md
+FinSight/DEPLOY_NOW.md
+FinSight/FINAL_DEPLOYMENT_SUMMARY.md
+FinSight/FIXES_COMPLETED.md

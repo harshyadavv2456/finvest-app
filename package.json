@@ -1,0 +1,15 @@
+{
+  "name": "finvest",
+  "version": "1.0.0",
+  "private": true,
+  "description": "FinVest - Unified Financial Operating System",
+  "scripts": {
+    "install": "cd FinSight/frontend && npm install",
+    "dev": "cd FinSight/frontend && npm run dev",
+    "dev:backend": "cd FinSight/backend && python -m uvicorn app.main:app --reload --port 8001",
+    "build": "cd FinSight/frontend && npm run build",
+    "start": "npm run dev"
+  },
+  "keywords": ["finvest", "finance", "stock", "intelligence"],
+  "license": "UNLICENSED"
+}

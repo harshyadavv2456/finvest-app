@@ -1,0 +1,146 @@
+-- ============================================================
+-- FinVest — Supabase schema for structured data
+-- Project: finvest-news (separate from the existing auth project,
+-- per instruction — keeps the 500MB free tier clean for this data)
+-- Run once in Supabase SQL Editor.
+--
+-- Design constraint (see REPO_AUDIT_REPORT.md §6/§9): every table here
+-- either holds small structured rows (news, digests, live intelligence)
+-- or has an explicit bounded-retention policy. Nothing here is allowed
+-- to grow unbounded the way FinSight/public/intelligence/history/ did.
+-- ============================================================
+
+-- ----------------------------------------------------------------
+-- News intelligence (mirrors FinVest News's local SQLite schema —
+-- synced in by scripts/sync_news_intelligence.py, which runs locally
+-- since the source .db file only exists on the local machine)
+-- ----------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS news_articles (
+    id BIGSERIAL PRIMARY KEY,
+    article_hash TEXT UNIQUE NOT NULL,
+    source TEXT,
+    category TEXT,
+    title TEXT,
+    summary TEXT,
+    url TEXT,
+    published_at TEXT,
+    fetched_at_ist TEXT,
+    fetched_at_utc TIMESTAMPTZ,
+    keyword_score REAL,
+    ai_analyzed BOOLEAN DEFAULT FALSE,
+    sentiment TEXT,
+    sentiment_score REAL,
+    impact_level TEXT,
+    impact_score REAL,
+    impacted_sectors TEXT,
+    impacted_stocks TEXT,
+    impact_reasoning TEXT,
+    market_action TEXT,
+    key_signal TEXT,
+    confidence REAL,
+    alert_sent BOOLEAN DEFAULT FALSE,
+    synced_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_news_articles_fetched_at ON news_articles (fetched_at_utc DESC);
+CREATE INDEX IF NOT EXISTS idx_news_articles_impact ON news_articles (impact_level, impact_score DESC);
+CREATE INDEX IF NOT EXISTS idx_news_articles_category ON news_articles (category);
+
+CREATE TABLE IF NOT EXISTS daily_digest (
+    id BIGSERIAL PRIMARY KEY,
+    digest_date DATE UNIQUE NOT NULL,
+    digest_html TEXT,
+    articles_count INTEGER,
+    high_impact_count INTEGER,
+    created_at TIMESTAMPTZ,
+    synced_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- ----------------------------------------------------------------
+-- Live intelligence snapshots — one row per ticker, UPSERTED daily.
+-- This is the replacement for FinSight/public/intelligence/{market}/*.json
+-- Overwritten in place, not archived — mirrors R2's overwrite-in-place rule.
+-- ----------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS intelligence_snapshots (
+    market TEXT NOT NULL,
+    ticker TEXT NOT NULL,
+    as_of_date DATE NOT NULL,
+    payload JSONB NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now(),
+    PRIMARY KEY (market, ticker)
+);
+
+CREATE INDEX IF NOT EXISTS idx_intel_snapshots_date ON intelligence_snapshots (as_of_date);
+-- Fast filtering on the fields the frontend actually sorts/filters by,
+-- without needing to pull the whole JSONB payload out first.
+CREATE INDEX IF NOT EXISTS idx_intel_snapshots_intent ON intelligence_snapshots ((payload->>'intent'));
+CREATE INDEX IF NOT EXISTS idx_intel_snapshots_conviction ON intelligence_snapshots (((payload->>'conviction')::numeric) DESC);
+
+-- ----------------------------------------------------------------
+-- BOUNDED historical intelligence — replacement for the abandoned,
+-- unbounded FinSight/public/intelligence/history/{date}/{market}/{ticker}.json
+-- archive (152,861 dead files at time of audit). Retention is enforced
+-- by prune_old_intelligence_history() below, called at the end of each
+-- daily refresh — never let this grow forever again.
+-- ----------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS intelligence_history (
+    id BIGSERIAL PRIMARY KEY,
+    market TEXT NOT NULL,
+    ticker TEXT NOT NULL,
+    as_of_date DATE NOT NULL,
+    payload JSONB NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT now(),
+    UNIQUE (market, ticker, as_of_date)
+);
+
+CREATE INDEX IF NOT EXISTS idx_intel_history_date ON intelligence_history (as_of_date DESC);
+CREATE INDEX IF NOT EXISTS idx_intel_history_ticker ON intelligence_history (market, ticker, as_of_date DESC);
+
+-- Retention: keep 90 days of daily rows; anything older gets downsampled
+-- to one snapshot per week rather than deleted outright, so long-run trend
+-- data survives without unbounded growth. Call this once/day from the
+-- refresh pipeline, not from the request path.
+CREATE OR REPLACE FUNCTION prune_old_intelligence_history() RETURNS void AS $$
+BEGIN
+    -- Beyond 90 days: keep only the earliest row per ISO week per ticker.
+    DELETE FROM intelligence_history t
+    WHERE as_of_date < (CURRENT_DATE - INTERVAL '90 days')
+      AND id NOT IN (
+        SELECT DISTINCT ON (market, ticker, date_trunc('week', as_of_date)) id
+        FROM intelligence_history
+        WHERE as_of_date < (CURRENT_DATE - INTERVAL '90 days')
+        ORDER BY market, ticker, date_trunc('week', as_of_date), as_of_date ASC
+      );
+END;
+$$ LANGUAGE plpgsql;
+
+-- ----------------------------------------------------------------
+-- Row Level Security — service_role (used by the backend/sync scripts)
+-- bypasses RLS by default; these policies only matter if this project's
+-- anon/public key is ever exposed client-side. Kept locked down since
+-- this project has no auth of its own (auth lives in the other project).
+-- ----------------------------------------------------------------
+
+ALTER TABLE news_articles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE daily_digest ENABLE ROW LEVEL SECURITY;
+ALTER TABLE intelligence_snapshots ENABLE ROW LEVEL SECURITY;
+ALTER TABLE intelligence_history ENABLE ROW LEVEL SECURITY;
+
+-- Public read-only access (this is public market/news data, not user data)
+DROP POLICY IF EXISTS "public read" ON news_articles;
+CREATE POLICY "public read" ON news_articles FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "public read" ON daily_digest;
+CREATE POLICY "public read" ON daily_digest FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "public read" ON intelligence_snapshots;
+CREATE POLICY "public read" ON intelligence_snapshots FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "public read" ON intelligence_history;
+CREATE POLICY "public read" ON intelligence_history FOR SELECT USING (true);
+
+-- No public INSERT/UPDATE/DELETE policies are defined — writes only happen
+-- via the service_role key (backend + sync scripts), which bypasses RLS.

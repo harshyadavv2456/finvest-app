@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: finsight-backend
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install --upgrade pip && pip install -r backend/requirements.txt
+    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: CORS_ORIGINS
+        value: https://finvest.fintaxlife.com,https://finsight.fintaxlife.com,https://finsight-sand.vercel.app,http://localhost:5173,https://finvest-harsh-yadavs-projects-2f5a688d.vercel.app
+    rootDir: FinSight
+

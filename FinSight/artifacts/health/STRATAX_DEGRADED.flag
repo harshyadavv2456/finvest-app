@@ -1,0 +1,37 @@
+STRATAX DATA DEGRADATION NOTICE
+==================================================
+Generated at: 2025-12-19T03:42:29.037234
+
+The following AUXILIARY data sources are degraded:
+
+  Source: NSE
+  Symbol: FINNIFTY
+  State: format_changed
+  Criticality: auxiliary
+  Message: NSE response missing 'records' key for FINNIFTY
+  Last Success: never
+
+  Source: NSE
+  Symbol: MIDCPNIFTY
+  State: format_changed
+  Criticality: auxiliary
+  Message: NSE response missing 'records' key for MIDCPNIFTY
+  Last Success: never
+
+  Source: NSE
+  Symbol: BANKNIFTY
+  State: format_changed
+  Criticality: auxiliary
+  Message: NSE response missing 'records' key for BANKNIFTY
+  Last Success: never
+
+  Source: NSE
+  Symbol: NIFTY
+  State: format_changed
+  Criticality: auxiliary
+  Message: NSE response missing 'records' key for NIFTY
+  Last Success: never
+
+==================================================
+NOTE: Pipeline continues because these are AUXILIARY sources.
+Stock intelligence will be generated without StrataX data.

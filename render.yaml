@@ -1,0 +1,18 @@
+# Render Blueprint for FinVest Backend
+# This file configures Render to deploy the backend correctly
+
+services:
+  - type: web
+    name: finvest-api
+    runtime: python
+    plan: free
+    rootDir: FinSight/backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11"
+    healthCheckPath: /api/health
+    autoDeploy: true
+
+

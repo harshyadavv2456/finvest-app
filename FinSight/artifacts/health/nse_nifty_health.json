@@ -1,0 +1,12 @@
+{
+  "source": "NSE",
+  "symbol": "NIFTY",
+  "state": "permanent_failure",
+  "criticality": "auxiliary",
+  "attempted_at": "2026-08-19T22:43:59.855432",
+  "last_success": null,
+  "message": "NSE endpoint not found (404) for NIFTY",
+  "retry_count": 0,
+  "response_code": null,
+  "error_type": "NSEPermanentError"
+}

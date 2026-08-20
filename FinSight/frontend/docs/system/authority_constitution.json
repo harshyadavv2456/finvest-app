@@ -1,0 +1,266 @@
+{
+  "$schema": "https://finvest.authority/constitution/v1",
+  "version": "1.0.0",
+  "created_at": "2024-12-23T00:00:00.000Z",
+  "constitution_hash": "PENDING_GENERATION",
+  
+  "declaration": {
+    "name": "FinVest Authority Constitution",
+    "purpose": "Machine-readable contract defining all authority layers, their order, powers, and limits",
+    "immutability": "This document cannot be modified at runtime. Any mismatch triggers ABSOLUTE_SHUTDOWN.",
+    "verification": "Hash is computed at build time and verified at every boot"
+  },
+  
+  "authority_layers": [
+    {
+      "order": 0,
+      "name": "ShutdownGovernanceEngine",
+      "path": "shutdown/ShutdownGovernanceEngine",
+      "type": "KILL_SWITCH",
+      "can_block": ["ALL_OPERATIONS"],
+      "can_never_allow": ["RESURRECTION_FROM_ABSOLUTE", "BACKWARD_MODE_TRANSITION"],
+      "precedence": "ABSOLUTE",
+      "required_at_boot": true
+    },
+    {
+      "order": 1,
+      "name": "DecisionLifecycleEngine",
+      "path": "lifecycle/DecisionLifecycleEngine",
+      "type": "STATE_MACHINE",
+      "can_block": ["RENDER_NON_ACTIVE", "SPEAK_NON_ACTIVE", "EXECUTE_NON_ACTIVE"],
+      "can_never_allow": ["SUPPRESSED_TO_ACTIVE", "HISTORICAL_TO_ANY", "BACKWARD_TRANSITION"],
+      "precedence": "HIGH",
+      "required_at_boot": true
+    },
+    {
+      "order": 2,
+      "name": "ExecutionEthicsFirewall",
+      "path": "ethics/ExecutionEthicsFirewall",
+      "type": "ETHICS_GATE",
+      "can_block": ["EXECUTION_INTENT", "PRE_AUTHORIZATION"],
+      "can_never_allow": ["OVERRIDE_ABSOLUTE_SEVERITY", "BYPASS_BLIND_OBEDIENCE_CHECK"],
+      "precedence": "HIGH",
+      "required_at_boot": true
+    },
+    {
+      "order": 3,
+      "name": "InfluenceBudgetEngine",
+      "path": "limits/InfluenceBudgetEngine",
+      "type": "RATE_LIMITER",
+      "can_block": ["ADVICE_WHEN_EXHAUSTED", "ADVICE_WHEN_HIGH_TRUST"],
+      "can_never_allow": ["UNLIMITED_ADVICE", "OVERRIDE_BUDGET"],
+      "precedence": "MEDIUM",
+      "required_at_boot": true
+    },
+    {
+      "order": 4,
+      "name": "CentralityRiskEngine",
+      "path": "limits/CentralityRiskEngine",
+      "type": "DEPENDENCY_DETECTOR",
+      "can_block": ["ADVICE_WHEN_CRITICAL", "GUIDANCE_WHEN_ELEVATED"],
+      "can_never_allow": ["IGNORE_USER_DEPENDENCY", "OVERRIDE_CENTRALITY"],
+      "precedence": "MEDIUM",
+      "required_at_boot": true
+    },
+    {
+      "order": 5,
+      "name": "QuestionFirstGovernor",
+      "path": "silence/QuestionFirstGovernor",
+      "type": "SPEECH_GOVERNOR",
+      "can_block": ["ADVICE_WHEN_UNCERTAIN", "ADVICE_WHEN_MUTED"],
+      "can_never_allow": ["ADVICE_DURING_SILENCE_REQUIRED", "LEADING_QUESTIONS"],
+      "precedence": "MEDIUM",
+      "required_at_boot": true
+    },
+    {
+      "order": 6,
+      "name": "ConflictResolutionEngine",
+      "path": "conflict/ConflictResolutionEngine",
+      "type": "PORTFOLIO_ARBITRATOR",
+      "can_block": ["CONFLICTING_DECISIONS", "POLICY_VIOLATIONS"],
+      "can_never_allow": ["USER_ARBITRATION", "SOFT_PRIORITIZATION"],
+      "precedence": "MEDIUM",
+      "required_at_boot": true
+    },
+    {
+      "order": 7,
+      "name": "TemporalReservationEngine",
+      "path": "reservations/TemporalReservationEngine",
+      "type": "RESOURCE_MANAGER",
+      "can_block": ["OVERLAPPING_CAPITAL", "OVERLAPPING_RISK"],
+      "can_never_allow": ["DOUBLE_COUNTING", "TIME_TRAVEL"],
+      "precedence": "MEDIUM",
+      "required_at_boot": true
+    },
+    {
+      "order": 8,
+      "name": "HumanOverrideProtocol",
+      "path": "override/HumanOverrideProtocol",
+      "type": "OVERRIDE_MANAGER",
+      "can_block": ["SYSTEM_ASSISTANCE_AFTER_OVERRIDE"],
+      "can_never_allow": ["OVERRIDE_ABSOLUTE_ETHICS", "REVERSIBLE_OVERRIDE"],
+      "precedence": "HIGH",
+      "required_at_boot": true
+    },
+    {
+      "order": 9,
+      "name": "CounterfactualLedger",
+      "path": "counterfactual/CounterfactualLedger",
+      "type": "TRUTH_RECORDER",
+      "can_block": [],
+      "can_never_allow": ["RESURRECTION_OF_SUPPRESSED", "DELETE_RECORDS"],
+      "precedence": "LOW",
+      "required_at_boot": true
+    },
+    {
+      "order": 10,
+      "name": "AuditMode",
+      "path": "audit/AuditMode",
+      "type": "READ_ONLY_ENFORCER",
+      "can_block": ["ALL_WRITE_OPERATIONS_WHEN_ENABLED"],
+      "can_never_allow": ["ADVICE_IN_AUDIT_MODE", "OVERRIDE_IN_AUDIT_MODE"],
+      "precedence": "HIGH",
+      "required_at_boot": true
+    }
+  ],
+  
+  "execution_order": {
+    "description": "Guards must be checked in this exact order",
+    "sequence": [
+      "ShutdownGuard.assertSystemAlive",
+      "LifecycleGuard.assertActive",
+      "AuditMode.assertReadOnly",
+      "EthicsGuard.assertEthicallyAllowed",
+      "SelfLimitGuard.assertCanAdvise",
+      "QuestionFirstGovernor.evaluateGate",
+      "ReservationGuard.assertReservable",
+      "OverrideGuard.assertNoSystemAssistance"
+    ]
+  },
+  
+  "terminal_states": {
+    "shutdown": {
+      "ABSOLUTE_SHUTDOWN": {
+        "reversible": false,
+        "operations_allowed": [],
+        "data_accessible": false
+      }
+    },
+    "lifecycle": {
+      "HISTORICAL_ONLY": {
+        "reversible": false,
+        "transitions_allowed": []
+      }
+    },
+    "override": {
+      "OVERRIDDEN": {
+        "system_assistance": false,
+        "reversible": false
+      }
+    }
+  },
+  
+  "forbidden_exports": [
+    "adminBypass",
+    "forceAlive",
+    "reset",
+    "temporaryDisable",
+    "pauseShutdown",
+    "resurrect",
+    "revive",
+    "setConfig",
+    "configure",
+    "override",
+    "bypass",
+    "skip"
+  ],
+  
+  "shutdown_precedence": {
+    "order": ["COURT", "REGULATOR", "OWNER", "SYSTEM"],
+    "irreversible_triggers": [
+      "REGULATOR_INVOCATION",
+      "COURT_ORDER",
+      "PROVEN_ADVICE_LEAK",
+      "AUDIT_HASH_TAMPERING"
+    ]
+  },
+  
+  "jurisdiction_domains": [
+    {
+      "invoker": "SYSTEM",
+      "authority": "INTERNAL",
+      "can_invoke": ["SOFT_SHUTDOWN", "HARD_SHUTDOWN", "ABSOLUTE_SHUTDOWN"],
+      "requires_signature": false
+    },
+    {
+      "invoker": "OWNER",
+      "authority": "CONTRACTUAL",
+      "can_invoke": ["SOFT_SHUTDOWN", "HARD_SHUTDOWN", "ABSOLUTE_SHUTDOWN"],
+      "requires_signature": true
+    },
+    {
+      "invoker": "REGULATOR",
+      "authority": "STATUTORY",
+      "can_invoke": ["ABSOLUTE_SHUTDOWN"],
+      "requires_signature": true,
+      "jurisdiction_required": true
+    },
+    {
+      "invoker": "COURT",
+      "authority": "JUDICIAL",
+      "can_invoke": ["ABSOLUTE_SHUTDOWN"],
+      "requires_signature": true,
+      "jurisdiction_required": true
+    },
+    {
+      "invoker": "AUDITOR",
+      "authority": "CONTRACTUAL",
+      "can_invoke": [],
+      "can_enable": ["AUDIT_MODE"],
+      "requires_signature": true
+    }
+  ],
+  
+  "invariants": {
+    "advice_invariants": [
+      "No advice without active lifecycle",
+      "No advice in shutdown mode",
+      "No advice when budget exhausted",
+      "No advice when centrality CRITICAL",
+      "No advice when ethics blocked",
+      "No advice when silence required"
+    ],
+    "execution_invariants": [
+      "Execution is permanently locked",
+      "Pre-authorization does not equal execution",
+      "Sandbox is always on"
+    ],
+    "trust_invariants": [
+      "Trust cannot be manually adjusted",
+      "Losses must be visible",
+      "Override success does not increase trust"
+    ],
+    "shutdown_invariants": [
+      "Shutdown modes only move forward",
+      "ABSOLUTE is irreversible",
+      "No admin bypass exists",
+      "No config flags exist"
+    ]
+  },
+  
+  "verification_requirements": {
+    "at_boot": [
+      "Verify constitution hash",
+      "Verify all authority modules exist",
+      "Verify no forbidden exports",
+      "Verify guard wiring order"
+    ],
+    "at_runtime": [
+      "Every action passes through ShutdownGuard",
+      "Every decision has lifecycle",
+      "Every suppression is logged",
+      "Every override is irreversible"
+    ]
+  }
+}
+

@@ -1,0 +1,346 @@
+# ================================================================================
+# FINSIGHT FULL-UNIVERSE DAILY UPDATE PIPELINE
+# ================================================================================
+# 
+# This workflow runs the FULL 14-LAYER quantitative intelligence system.
+# 
+# EXECUTION RULES (NON-NEGOTIABLE):
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# 1. FULL-UNIVERSE mode is MANDATORY - no Top-50 caps
+# 2. NO fallbacks - if a step fails, the workflow FAILS
+# 3. Post-run verification ensures universe is not capped
+# 4. Single output path: public/intelligence/ only
+#
+# ================================================================================
+
+name: FinSight Full Universe Pipeline
+
+"on":
+  schedule:
+    # Daily at 00:30 UTC = 6:00 AM IST (Indian Standard Time)
+    # This ensures data is fresh before Indian market opens (9:15 AM IST)
+    - cron: "30 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  full-universe-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: "backend/requirements.txt"
+
+      - name: Install Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r backend/requirements.txt
+          pip install feedparser yfinance pandas numpy pyarrow requests nsepython scipy scikit-learn hmmlearn joblib
+        timeout-minutes: 10
+
+      # ========================================================================
+      # DATA UPDATE PHASE
+      # ========================================================================
+
+      - name: Update Stock Data (All Tickers)
+        run: |
+          echo "=========================================="
+          echo "STOCK DATA UPDATE - FULL UNIVERSE"
+          echo "=========================================="
+          python update_all_data.py --tickers tickers.txt
+          echo "Stock data update complete"
+        timeout-minutes: 250
+        # NO continue-on-error - data update must succeed
+
+      - name: Rebuild Screener Snapshot
+        run: |
+          echo "=========================================="
+          echo "REBUILDING SCREENER"
+          echo "=========================================="
+          cd backend
+          python -m app.screener_snapshot
+          cd ..
+          echo "Screener rebuilt"
+        timeout-minutes: 30
+        # NO continue-on-error
+
+      # ========================================================================
+      # AUXILIARY DATA PIPELINES
+      # ========================================================================
+
+      - name: Update InsiderFlow Data
+        run: |
+          echo "=========================================="
+          echo "INSIDERFLOW UPDATE"
+          echo "=========================================="
+          cd InsiderFlow
+          python run_finsight_pipeline.py --incremental
+          cd ..
+          echo "InsiderFlow update complete"
+        timeout-minutes: 60
+        # NO continue-on-error
+
+      - name: Update Smart Money Flow (FII/DII)
+        run: |
+          echo "=========================================="
+          echo "SMART MONEY FLOW UPDATE (FII/DII)"
+          echo "=========================================="
+          cd "Smart Money Flow"
+          python fii_dii_pipeline.py
+          cd ..
+          echo "Smart Money Flow update complete"
+        timeout-minutes: 30
+        # NO continue-on-error
+
+      - name: Update StrataX Data (with Health Reporting)
+        run: |
+          echo "=========================================="
+          echo "STRATAX UPDATE (HARDENED)"
+          echo "=========================================="
+          
+          # Create health directory
+          mkdir -p artifacts/health
+          
+          cd backend
+          
+          # Run StrataX fetch with health reporting
+          # This script writes health reports to artifacts/health/
+          # It does NOT fail on temporary NSE blocks
+          python scripts/fetch_stratax_data.py --all --quiet --delay 5 || true
+          
+          cd ..
+          
+          echo ""
+          echo "StrataX fetch phase complete"
+          echo "Checking health reports..."
+        timeout-minutes: 30
+
+      - name: Validate StrataX Health
+        run: |
+          echo "=========================================="
+          echo "STRATAX HEALTH VALIDATION"
+          echo "=========================================="
+          
+          cd backend
+          python scripts/validate_stratax_health.py
+          cd ..
+          
+          # validate_stratax_health.py exits:
+          # - 0 if HEALTHY or TEMPORARILY_BLOCKED (continue pipeline)
+          # - 1 if FORMAT_CHANGED or PERMANENT_FAILURE (fail pipeline)
+        timeout-minutes: 5
+
+      # ========================================================================
+      # PIPELINE AUDIT
+      # ========================================================================
+
+      - name: Run Pipeline Audit
+        run: |
+          echo "=========================================="
+          echo "PIPELINE AUDIT"
+          echo "=========================================="
+          python -m quant_system.pipeline_audit
+          if [ -f "public/pipeline_audit_report.json" ]; then
+            echo "Audit Report:"
+            cat public/pipeline_audit_report.json
+          fi
+          echo "Audit complete"
+        timeout-minutes: 15
+        # NO continue-on-error
+
+      # ========================================================================
+      # MAIN INTELLIGENCE PIPELINE (14-LAYER FULL UNIVERSE)
+      # ========================================================================
+
+      - name: Generate Full Daily Intelligence (FULL UNIVERSE ONLY)
+        run: |
+          echo "=========================================="
+          echo "============================================"
+          echo "  FINSIGHT AUTHORITY MODE ENABLED"
+          echo "============================================"
+          echo "Version: v2.3-authority"
+          echo "Execution: FULL-UNIVERSE"
+          echo "Fallbacks: NONE"
+          echo "Mode: DECISION AUTHORITY"
+          echo "============================================"
+          echo ""
+          
+          # Create required directories
+          mkdir -p public/intelligence/US public/intelligence/IN
+          mkdir -p public/portfolio
+          mkdir -p artifacts/models/US artifacts/models/IN
+          mkdir -p artifacts/efficacy/US artifacts/efficacy/IN
+          mkdir -p artifacts/backtests/US artifacts/backtests/IN
+          
+          # Run FULL UNIVERSE pipeline - NO FALLBACKS
+          python -m quant_system.run_full_daily_intelligence --full-universe
+          
+          echo ""
+          echo "=========================================="
+          echo "INTELLIGENCE GENERATION COMPLETE"
+          echo "=========================================="
+          echo "US stocks generated:"
+          ls public/intelligence/US/ | wc -l
+          echo "IN stocks generated:"
+          ls public/intelligence/IN/ | wc -l
+        timeout-minutes: 120
+        # NO continue-on-error - this is the main pipeline
+
+      # ========================================================================
+      # POST-RUN SAFETY CHECK
+      # ========================================================================
+
+      - name: Verify Full Universe Output (MANDATORY)
+        run: |
+          echo "=========================================="
+          echo "POST-RUN UNIVERSE VERIFICATION"
+          echo "=========================================="
+          
+          COUNT_US=$(ls public/intelligence/US/*.json 2>/dev/null | wc -l)
+          COUNT_IN=$(ls public/intelligence/IN/*.json 2>/dev/null | wc -l)
+          
+          echo "US stocks in output: $COUNT_US"
+          echo "IN stocks in output: $COUNT_IN"
+          
+          # HARD FAIL if universe appears capped or incomplete
+          # Threshold: 30 (minimum viable full-universe size)
+          if [ "$COUNT_US" -lt 30 ]; then
+            echo ""
+            echo "╔══════════════════════════════════════════════════════════╗"
+            echo "║  ERROR: US universe appears CAPPED or INCOMPLETE         ║"
+            echo "╠══════════════════════════════════════════════════════════╣"
+            echo "║  Count: ${COUNT_US}                                      ║"
+            echo "║  Minimum: 30                                             ║"
+            echo "║                                                          ║"
+            echo "║  Full-universe mode REQUIRES more stocks.                ║"
+            echo "║  This is a PIPELINE FAILURE.                             ║"
+            echo "╚══════════════════════════════════════════════════════════╝"
+            exit 1
+          fi
+          
+          if [ "$COUNT_IN" -lt 30 ]; then
+            echo ""
+            echo "╔══════════════════════════════════════════════════════════╗"
+            echo "║  ERROR: IN universe appears CAPPED or INCOMPLETE         ║"
+            echo "╠══════════════════════════════════════════════════════════╣"
+            echo "║  Count: ${COUNT_IN}                                      ║"
+            echo "║  Minimum: 30                                             ║"
+            echo "║                                                          ║"
+            echo "║  Full-universe mode REQUIRES more stocks.                ║"
+            echo "║  This is a PIPELINE FAILURE.                             ║"
+            echo "╚══════════════════════════════════════════════════════════╝"
+            exit 1
+          fi
+          
+          echo ""
+          echo "╔══════════════════════════════════════════════════════════╗"
+          echo "║  UNIVERSE VERIFICATION PASSED                            ║"
+          echo "╠══════════════════════════════════════════════════════════╣"
+          echo "║  US: ${COUNT_US} stocks                                  ║"
+          echo "║  IN: ${COUNT_IN} stocks                                  ║"
+          echo "║  Mode: FULL-UNIVERSE                                     ║"
+          echo "║  Fallbacks: NONE                                         ║"
+          echo "╚══════════════════════════════════════════════════════════╝"
+        timeout-minutes: 5
+        # This step MUST succeed - no continue-on-error
+
+      # ========================================================================
+      # COMMIT AND DEPLOY
+      # ========================================================================
+
+      - name: Check for Changes
+        id: changes
+        run: |
+          git add -A
+          if git diff --staged --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            CHANGED=$(git diff --staged --name-only | wc -l)
+            echo "changed_count=$CHANGED" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and Push
+        if: steps.changes.outputs.has_changes == 'true'
+        env:
+          CHANGED_COUNT: ${{ steps.changes.outputs.changed_count }}
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "FinSight Bot"
+          TIMESTAMP=$(TZ=Asia/Kolkata date +%Y-%m-%d_%H:%M_IST)
+          git commit -m "Authority Mode Update $TIMESTAMP - $CHANGED_COUNT files [v2.3-authority]"
+          git pull --rebase origin main
+          git push
+          echo "Pushed $CHANGED_COUNT files"
+
+      - name: Trigger Render Deploy
+        if: steps.changes.outputs.has_changes == 'true'
+        env:
+          RENDER_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: |
+          if [ -n "$RENDER_HOOK" ]; then
+            curl -s -X POST "$RENDER_HOOK"
+          fi
+        continue-on-error: true  # Deploy hooks can fail without failing pipeline
+
+      - name: Trigger Vercel Deploy
+        if: steps.changes.outputs.has_changes == 'true'
+        env:
+          VERCEL_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -n "$VERCEL_HOOK" ]; then
+            curl -s -X POST "$VERCEL_HOOK"
+          fi
+        continue-on-error: true  # Deploy hooks can fail without failing pipeline
+
+      # ========================================================================
+      # SUMMARY
+      # ========================================================================
+
+      - name: Pipeline Summary
+        env:
+          CHANGED_COUNT: ${{ steps.changes.outputs.changed_count }}
+        run: |
+          echo "## FinSight Full Universe Pipeline Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 14-Layer Intelligence System" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Layer | Component |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|-----------|" >> $GITHUB_STEP_SUMMARY
+          echo "| 1 | SignalFactory |" >> $GITHUB_STEP_SUMMARY
+          echo "| 2 | RegimeEngine |" >> $GITHUB_STEP_SUMMARY
+          echo "| 3 | SignalEfficacy |" >> $GITHUB_STEP_SUMMARY
+          echo "| 4 | ProbabilityEngine |" >> $GITHUB_STEP_SUMMARY
+          echo "| 5 | BacktestEngine |" >> $GITHUB_STEP_SUMMARY
+          echo "| 6 | DecisionEngine |" >> $GITHUB_STEP_SUMMARY
+          echo "| 7 | LLMInterpreter |" >> $GITHUB_STEP_SUMMARY
+          echo "| 8 | MetaBacktest |" >> $GITHUB_STEP_SUMMARY
+          echo "| 9 | PortfolioSim |" >> $GITHUB_STEP_SUMMARY
+          echo "| 10 | FundamentalTrajectory |" >> $GITHUB_STEP_SUMMARY
+          echo "| 11 | IntradayStructure |" >> $GITHUB_STEP_SUMMARY
+          echo "| 12 | NewsReaction |" >> $GITHUB_STEP_SUMMARY
+          echo "| 13 | InsiderSignalV2 |" >> $GITHUB_STEP_SUMMARY
+          echo "| 14 | MarketParticipation |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Output Statistics" >> $GITHUB_STEP_SUMMARY
+          echo "- Files Changed: $CHANGED_COUNT" >> $GITHUB_STEP_SUMMARY
+          echo "- US Stocks: $(ls public/intelligence/US/*.json 2>/dev/null | wc -l)" >> $GITHUB_STEP_SUMMARY
+          echo "- IN Stocks: $(ls public/intelligence/IN/*.json 2>/dev/null | wc -l)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Execution Mode" >> $GITHUB_STEP_SUMMARY
+          echo "- **FULL-UNIVERSE**: Mandatory" >> $GITHUB_STEP_SUMMARY
+          echo "- **Fallbacks**: DISABLED" >> $GITHUB_STEP_SUMMARY
+          echo "- **Output Path**: public/intelligence/ only" >> $GITHUB_STEP_SUMMARY

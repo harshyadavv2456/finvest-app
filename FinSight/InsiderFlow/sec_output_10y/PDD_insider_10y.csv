@@ -1,0 +1,10 @@
+cik,filingDate,issuerTradingSymbol,reportingOwnerName,reportingOwnerRelationship,accessionNumber,transactionDate,transactionCode,transactionShares,transactionPricePerShare,sharesOwnedFollowingTransaction,directOrIndirectOwnership,transactionType,securityTitle,underlyingSecurityTitle,underlyingSecurityShares,exercisePrice,expirationDate
+1737806,2026-04-01,PDD,Rietjens Ivonne MCM,,0001104659-26-038207,2026-03-30,S,560,99.5936,0,D,,,,,,
+1737806,2026-04-01,PDD,Kam Anthony Ping Leung,,0001104659-26-038202,2026-03-30,S,1533,99.4287,0,D,,,,,,
+1737806,2026-04-01,PDD,Rietjens Ivonne MCM,,0001104659-26-038207,2026-03-30,S,560,99.5936,0,D,non_derivative,ADSs,,,,
+1737806,2026-04-01,PDD,Kam Anthony Ping Leung,,0001104659-26-038202,2026-03-30,S,1533,99.4287,0,D,non_derivative,ADSs,,,,
+1737806,2026-07-02,PDD,Zhao Jiazhen,,0001104659-26-080480,2026-07-01,A,50000,0.0,50000,D,derivative,Options (right to buy),ADSs,50000.0,0.026,2046-06-30
+1737806,2026-07-02,PDD,Wang Mi,,0001104659-26-080479,2026-07-01,A,40000,0.0,40000,D,derivative,Options (right to buy),ADSs,40000.0,0.026,2046-06-30
+1737806,2026-08-04,PDD,Yeo George Yong-Boon,,0001104659-26-089995,2026-08-01,M,1584,,27212,D,non_derivative,ADSs,,,,
+1737806,2026-08-04,PDD,Yeo George Yong-Boon,,0001104659-26-089995,2026-08-01,M,1045,0.0,0,D,derivative,Restricted Share Units (RSUs),ADSs,1045.0,,
+1737806,2026-08-04,PDD,Yeo George Yong-Boon,,0001104659-26-089995,2026-08-01,A,423,0.0,423,D,derivative,Restricted Share Units (RSUs),ADSs,423.0,,

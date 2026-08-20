@@ -1,0 +1,26 @@
+# Quant System Dependencies
+# =========================
+
+# Core Data Processing
+pandas>=1.5.0
+numpy>=1.23.0
+pyarrow>=10.0.0  # For parquet support
+
+# Statistical & Scientific Computing
+scipy>=1.9.0
+
+# Machine Learning
+scikit-learn>=1.2.0
+hmmlearn>=0.3.0  # Hidden Markov Models for regime detection
+joblib>=1.2.0  # Model serialization
+
+# Optional: Enhanced ML (uncomment if needed)
+# xgboost>=1.7.0
+# lightgbm>=3.3.0
+
+# Logging & Utilities
+python-dateutil>=2.8.0
+
+# Note: The system is designed to work with the existing FinSight data
+# No additional data APIs are required
+

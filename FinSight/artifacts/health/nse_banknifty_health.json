@@ -1,0 +1,12 @@
+{
+  "source": "NSE",
+  "symbol": "BANKNIFTY",
+  "state": "permanent_failure",
+  "criticality": "auxiliary",
+  "attempted_at": "2026-08-19T22:44:05.050611",
+  "last_success": null,
+  "message": "NSE endpoint not found (404) for BANKNIFTY",
+  "retry_count": 0,
+  "response_code": null,
+  "error_type": "NSEPermanentError"
+}

@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# Backend
+backend/__pycache__/
+backend/.env
+backend/*.pyc
+backend/.env.local
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Data
+# Note: data/ folder is now committed to repo (files are < 50MB each)
+# Only ignore generated screener files
+data/screener.parquet
+data/screener.csv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Intelligence history (local archive, too large for git)
+public/intelligence/history/
+
+# Mnemos databases
+*.db
+*.db-journal
+
+# OS
+.DS_Store
+Thumbs.db
+

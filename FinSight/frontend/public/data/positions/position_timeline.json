@@ -1,0 +1,54 @@
+{
+  "version": "1.0.0",
+  "entries": [
+    {
+      "date": "2025-12-24",
+      "position_id": "POS-DEMO-001",
+      "symbol": "RELIANCE",
+      "decision": "HOLD",
+      "rationale": "Thesis intact, risk acceptable",
+      "price_at_decision": 2582.28
+    },
+    {
+      "date": "2025-12-24",
+      "position_id": "POS-DEMO-002",
+      "symbol": "TCS",
+      "decision": "HOLD",
+      "rationale": "Thesis intact, risk acceptable",
+      "price_at_decision": 4053.58
+    },
+    {
+      "date": "2025-12-24",
+      "position_id": "POS-DEMO-003",
+      "symbol": "HDFCBANK",
+      "decision": "HOLD",
+      "rationale": "Thesis intact, risk acceptable",
+      "price_at_decision": 1721.52
+    },
+    {
+      "date": "2025-12-23",
+      "position_id": "POS-DEMO-001",
+      "symbol": "RELIANCE",
+      "decision": "HOLD",
+      "rationale": "Awaiting Q3 results",
+      "price_at_decision": 2575.40
+    },
+    {
+      "date": "2025-12-23",
+      "position_id": "POS-DEMO-002",
+      "symbol": "TCS",
+      "decision": "HOLD",
+      "rationale": "Strong momentum continues",
+      "price_at_decision": 4040.25
+    },
+    {
+      "date": "2025-12-23",
+      "position_id": "POS-DEMO-003",
+      "symbol": "HDFCBANK",
+      "decision": "HOLD",
+      "rationale": "Banking sector stable",
+      "price_at_decision": 1715.80
+    }
+  ]
+}
+

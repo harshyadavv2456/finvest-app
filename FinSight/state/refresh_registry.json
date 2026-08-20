@@ -1,0 +1,156 @@
+{
+  "schema_version": "1.0",
+  "last_orchestration_utc": "2026-08-19T18:02:36.495891+00:00",
+  "modules": {
+    "market_data": {
+      "last_attempt_utc": "2026-08-19T17:13:45.318725+00:00",
+      "last_success_utc": "2026-08-19T17:13:45.318725+00:00",
+      "status": "success",
+      "elapsed_seconds": 18858.4,
+      "error": null,
+      "consecutive_failures": 0,
+      "depends_on": []
+    },
+    "insider_flow": {
+      "last_attempt_utc": "2026-08-19T17:13:46.493143+00:00",
+      "last_success_utc": "2026-08-19T17:13:46.493143+00:00",
+      "status": "success",
+      "elapsed_seconds": 1.1,
+      "error": null,
+      "consecutive_failures": 0,
+      "depends_on": []
+    },
+    "fii_dii": {
+      "last_attempt_utc": "2026-08-19T17:13:54.785643+00:00",
+      "last_success_utc": "2026-08-19T17:13:54.785643+00:00",
+      "status": "success",
+      "elapsed_seconds": 8.3,
+      "error": null,
+      "consecutive_failures": 0,
+      "depends_on": []
+    },
+    "stratax": {
+      "last_attempt_utc": "2026-08-19T17:14:15.851022+00:00",
+      "last_success_utc": "2026-08-19T17:14:15.851022+00:00",
+      "status": "success",
+      "elapsed_seconds": 21.1,
+      "error": null,
+      "consecutive_failures": 0,
+      "depends_on": []
+    },
+    "announcements": {
+      "last_attempt_utc": "2026-08-19T17:14:23.265857+00:00",
+      "last_success_utc": "2026-08-19T17:14:23.265857+00:00",
+      "status": "success",
+      "elapsed_seconds": 7.4,
+      "error": null,
+      "consecutive_failures": 0,
+      "depends_on": []
+    },
+    "finax": {
+      "last_attempt_utc": "2026-08-19T17:15:38.398933+00:00",
+      "last_success_utc": "2026-08-19T17:15:38.398933+00:00",
+      "status": "success",
+      "elapsed_seconds": 75.1,
+      "error": null,
+      "consecutive_failures": 0,
+      "depends_on": []
+    },
+    "screener": {
+      "last_attempt_utc": "2026-08-19T17:49:36.575984+00:00",
+      "last_success_utc": "2026-08-19T17:49:36.575984+00:00",
+      "status": "success",
+      "elapsed_seconds": 627.3,
+      "error": null,
+      "consecutive_failures": 0,
+      "depends_on": [
+        "market_data"
+      ]
+    },
+    "intelligence": {
+      "last_attempt_utc": "2026-08-19T17:58:28.829561+00:00",
+      "last_success_utc": "2026-08-19T17:58:28.829561+00:00",
+      "status": "success",
+      "elapsed_seconds": 532.3,
+      "error": null,
+      "consecutive_failures": 0,
+      "depends_on": [
+        "market_data",
+        "screener"
+      ]
+    },
+    "intelligence_archive": {
+      "last_attempt_utc": "2026-08-19T17:58:37.686374+00:00",
+      "last_success_utc": "2026-08-19T17:58:37.686374+00:00",
+      "status": "success",
+      "elapsed_seconds": 8.9,
+      "error": null,
+      "consecutive_failures": 0,
+      "depends_on": [
+        "intelligence"
+      ]
+    },
+    "timeline": {
+      "last_attempt_utc": "2026-08-19T17:58:38.309507+00:00",
+      "last_success_utc": "2026-08-19T17:58:38.309507+00:00",
+      "status": "success",
+      "elapsed_seconds": 0.6,
+      "error": null,
+      "consecutive_failures": 0,
+      "depends_on": [
+        "intelligence"
+      ]
+    },
+    "positions": {
+      "last_attempt_utc": "2026-08-19T17:58:39.328041+00:00",
+      "last_success_utc": "2026-08-19T17:58:39.328041+00:00",
+      "status": "success",
+      "elapsed_seconds": 1.0,
+      "error": null,
+      "consecutive_failures": 0,
+      "depends_on": [
+        "intelligence"
+      ]
+    },
+    "pipeline_audit": {
+      "last_attempt_utc": "2026-08-19T18:02:36.495891+00:00",
+      "last_success_utc": "2026-08-19T18:02:36.495891+00:00",
+      "status": "success",
+      "elapsed_seconds": 6.0,
+      "error": null,
+      "consecutive_failures": 0,
+      "depends_on": [
+        "intelligence"
+      ]
+    },
+    "mnemos": {
+      "last_attempt_utc": "2026-08-19T17:37:09.160055+00:00",
+      "last_success_utc": "2026-08-19T17:37:09.160055+00:00",
+      "status": "success",
+      "elapsed_seconds": 1290.8,
+      "error": null,
+      "consecutive_failures": 0,
+      "depends_on": []
+    },
+    "mnemos2_sync": {
+      "last_attempt_utc": "2026-08-19T17:39:09.254722+00:00",
+      "last_success_utc": "2026-08-19T17:39:09.254722+00:00",
+      "status": "success",
+      "elapsed_seconds": 120.1,
+      "error": null,
+      "consecutive_failures": 0,
+      "depends_on": []
+    },
+    "alpha_rankings": {
+      "last_attempt_utc": "2026-08-19T18:02:30.453303+00:00",
+      "last_success_utc": "2026-08-19T18:02:30.453303+00:00",
+      "status": "success",
+      "elapsed_seconds": 231.1,
+      "error": null,
+      "consecutive_failures": 0,
+      "depends_on": [
+        "market_data"
+      ]
+    }
+  }
+}

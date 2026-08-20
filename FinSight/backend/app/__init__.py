@@ -1,0 +1,2 @@
+"""FinSight backend application."""
+

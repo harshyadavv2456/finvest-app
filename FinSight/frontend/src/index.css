@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-bloomberg-dark text-bloomberg-text;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-bloomberg-panel border border-bloomberg-border rounded-lg p-4;
+  }
+  
+  .btn-primary {
+    @apply bg-bloomberg-accent hover:bg-bloomberg-accent-hover text-white px-4 py-2 rounded-md transition-colors;
+  }
+  
+  .btn-secondary {
+    @apply bg-bloomberg-panel hover:bg-bloomberg-border border border-bloomberg-border text-bloomberg-text px-4 py-2 rounded-md transition-colors;
+  }
+  
+  .input-field {
+    @apply bg-bloomberg-panel border border-bloomberg-border text-bloomberg-text rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-bloomberg-accent;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
+}
+

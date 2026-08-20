@@ -1,0 +1,21 @@
+{
+  "last_run_utc": "2026-08-19T18:02:36.496880+00:00",
+  "elapsed_minutes": 363.16,
+  "results": {
+    "market_data": true,
+    "insider_flow": true,
+    "fii_dii": true,
+    "stratax": true,
+    "announcements": true,
+    "finax": true,
+    "mnemos": true,
+    "mnemos2_sync": true,
+    "screener": true,
+    "intelligence": true,
+    "intelligence_archive": true,
+    "timeline": true,
+    "positions": true,
+    "alpha_rankings": true,
+    "pipeline_audit": true
+  }
+}
