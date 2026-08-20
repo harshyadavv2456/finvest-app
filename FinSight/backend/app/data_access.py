@@ -43,14 +43,25 @@ def _list_tickers_from_r2() -> List[Dict[str, Any]]:
 
 def list_tickers() -> List[Dict[str, Any]]:
     """
-    Walk data/*/*/metadata.json and return list of tickers with metadata.
-    Falls back to the R2 manifest (_list_tickers_from_r2) if the local
-    data directory is missing or empty, e.g. in production where
-    FinSight/data/ is no longer part of the git repo.
+    Returns the full ticker universe with metadata.
+
+    When R2 is configured (production), the R2 manifest is the source of
+    truth: local disk on Render only ever holds whichever tickers happened
+    to be requested and self-healed from R2 already (utils/paths.py), so a
+    local walk there would silently return a partial, request-order-
+    dependent list instead of the full universe - worse than just not
+    falling back at all. Local-only walk (no R2 configured) remains the
+    plain dev behavior, unchanged from before this fix.
 
     Returns:
         List of dicts with keys: ticker, market, exchange_tz, updated_utc, daily_rows, minute_rows
     """
+    if os.environ.get("R2_ACCESS_KEY_ID"):
+        r2_tickers = _list_tickers_from_r2()
+        if r2_tickers:
+            return r2_tickers
+        # R2 configured but manifest missing/empty - fall through to local walk as a last resort
+
     tickers = []
     data_dir = settings.DATA_DIR
 
