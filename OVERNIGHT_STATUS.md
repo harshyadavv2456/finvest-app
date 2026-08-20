@@ -1,4 +1,4 @@
-# Overnight status — final update, everything below is live and verified
+# Overnight status — final update, everything below is live and verified, repo is public
 
 Written after finishing. This replaces last night's in-progress version — read this one.
 
@@ -46,12 +46,14 @@ Committed to both `E:\FinVest2` and `finvest-app`, per `FinSight/IMPLEMENTATION_
 
 `decision_calls` / `decision_outcomes` Supabase tables are created (schema pushed) but empty until the pipeline runs and starts logging real calls — nothing to score yet.
 
+## Resolved this morning
+
+- **Mnemos (1.0 and 2.0)**: leaving both alone entirely, per your explicit instruction. No further action, no more flagging.
+- **`finvest-app` visibility**: confirmed **public** (`gh api repos/harshyadavv2456/finvest-app` → `private: false`). GitHub Actions minutes (daily-refresh + the keep-alive ping) are now unlimited.
+
 ## Still flagged from earlier, not acted on — still needs your input
 
-- **`apps/Mnemos/`** still has real Gmail credentials on disk in `config.yaml` (untracked, excluded from the new repo, but not deleted). Its `output/` folder had a same-day modification timestamp I couldn't explain — confirm whether it's genuinely retired before I delete anything.
-- **"Mnemos 2.0" scheduled task** — confirmed real and still running daily at 8:30 AM from `D:\Mnemos 2.0\run_mnemos.bat`, with `LastTaskResult: 1` (non-zero — may be failing silently). Not touched.
 - **`FinVest-oldnew`** (a 4th GitHub repo Render was originally connected to) and **`D:\FinVest2` / `D:\FinVest News`** — never investigated, mentioned in passing early in the session.
-- **`finvest-app` repo visibility**: still **private**. Flipping it public is what would make GitHub Actions minutes fully unlimited (private repos get 2,000 free min/month, which the daily-refresh + new keep-alive ping together should still fit inside comfortably, so this isn't urgent) — but making a repo public is effectively irreversible once anything's been cloned/indexed, so I left this for you to decide rather than doing it unilaterally overnight.
 
 ## Everything that was already fixed before you went to sleep (unchanged, still true)
 
