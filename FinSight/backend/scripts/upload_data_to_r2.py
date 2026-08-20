@@ -28,6 +28,8 @@ import logging
 import os
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import TimeoutError as FuturesTimeout
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -37,6 +39,7 @@ log = logging.getLogger("upload_data_to_r2")
 
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"  # FinSight/backend/scripts -> FinSight/data
 STATE_FILE = Path(__file__).resolve().parent.parent.parent / "state" / "r2_upload_state.json"  # FinSight/state, matching sync_news_intelligence.py's state file convention
+PER_FILE_TIMEOUT_SECONDS = 30  # seen actual hangs this session with no timeout at all; 30s is generous for any single ticker file
 
 # Hard safety cap - stop well before the actual 10GB free-tier limit, to
 # leave headroom for the intelligence snapshots and anything else that
@@ -150,10 +153,28 @@ def main():
 
         key = ticker_data_key(market, ticker, f.name)
         try:
-            client.put_file(key, f)
+            # Hard per-file timeout, not just boto3's socket_timeout. The
+            # actual hangs seen in this run had CPU and network activity
+            # both flatline mid-file - almost certainly a stuck local disk
+            # read (this external drive), not a network stall, so a socket
+            # timeout alone never fired. A thread with a real deadline
+            # is what lets the script self-recover instead of needing a
+            # human to notice and kill it.
+            # Not a `with` block deliberately: __exit__ would call
+            # shutdown(wait=True) and block on the same stuck thread we're
+            # trying to time out on. Let it leak on timeout instead - a
+            # rare, small cost versus the alternative of the timeout never
+            # actually firing.
+            pool = ThreadPoolExecutor(max_workers=1)
+            future = pool.submit(client.put_file, key, f)
+            future.result(timeout=PER_FILE_TIMEOUT_SECONDS)
+            pool.shutdown(wait=False)
             uploaded[rel] = fp
             uploaded_count += 1
             uploaded_bytes_this_run += f.stat().st_size
+        except FuturesTimeout:
+            log.warning("Upload TIMED OUT for %s after %ds - likely a stuck disk read, skipping (will retry next run)", rel, PER_FILE_TIMEOUT_SECONDS)
+            continue
         except Exception as e:
             log.warning("Upload failed for %s: %s (will retry next run)", rel, e)
             continue
