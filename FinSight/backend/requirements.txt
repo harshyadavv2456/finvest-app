@@ -21,3 +21,11 @@ redis>=5.0.0
 # (ModuleNotFoundError / "nsepython not installed") - 2026-08-21.
 feedparser>=6.0.0
 nsepython>=2.0.0
+
+# AngelOne SmartAPI (Workstream D) - read-only market data, primary IN
+# equity/option source. smartapi-python pulls in logzero transitively but
+# doesn't declare it - pinning it explicitly (confirmed missing during
+# this session's own install).
+smartapi-python>=1.5.5
+pyotp>=2.9.0
+logzero>=1.7.0
