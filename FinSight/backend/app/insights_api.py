@@ -72,6 +72,46 @@ def _news_sentiment_for_ticker(supabase, ticker: str, lookback_days: int = 3) ->
     }
 
 
+def _fetch_recent_news_bulk(supabase, lookback_days: int = 2, row_limit: int = 3000) -> List[Dict[str, Any]]:
+    """One query for ALL recent articles instead of one query per ticker -
+    fixes the N+1 pattern that made /divergent take 30+ seconds (~500
+    individual .ilike() queries against news_articles). Ticker matching
+    then happens in memory against this single result set."""
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=lookback_days)).isoformat()
+    resp = (
+        supabase.table("news_articles")
+        .select("title, sentiment, sentiment_score, impact_level, impact_score, impacted_stocks, fetched_at_utc, url")
+        .gte("fetched_at_utc", cutoff)
+        .order("fetched_at_utc", desc=True)
+        .limit(row_limit)
+        .execute()
+    )
+    return resp.data or []
+
+
+def _sentiment_from_rows(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Same aggregation _news_sentiment_for_ticker does, factored out so
+    both the single-query and bulk-fetched-then-filtered paths share it."""
+    if not rows:
+        return {"article_count": 0, "avg_sentiment_score": None, "dominant_sentiment": None, "recent_articles": []}
+
+    scored = [r["sentiment_score"] for r in rows if isinstance(r.get("sentiment_score"), (int, float))]
+    avg_sentiment = sum(scored) / len(scored) if scored else None
+
+    sentiments = [r.get("sentiment") for r in rows if r.get("sentiment")]
+    dominant = max(set(sentiments), key=sentiments.count) if sentiments else None
+
+    return {
+        "article_count": len(rows),
+        "avg_sentiment_score": round(avg_sentiment, 3) if avg_sentiment is not None else None,
+        "dominant_sentiment": dominant,
+        "recent_articles": [
+            {"title": r["title"], "sentiment": r.get("sentiment"), "impact_level": r.get("impact_level"), "url": r.get("url")}
+            for r in rows[:5]
+        ],
+    }
+
+
 def _classify_agreement(quant_intent: str, news_sentiment: Optional[str]) -> Dict[str, Any]:
     """The actual insight: does news sentiment confirm or contradict the
     quant call? Deliberately simple/explainable rules, not another model -
@@ -162,11 +202,18 @@ def _list_divergent_signals_sync(market: str, limit: int) -> Dict[str, Any]:
         .execute()
     )
 
+    # One bulk fetch instead of one query per ticker (was the actual N+1
+    # cause of the 30+ second response time) - match tickers against this
+    # single result set in memory instead.
+    all_news = _fetch_recent_news_bulk(supabase, lookback_days=2)
+
     divergent: List[Dict[str, Any]] = []
     for row in snap_resp.data or []:
         ticker = row["ticker"]
         payload = row["payload"]
-        news = _news_sentiment_for_ticker(supabase, ticker, lookback_days=2)
+        # Case-insensitive substring match, matching the original .ilike() semantics.
+        ticker_rows = [r for r in all_news if ticker.lower() in (r.get("impacted_stocks") or "").lower()]
+        news = _sentiment_from_rows(ticker_rows[:20])
         if news["article_count"] == 0:
             continue
         agreement = _classify_agreement(payload.get("intent"), news.get("dominant_sentiment"))
