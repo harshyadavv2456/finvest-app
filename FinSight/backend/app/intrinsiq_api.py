@@ -788,9 +788,20 @@ def compute_valuation(ticker: str) -> Dict[str, Any]:
         intrinsic_value = current_price
 
     # ── Minimum Intrinsic Floor ──
+    # Sanity-bound against current_price the same way the composite
+    # weighted-average step above already does (0.15x-5x band). Without
+    # this, a per-share input corrupted by bad upstream data - observed
+    # live on BRK-B: yfinance's sharesOutstanding for dual-class tickers
+    # can resolve to the wrong class's share count, producing an EPV/
+    # book-value-per-share inflated ~1000x - forces intrinsic_value (and
+    # therefore intrinsic_range.low, since it's raised to at least
+    # floor*0.9 below) to some multiple-of-current-price absurdity, while
+    # intrinsic_range.high stays sane - a range where high < low.
     floor_bv = (book_value * 0.8) if book_value and book_value > 0 else 0
     floor_epv = (epv_per_share * 0.7) if epv_per_share and epv_per_share > 0 else 0
     intrinsic_floor = max(floor_bv, floor_epv)
+    if current_price > 0 and intrinsic_floor > 5.0 * current_price:
+        intrinsic_floor = 0  # implausible vs. market price - treat as bad per-share data, not a real floor
     if intrinsic_floor > 0 and intrinsic_value < intrinsic_floor:
         intrinsic_value = round(intrinsic_floor, 2)
 
@@ -812,6 +823,11 @@ def compute_valuation(ticker: str) -> Dict[str, Any]:
         iv_high = round(intrinsic_value * 1.15, 2)
     if intrinsic_floor > 0:
         iv_low = max(iv_low, round(intrinsic_floor * 0.9, 2))
+    # Belt-and-suspenders: whatever produced iv_low/iv_high above, the
+    # displayed range must never be inverted (low > high reads as a
+    # broken product to a user regardless of the numerical root cause).
+    if iv_low > iv_high:
+        iv_low, iv_high = iv_high, iv_low
     intrinsic_range = {"low": iv_low, "base": intrinsic_value, "high": iv_high}
 
     # ── Valuation Confidence Score ──
