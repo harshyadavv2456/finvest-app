@@ -68,38 +68,39 @@ def _download_with_retries() -> list:
     progress, not complete the whole file in one unbroken connection."""
     buf = bytearray()
     consecutive_no_progress = 0
+    max_attempts = MAX_ATTEMPTS * 6  # each attempt may only add a small amount before the connection drops again
 
-    for attempt in range(1, MAX_ATTEMPTS * 3 + 1):  # more attempts since each one may only add a small amount
+    for attempt in range(1, max_attempts + 1):
+        before = len(buf)  # tracked outside the try - a mid-stream exception still leaves real bytes in buf
         headers = {"Range": f"bytes={len(buf)}-"} if buf else {}
         try:
             resp = requests.get(INSTRUMENT_MASTER_URL, headers=headers, timeout=90, stream=True)
             if resp.status_code not in (200, 206):
                 resp.raise_for_status()
 
-            before = len(buf)
             for chunk in resp.iter_content(chunk_size=256 * 1024):
                 if chunk:
                     buf.extend(chunk)
-            gained = len(buf) - before
-            log.info("Attempt %d: +%d bytes (total %d)", attempt, gained, len(buf))
-            consecutive_no_progress = 0 if gained > 0 else consecutive_no_progress + 1
 
             try:
                 data = json.loads(bytes(buf))
-                log.info("Download complete and valid JSON: %d instruments (%d bytes, %d attempts)", len(data), len(buf), attempt)
+                log.info("Attempt %d: download complete and valid JSON - %d instruments (%d bytes)", attempt, len(data), len(buf))
                 return data
             except json.JSONDecodeError:
                 pass  # not done yet, more bytes needed - loop and resume
 
         except Exception as e:  # noqa: BLE001
             log.warning("Attempt %d failed at %d bytes: %s", attempt, len(buf), e)
-            consecutive_no_progress += 1
 
-        if consecutive_no_progress >= 5:
-            raise RuntimeError(f"No progress in 5 consecutive attempts, stuck at {len(buf)} bytes")
-        time.sleep(3)
+        gained = len(buf) - before
+        log.info("Attempt %d: +%d bytes (total %d/~37MB)", attempt, gained, len(buf))
+        consecutive_no_progress = 0 if gained > 0 else consecutive_no_progress + 1
 
-    raise RuntimeError(f"Failed to complete instrument master download after {MAX_ATTEMPTS * 3} attempts, stuck at {len(buf)} bytes")
+        if consecutive_no_progress >= 8:
+            raise RuntimeError(f"No progress in 8 consecutive attempts, stuck at {len(buf)} bytes")
+        time.sleep(2)
+
+    raise RuntimeError(f"Failed to complete instrument master download after {max_attempts} attempts, stuck at {len(buf)} bytes")
 
 
 def _filter(instruments: list) -> list:
