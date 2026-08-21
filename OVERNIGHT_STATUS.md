@@ -2,6 +2,22 @@
 
 Written after finishing. This replaces last night's in-progress version — read this one.
 
+## Morning-after fixes (2026-08-21) — you flagged the site as "nothing working," here's what was actually wrong and what's fixed
+
+You were right - the "site is live" claim below held for the two things I'd directly tested (health check, one ticker), but a full pass over every page found real regressions from the migration. All fixed, deployed, and verified live:
+
+1. **Insider Flow "Recent Trades" showed 0** - the CSV's actual columns had drifted from what the code expected (`signalCategory`/`transactionValue` vs. the old `is_compensation`/`transactionValueAbs`). Fixed to support both.
+2. **`/api/announcements/today` 500'd everywhere it's used** (Dashboard news ticker, Insider Flow's Corp Announcements tab) - NaN values from pandas hit FastAPI's JSON encoder, which rejects them outright. Added a sanitizer.
+3. **IntrinsIQ said "No data found" for any ticker** - it had its own local-only data lookup instead of the R2-self-healing one everything else uses.
+4. **FinBot chat, AI insights, StrataX AI analysis all said "trouble connecting to AI"** - Groq deprecated the entire `llama-3.x`/`gemma2` model family (confirmed live against their API). Every hardcoded model name across 5 files was pointing at a model that no longer exists. Switched to `openai/gpt-oss-20b`/`120b`.
+5. **Market Intel ("Mnemos Buy-Side Intelligence"), Alpha Rankings, and the Dashboard's real stock count were all empty/"not generated"** - they read small aggregate JSON files that live in gitignored folders (same reason as the big data migration) but were never actually migrated anywhere, to git or R2. Bundled them into one R2 object, added a Render build step that downloads+extracts it before the app starts.
+6. **Mnemos 1.0's market analysis was missing** - `apps/Mnemos/output/` (156 files, scanned for credentials first - none found) had been excluded from the new repo entirely instead of just `config.yaml`. Restored, per your instruction to leave both Mnemos 1.0 and 2.0 alone otherwise.
+7. **Dashboard numbers stuck on "..." / requests timing out past 30s** - several routes each re-parsed the same 10,000+ row CSVs from disk on every request, synchronously, blocking FastAPI's single event loop - so concurrent requests from one page load stacked up. Added a 5-minute cache to the heavy loaders and moved the CPU-bound work off the event loop (`run_in_threadpool`). Verified: a 4-way concurrent burst that used to time out now finishes in <9s.
+8. **The Redis/Upstash caching layer you asked about ("World Monitor" addition)** - the code (`app/storage/cache.py`) was already written from the earlier audit but never actually wired to anything. Wired it onto `/api/top-opportunities/{market}`. It's still a no-op until you create an Upstash account and add `REDIS_URL` (or `UPSTASH_REDIS_REST_URL`/`_TOKEN`) as a Render env var - I can't create that account for you (never sign up for services on your behalf), but the code activates automatically the moment those credentials exist. Free tier, no card required: https://upstash.com
+9. **Daily-refresh GitHub Actions workflow was failing every single run**, silently - `market-data` (missing `feedparser`), `fii-dii` (missing `nsepython`), and even `notify-status` (calling a function, `send_pipeline_status_alert`, that never existed - so failures were never actually surfacing as a notification either way). All three fixed; re-ran manually to confirm `fii-dii`/`insider-flow`/`indian-announcements` now pass.
+
+**Not fixed, flagged honestly:** StrataX's option chain is serving a Dec 2025 CSV snapshot (`nse_available: false` in `/api/stratax/data-status`) - the live NSE scrape is failing, most likely NSE blocking Render's cloud IP, a common issue scraping NSE from outside India. Not a regression from tonight's work; needs its own investigation (proxy, different data source, or accepting the staleness) whenever you want to look at it.
+
 ## Bottom line
 
 **The site is live and serving real data end-to-end.** Frontend → Render backend → Cloudflare R2 (market data) / Supabase (news, intelligence), verified with real requests just now, not just "the build succeeded":
