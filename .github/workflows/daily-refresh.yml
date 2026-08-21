@@ -92,27 +92,6 @@ jobs:
         working-directory: "FinSight/Smart Money Flow"
         run: python fii_dii_pipeline.py
 
-  angelone-instruments:
-    # Refreshes the filtered AngelOne instrument master (Workstream D) -
-    # independent of market-data since it's a different data source
-    # entirely. Never fails the overall run if AngelOne isn't configured
-    # or the download is flaky that day (see the script's own retry
-    # logic) - angelone_provider.py falls back to yFinance either way.
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    continue-on-error: true
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-      - run: pip install -r FinSight/backend/requirements.txt
-      - name: Refresh AngelOne instrument master
-        # No AngelOne credentials needed here - the instrument master is a
-        # public, unauthenticated file. Only R2 (env: block at file top)
-        # is required, to publish the filtered result.
-        working-directory: FinSight/backend/scripts
-        run: python refresh_angelone_instruments.py
 
   indian-announcements:
     runs-on: ubuntu-latest

@@ -1,0 +1,37 @@
+name: Refresh AngelOne Instrument Master
+
+# Standalone workflow (not a job inside daily-refresh.yml) so this can be
+# triggered independently, without waiting on the multi-hour market-data
+# crawl - useful when verifying this specific data source, and keeps the
+# ~20min instrument-master job from being coupled to a much longer run.
+#
+# No AngelOne credentials needed - the instrument master is a public,
+# unauthenticated file. Only R2 credentials required, to publish the
+# filtered result. Never blocks anything downstream if it fails -
+# angelone_provider.py falls back to yFinance regardless.
+
+on:
+  schedule:
+    - cron: "0 1 * * *"  # daily, offset from daily-refresh's 00:30 UTC start
+  workflow_dispatch: {}
+
+env:
+  R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+  R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+  R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+  R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+  R2_ENDPOINT_URL: ${{ secrets.R2_ENDPOINT_URL }}
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r FinSight/backend/requirements.txt
+      - name: Refresh AngelOne instrument master
+        working-directory: FinSight/backend/scripts
+        run: python refresh_angelone_instruments.py
