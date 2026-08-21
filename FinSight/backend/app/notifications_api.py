@@ -87,6 +87,44 @@ def _send_telegram(text: str) -> bool:
         return False
 
 
+def send_pipeline_status_alert(job_status: dict) -> bool:
+    """Called from .github/workflows/daily-refresh.yml's notify-status job
+    with `toJSON(needs)` - a dict of {job_name: {"result": "...", ...}}.
+    Alerts (email + telegram) only when something actually failed; a
+    clean run stays quiet rather than paging every night. Silently a
+    no-op if GMAIL_USER/GMAIL_APP_PASSWORD or TELEGRAM_BOT_TOKEN/
+    TELEGRAM_CHAT_ID secrets aren't set on the repo - same as every
+    other alert path in this module - so add those as GitHub Actions
+    repo secrets to actually receive this.
+
+    This function didn't exist before 2026-08-21 despite the workflow
+    step trying to import it every run - the notify-status job itself
+    was silently failing (ImportError) on every single daily-refresh
+    run, so pipeline failures were never actually surfaced.
+    """
+    failed = {name: info for name, info in job_status.items() if info.get("result") == "failure"}
+    skipped = {name: info for name, info in job_status.items() if info.get("result") == "skipped"}
+
+    if not failed:
+        logger.info("Daily refresh: all jobs passed (%s), no alert needed.", ", ".join(job_status.keys()))
+        return True
+
+    lines = [f"FinVest daily refresh: {len(failed)} job(s) failed"]
+    for name in failed:
+        lines.append(f"  ✗ {name}")
+    if skipped:
+        lines.append("Skipped (likely due to a failed dependency):")
+        for name in skipped:
+            lines.append(f"  - {name}")
+    msg = "\n".join(lines)
+
+    email_ok = _send_email("FinVest: daily refresh failure", msg)
+    telegram_ok = _send_telegram(f"⚠️ {msg}")
+    if not email_ok and not telegram_ok:
+        logger.warning("Pipeline failure alert not delivered - no GMAIL_* or TELEGRAM_* secrets configured. Failed jobs: %s", list(failed.keys()))
+    return email_ok or telegram_ok
+
+
 @router.post("/send", response_model=NotificationResponse)
 async def send_notification(req: NotificationRequest):
     """Send a notification via email, telegram, or both."""
