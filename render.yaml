@@ -7,7 +7,7 @@ services:
     runtime: python
     plan: free
     rootDir: FinSight/backend
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r requirements.txt && python scripts/hydrate_from_r2.py
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
