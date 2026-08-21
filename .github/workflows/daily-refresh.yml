@@ -31,6 +31,7 @@ env:
   # Macro overlay (Workstream A/F) - all optional, macro_signals.py degrades
   # gracefully to "unavailable" per-source if any of these are absent.
   FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+  GROQ_API_KEYS: ${{ secrets.GROQ_API_KEYS }}
   FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
   FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
   DATA_GOV_IN_API_KEY: ${{ secrets.DATA_GOV_IN_API_KEY }}

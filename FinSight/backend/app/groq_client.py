@@ -13,7 +13,7 @@ Usage (new call sites - existing ones can migrate opportunistically,
 this doesn't require touching all of them at once):
 
     from app.groq_client import get_groq_client, groq_chat_completion
-    resp = groq_chat_completion(messages=[...], model="llama-3.3-70b-versatile")
+    resp = groq_chat_completion(messages=[...], model="openai/gpt-oss-120b")
 
 Key source: GROQ_API_KEYS (comma-separated, preferred) or GROQ_API_KEY
 (single, backward compatible with every existing call site). Rotates
@@ -84,7 +84,7 @@ def groq_available() -> bool:
 
 def groq_chat_completion(
     messages: List[Dict[str, str]],
-    model: str = "llama-3.3-70b-versatile",
+    model: str = "openai/gpt-oss-120b",
     caller: str = "unknown",
     **kwargs: Any,
 ) -> Optional[Dict[str, Any]]:

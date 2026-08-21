@@ -270,10 +270,18 @@ def _ai_insight_feed_sync(market: str) -> Dict[str, Any]:
 
     response = groq_chat_completion(
         messages=[{"role": "user", "content": prompt}],
-        model="llama-3.3-70b-versatile",
+        model="openai/gpt-oss-120b",
         caller="findash_ai_insight_feed",
         temperature=0.4,
-        max_tokens=400,
+        max_tokens=1200,
+        # gpt-oss is a reasoning model - its hidden reasoning tokens count
+        # against max_tokens same as visible output. Discovered live: at
+        # max_tokens=400 with default reasoning effort, every single call
+        # returned finish_reason="length" with EMPTY content - the whole
+        # budget got spent on reasoning before any answer text was
+        # written. "low" effort + more headroom fixes it (verified: real
+        # 4-bullet output, finish_reason="stop").
+        reasoning_effort="low",
     )
     if not response:
         return {"available": False, "reason": "Groq call failed on all configured keys", "insights": []}
