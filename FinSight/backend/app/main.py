@@ -69,6 +69,7 @@ from app import stock_dashboard_api
 from app import notifications_api
 from app import mnemos_api
 from app import insights_api
+from app import findash_api
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -226,6 +227,9 @@ app.include_router(mnemos_api.router)
 
 # Cross-signal insights - quant conviction vs. news sentiment, confirms/diverges
 app.include_router(insights_api.router)
+
+# FinDash rebuild - news feed, correlation matrix, AI insight feed
+app.include_router(findash_api.router)
 
 # In-memory cache for screener data (loaded from files)
 # 
