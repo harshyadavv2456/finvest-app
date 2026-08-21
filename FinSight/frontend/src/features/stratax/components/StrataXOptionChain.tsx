@@ -409,10 +409,10 @@ export default function StrataXOptionChain() {
                   </Tooltip>
                 </div>
               </th>
-              <th colSpan={6} className="text-center px-4 py-3 text-sm font-semibold text-blue-400 border-l border-bloomberg-border">
+              <th colSpan={7} className="text-center px-4 py-3 text-sm font-semibold text-blue-400 border-l border-bloomberg-border">
                 CALL OPTIONS (Right to Buy)
               </th>
-              <th colSpan={6} className="text-center px-4 py-3 text-sm font-semibold text-red-400 border-l border-bloomberg-border">
+              <th colSpan={7} className="text-center px-4 py-3 text-sm font-semibold text-red-400 border-l border-bloomberg-border">
                 PUT OPTIONS (Right to Sell)
               </th>
             </tr>
@@ -466,6 +466,14 @@ export default function StrataXOptionChain() {
                   </Tooltip>
                 </div>
               </th>
+              <th className="text-right px-2 py-2 text-xs font-semibold text-bloomberg-text-muted">
+                <div className="flex items-center justify-end gap-1">
+                  Delta
+                  <Tooltip content="Rate of change of the option's price per ₹1 move in the underlying. Calls: 0 to 1. Puts: -1 to 0. Also a rough proxy for probability of expiring in-the-money">
+                    <Info size={10} className="text-bloomberg-text-muted cursor-help" />
+                  </Tooltip>
+                </div>
+              </th>
               <th className="text-right px-2 py-2 text-xs font-semibold text-bloomberg-text-muted border-l border-bloomberg-border">
                 <div className="flex items-center justify-end gap-1">
                   LTP
@@ -510,6 +518,14 @@ export default function StrataXOptionChain() {
                 <div className="flex items-center justify-end gap-1">
                   IV
                   <Tooltip content="Implied Volatility - market's expectation of price movement. High IV (>30%) = expensive options, Low IV (<15%) = cheap options">
+                    <Info size={10} className="text-bloomberg-text-muted cursor-help" />
+                  </Tooltip>
+                </div>
+              </th>
+              <th className="text-right px-2 py-2 text-xs font-semibold text-bloomberg-text-muted">
+                <div className="flex items-center justify-end gap-1">
+                  Delta
+                  <Tooltip content="Rate of change of the option's price per ₹1 move in the underlying. Calls: 0 to 1. Puts: -1 to 0. Also a rough proxy for probability of expiring in-the-money">
                     <Info size={10} className="text-bloomberg-text-muted cursor-help" />
                   </Tooltip>
                 </div>
@@ -577,6 +593,9 @@ export default function StrataXOptionChain() {
                   <td className={`text-right px-2 py-2 text-sm font-medium ${getIVColor(row.call?.impliedVolatility)}`}>
                     {formatIV(row.call?.impliedVolatility)}
                   </td>
+                  <td className="text-right px-2 py-2 text-sm text-bloomberg-text-muted">
+                    {row.call?.delta != null ? row.call.delta.toFixed(2) : '-'}
+                  </td>
                   {/* Put columns */}
                   <td className="text-right px-2 py-2 text-sm text-bloomberg-text font-medium border-l border-bloomberg-border">
                     {row.put?.lastPrice && row.put.lastPrice > 0
@@ -608,6 +627,9 @@ export default function StrataXOptionChain() {
                   </td>
                   <td className={`text-right px-2 py-2 text-sm font-medium ${getIVColor(row.put?.impliedVolatility)}`}>
                     {formatIV(row.put?.impliedVolatility)}
+                  </td>
+                  <td className="text-right px-2 py-2 text-sm text-bloomberg-text-muted">
+                    {row.put?.delta != null ? row.put.delta.toFixed(2) : '-'}
                   </td>
                 </tr>
               );

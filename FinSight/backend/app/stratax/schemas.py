@@ -28,6 +28,13 @@ class StrataXOptionRow(BaseModel):
     askPrice: Optional[float] = None
     askQty: Optional[int] = None
     identifier: Optional[str] = None
+    # Greeks - populated from AngelOne's optionGreek endpoint when the
+    # chain comes from AngelOne (see angelone_option_chain.py); None for
+    # CSV-sourced rows, which never had these. Sensibull-style display.
+    delta: Optional[float] = None
+    gamma: Optional[float] = None
+    theta: Optional[float] = None
+    vega: Optional[float] = None
 
 
 class OptionChainResponse(BaseModel):

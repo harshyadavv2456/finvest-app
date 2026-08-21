@@ -32,6 +32,10 @@ export interface StrataXOptionRow {
   askPrice?: number | null;
   askQty?: number | null;
   identifier?: string | null;
+  delta?: number | null;
+  gamma?: number | null;
+  theta?: number | null;
+  vega?: number | null;
 }
 
 /**

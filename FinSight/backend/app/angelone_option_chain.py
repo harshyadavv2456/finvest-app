@@ -202,6 +202,10 @@ def get_option_chain(symbol: str, expiry: Optional[str] = None) -> List[Dict[str
             "askPrice": best_ask.get("price"),
             "askQty": best_ask.get("quantity"),
             "identifier": token,
+            "delta": greek.get("delta"),
+            "gamma": greek.get("gamma"),
+            "theta": greek.get("theta"),
+            "vega": greek.get("vega"),
         })
 
     rows = _apply_oi_change(symbol, expiry, rows)
