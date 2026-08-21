@@ -26,6 +26,18 @@ Checked `/api/coverage` directly: the intelligence pipeline's last successful ru
 
 **Individual stock pages ("many not loading")** - the specific bug I found and fixed was IntrinsIQ + the stock intelligence snapshot page both returning empty for any ticker outside whatever was already locally cached (same root cause as the screener fix, item 4/5 above - both are fixed now and verified live for GOOGL, AAPL, and Indian tickers like RELIANCE.NS). If you're still seeing a specific ticker fail after this, it's most likely one that genuinely isn't in this cycle's scored universe yet (see above) rather than the same bug recurring - tell me which ticker and I'll check.
 
+## The actual root cause behind the daily-refresh pipeline never truly working
+
+Re-ran `daily-refresh.yml` a second time to confirm the earlier fixes (item 9) held up, and it failed again - differently this time, much further in. `market-data`'s crawl ran cleanly for ~1h50m over the full ~2,300-ticker universe, then died on its very last step:
+
+```
+RuntimeError: Missing required env var R2_BUCKET_NAME
+```
+
+Checked `gh secret list --repo harshyadavv2456/finvest-app` - **it came back completely empty**. None of `R2_ACCOUNT_ID`, `R2_BUCKET_NAME`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_ENDPOINT_URL`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` were ever configured as GitHub Actions secrets on this repo, even though the workflow has referenced `secrets.R2_BUCKET_NAME` etc. since it was written. This is the real reason the automated pipeline could never have worked end-to-end, even before tonight's `feedparser`/`nsepython` fix - the jobs that don't touch R2/Supabase (`insider-flow`, `fii-dii`, `indian-announcements`) could pass, but nothing could ever actually get new data back into R2 or Supabase.
+
+**Fixed**: set all 7 secrets via `gh secret set`, using the same credentials already in `FinSight/backend/.env`. Re-triggered the workflow again to validate end-to-end - check `gh run list --repo harshyadavv2456/finvest-app --workflow=daily-refresh.yml` for the current status; a full run (crawl + R2 upload + intelligence pipeline) takes a few hours, so I can't promise it's finished by the time you read this, but the actual blocker is gone.
+
 ## Screener fixes (found after you flagged it directly)
 
 1. **`/api/screener` was empty for every market, including India** - `screener.parquet` (2,291 rows, all 8 markets, generated the same day as everything else) exists locally but is gitignored and was never migrated anywhere. Without it, the backend tried building the screener from 2,298 individual per-ticker files instead - each self-healing from R2 on a cache miss, so ~9,000 individual R2 requests, far too slow to ever finish. Bundled it into the same R2 object as the other small aggregate files (item 4/5 in the morning fixes above) - **verified live: US=618 rows, India=859 rows, All Markets=2,291 rows.**
