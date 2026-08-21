@@ -80,14 +80,18 @@ FRED_SERIES = {
 # Add more entries here as their resource IDs are found - same call pattern for all of them.
 DATA_GOV_IN_RESOURCES = {
     "retail_inflation_cpi": "9d67b242-0243-4298-adf9-7617dbeba7ab",
-    # "wpi": None,               # TODO: look up on data.gov.in catalog search
-    # "iip": None,               # TODO
-    # "gst_collection": None,    # TODO
-    # "forex_reserves": None,    # TODO
-    # "crude_oil_production": None,  # TODO
-    # "unemployment_plfs": None, # TODO
-    # "fiscal_deficit": None,    # TODO
-    # "gdp_growth": None,        # TODO
+    # Found via api.data.gov.in/lists (the undocumented catalog-search
+    # endpoint the site's own scripted-access block doesn't cover - see
+    # the addypy/datagovindia project for how it's used) and confirmed
+    # live with real records during this session (2026-08-21).
+    "wpi": "239ac3d0-f08d-40d0-b03c-9b7a426a62d5",              # Wholesale Price Index (Base Year 2011-12), till last month
+    "crude_oil_production": "7932c3ed-c88d-4e0c-bc39-17e3e3170483",  # Monthly Indigenous Crude Oil Production
+    # "iip": None,               # searched - only stale/unrelated OGD resources found, not a live series
+    # "gst_collection": None,    # searched - only one-off Rajya Sabha historical tables, no continuously-updated series
+    # "forex_reserves": None,    # searched - not published as an OGD resource; RBI's weekly bulletin has no API (see fetch_rbi_dbie)
+    # "unemployment_plfs": None, # searched - PLFS tables on OGD are stale (2004-05 to 2011-12 vintage), not current
+    # "fiscal_deficit": None,    # searched - only one-off historical Rajya Sabha tables, no continuously-updated series
+    # "gdp_growth": None,        # searched - not published as an OGD resource; MOSPI releases as PDF/PIB, not API
 }
 
 _MNEMOS_OUTPUT = Path(__file__).resolve().parent.parent.parent / "apps" / "Mnemos" / "output"
@@ -271,7 +275,7 @@ def fetch_india_macro() -> Dict[str, Any]:
     result["missing_datasets"] = [
         name for name, rid in DATA_GOV_IN_RESOURCES.items() if not rid
     ] + [
-        name for name in ("wpi", "iip", "gst_collection", "forex_reserves", "crude_oil_production",
+        name for name in ("iip", "gst_collection", "forex_reserves",
                            "unemployment_plfs", "fiscal_deficit", "gdp_growth")
         if name not in DATA_GOV_IN_RESOURCES
     ]
