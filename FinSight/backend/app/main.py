@@ -310,125 +310,29 @@ def load_screener_data_from_files() -> List[Dict[str, Any]]:
             import traceback
             logger.warning(f"Traceback: {traceback.format_exc()}")
     
-    # Load data from all ticker folders (tickers already loaded above)
-    rows: List[Dict[str, Any]] = []
-    
-    if len(tickers) == 0:
-        logger.error(f"No tickers found! Data directory: {settings.DATA_DIR}")
-        logger.error(f"Data directory exists: {settings.DATA_DIR.exists()}")
-        if settings.DATA_DIR.exists():
-            try:
-                dir_contents = list(settings.DATA_DIR.iterdir())
-                logger.error(f"Data directory contents: {[str(p.name) for p in dir_contents[:10]]}")
-            except Exception as e:
-                logger.error(f"Could not list data directory: {e}")
-        return rows  # Return empty list
-    
-    logger.info(f"Loading screener data for {len(tickers)} tickers from parquet files...")
-    
-    # Parallelize loading for faster performance
-    import concurrent.futures
-    
-    def process_ticker(ticker_meta):
-        ticker = ticker_meta.get("ticker")
-        market = ticker_meta.get("market")
-        
-        if not ticker:
-            return None
-        
-        try:
-            # Load data directly from ticker folder parquet files
-            daily_df = load_daily(ticker, market)
-            tech_df = load_technicals(ticker, market)
-            fundamentals = load_fundamentals(ticker, market)
-            metadata = load_metadata(ticker, market)
-            
-            if not metadata.get("market"):
-                metadata["market"] = market
-            
-            # Compute screener row (this is the single source of truth for metrics)
-            row = compute_screener_row(
-                ticker=ticker,
-                daily_df=daily_df,
-                tech_df=tech_df,
-                fundamentals=fundamentals,
-                metadata=metadata,
-            )
-            
-            # Ensure all required fields exist (set to None if missing)
-            # This ensures the row matches ScreenerRow schema
-            if "company_name" not in row or not row.get("company_name"):
-                row["company_name"] = ticker
-            
-            return row
-        
-        except Exception as e:
-            logger.warning(f"Failed to process {ticker}: {e}")
-            return None
-    
-    # Use ThreadPoolExecutor for I/O-bound operations (file reading)
-    # Increased workers for faster processing on Render
-    # Add timeout to prevent hanging on slow loads
-    try:
-        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
-            futures = [executor.submit(process_ticker, ticker_meta) for ticker_meta in tickers]
-            pending = set(futures)
+    # There used to be a full-universe per-ticker rebuild fallback here
+    # (ThreadPoolExecutor walking ~2300 tickers x up to 6 R2-backed files
+    # each, on the request thread). REMOVED, not just capped - this was
+    # the confirmed root cause of four separate backend-wide hangs
+    # tonight, live production logs showed it running 84+ seconds past
+    # its own supposed 45s timeout with no end in sight, and even after
+    # fixing the R2 client's missing timeout (a real, necessary fix -
+    # see r2_client.py), it hung a fourth time. Rebuilding the full
+    # screener from scratch inline, on a single-worker deployment,
+    # triggered by any request whenever the snapshot check fails, is not
+    # a safe "graceful degradation" - it's the single most dangerous
+    # code path in this app. The GitHub Actions `screener` job already
+    # rebuilds screener.parquet properly, off the request path entirely,
+    # on its own schedule; that is the only place this should ever
+    # happen. If the snapshot is unavailable, serve whatever's cached
+    # (even stale/expired) rather than ever attempting a live rebuild -
+    # stale data beats a hung app every time.
+    if _screener_cache is not None:
+        logger.warning("Screener snapshot unavailable/invalid - serving stale in-memory cache rather than rebuilding inline (see comment above)")
+        return _screener_cache
 
-            completed = 0
-            start_time = time.time()
-            timeout = 45  # Don't spend more than 45 seconds loading data
-
-            # `as_completed()` blocks until the NEXT future finishes with no
-            # overall deadline of its own - if every worker thread is stuck
-            # (e.g. a slow R2 call, before the r2_client.py timeout fix
-            # this could be minutes), the timeout check below never gets a
-            # chance to run and this cap was effectively unenforced -
-            # confirmed live: still running 84s+ after the intended 45s
-            # limit, walking the full ticker universe one file at a time.
-            # concurrent.futures.wait() with its own timeout is the
-            # correct primitive - it returns even if nothing completed.
-            while pending:
-                elapsed = time.time() - start_time
-                remaining = timeout - elapsed
-                if remaining <= 0:
-                    logger.warning(f"Data loading timeout after {timeout}s, returning {len(rows)} rows loaded so far ({len(pending)} still pending, cancelling)")
-                    for f in pending:
-                        f.cancel()
-                    break
-
-                done, pending = concurrent.futures.wait(pending, timeout=min(remaining, 5), return_when=concurrent.futures.FIRST_COMPLETED)
-
-                for future in done:
-                    try:
-                        row = future.result(timeout=1)  # 1 second timeout per ticker
-                        if row:
-                            rows.append(row)
-                        completed += 1
-
-                        if completed % 100 == 0:
-                            logger.info(f"Processed {completed}/{len(tickers)} tickers (elapsed: {time.time() - start_time:.1f}s)")
-                    except concurrent.futures.TimeoutError:
-                        logger.warning(f"Ticker processing timeout, skipping")
-                        completed += 1
-                    except Exception as e:
-                        logger.warning(f"Error processing future: {e}")
-                        completed += 1
-    except Exception as e:
-        logger.error(f"Error in parallel processing, falling back to sequential: {e}")
-        # Fallback to sequential processing
-        for i, ticker_meta in enumerate(tickers):
-            row = process_ticker(ticker_meta)
-            if row:
-                rows.append(row)
-            if (i + 1) % 100 == 0:
-                logger.info(f"Processed {i + 1}/{len(tickers)} tickers")
-    
-    # Cache the result
-    _screener_cache = rows
-    _cache_timestamp = time.time()
-    logger.info(f"Loaded screener data for {len(rows)} tickers from parquet files (cached for {settings.SCREENER_CACHE_TTL}s)")
-    
-    return rows
+    logger.error(f"No screener snapshot and no cache available. Data directory: {settings.DATA_DIR}, tickers found: {len(tickers)}")
+    return []
 
 
 def get_screener_df() -> pd.DataFrame:
