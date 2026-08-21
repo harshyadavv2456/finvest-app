@@ -51,6 +51,52 @@ def _parse_impacted_stocks(raw: Optional[str]) -> List[str]:
 
 # --------------------------------------------------------------- Index quotes
 
+# US indices have no AngelOne equivalent - yfinance only, and yfinance is
+# too slow to hit on every request without adding real page-load lag.
+# Cached 10-15min (900s), matching what a US-market index actually needs -
+# IN indices stay uncached/live via AngelOne above since that call is fast.
+_US_INDEX_CACHE: Dict[str, Any] = {"data": None, "ts": 0.0}
+_US_INDEX_TTL_SECONDS = 900
+_US_INDEX_SYMBOLS = {"SPX": "^GSPC", "NASDAQ": "^IXIC"}
+
+
+def _fetch_us_indices_sync() -> Dict[str, Any]:
+    import time
+    now = time.time()
+    if _US_INDEX_CACHE["data"] is not None and (now - _US_INDEX_CACHE["ts"]) < _US_INDEX_TTL_SECONDS:
+        return _US_INDEX_CACHE["data"]
+
+    out: Dict[str, Any] = {}
+    try:
+        import yfinance as yf
+        for label, sym in _US_INDEX_SYMBOLS.items():
+            try:
+                hist = yf.Ticker(sym).history(period="2d", timeout=10)
+                if hist is None or hist.empty:
+                    out[label] = {"symbol": label, "ltp": None, "source": "unavailable"}
+                    continue
+                last = hist.iloc[-1]
+                prev = hist.iloc[-2] if len(hist) > 1 else last
+                out[label] = {
+                    "symbol": label,
+                    "ltp": float(last["Close"]),
+                    "open": float(prev["Close"]),
+                    "close": float(prev["Close"]),
+                    "source": "yfinance",
+                }
+            except Exception as e:  # noqa: BLE001
+                logger.warning(f"US index fetch failed for {label}: {e}")
+                out[label] = {"symbol": label, "ltp": None, "source": "unavailable"}
+    except Exception as e:  # noqa: BLE001
+        logger.error(f"US index batch fetch failed: {e}")
+        for label in _US_INDEX_SYMBOLS:
+            out[label] = {"symbol": label, "ltp": None, "source": "unavailable"}
+
+    _US_INDEX_CACHE["data"] = out
+    _US_INDEX_CACHE["ts"] = now
+    return out
+
+
 def _index_quotes_sync() -> Dict[str, Any]:
     from app.angelone_provider import get_index_quote
 
@@ -71,13 +117,16 @@ def _index_quotes_sync() -> Dict[str, Any]:
     for idx in ("NIFTY", "BANKNIFTY"):
         q = get_index_quote(idx, yfinance_fallback=yf_fallback)
         out[idx] = q or {"symbol": idx, "ltp": None, "source": "unavailable"}
+
+    out.update(_fetch_us_indices_sync())
     return {"available": any(v.get("ltp") for v in out.values()), "indices": out}
 
 
 @router.get("/index-quotes")
 async def index_quotes():
-    """Live NIFTY/BANKNIFTY, AngelOne-first with yfinance fallback -
-    the FinDash header's real-time market status line."""
+    """Live NIFTY/BANKNIFTY (AngelOne, real-time) + SPX/NASDAQ (yfinance,
+    15min-cached - US indices don't need tick-level freshness and a live
+    yfinance call on every request would add real page-load lag)."""
     return await run_in_threadpool(_index_quotes_sync)
 
 
