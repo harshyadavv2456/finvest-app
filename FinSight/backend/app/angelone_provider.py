@@ -315,6 +315,24 @@ def get_index_quote(index: str, yfinance_fallback: Optional[Callable] = None) ->
     return with_angelone_fallback(fallback)(_angelone_index_quote)(index)
 
 
+def _angelone_index_candles(client, index: str, interval: str, from_date: str, to_date: str) -> Optional[List]:
+    token = _INDEX_TOKENS.get(index)
+    if not token:
+        return None
+    params = {"exchange": "NSE", "symboltoken": token, "interval": interval, "fromdate": from_date, "todate": to_date}
+    resp = client.getCandleData(params)
+    if not resp or not resp.get("status"):
+        return None
+    return resp.get("data")
+
+
+def get_index_candles(index: str, interval: str, from_date: str, to_date: str, yfinance_fallback: Optional[Callable] = None) -> Optional[List]:
+    """NIFTY/BANKNIFTY historical candles - same static-token approach
+    as get_index_quote, for the FinDash index charts."""
+    fallback = yfinance_fallback or (lambda *a, **k: None)
+    return with_angelone_fallback(fallback)(_angelone_index_candles)(index, interval, from_date, to_date)
+
+
 def _angelone_candles(client, tradingsymbol: str, exchange: str, interval: str, from_date: str, to_date: str) -> Optional[List]:
     token = get_instrument_token(tradingsymbol, exchange)
     if not token:

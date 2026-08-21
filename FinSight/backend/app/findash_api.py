@@ -81,6 +81,38 @@ async def index_quotes():
     return await run_in_threadpool(_index_quotes_sync)
 
 
+def _index_history_sync(days: int) -> Dict[str, Any]:
+    from datetime import datetime as _dt
+    from app.angelone_provider import get_index_candles
+
+    def yf_fallback(index: str, interval: str, from_date: str, to_date: str):
+        try:
+            import yfinance as yf
+            sym = "^NSEI" if index == "NIFTY" else "^NSEBANK"
+            hist = yf.Ticker(sym).history(period=f"{days}d", timeout=10)
+            if hist is None or hist.empty:
+                return None
+            return [[str(idx.date()), float(row["Open"]), float(row["High"]), float(row["Low"]), float(row["Close"]), float(row.get("Volume", 0))] for idx, row in hist.iterrows()]
+        except Exception:  # noqa: BLE001
+            return None
+
+    to_date = _dt.now().strftime("%Y-%m-%d %H:%M")
+    from_date = (_dt.now() - timedelta(days=days)).strftime("%Y-%m-%d %H:%M")
+
+    out = {}
+    for idx in ("NIFTY", "BANKNIFTY"):
+        candles = get_index_candles(idx, "ONE_DAY", from_date, to_date, yfinance_fallback=yf_fallback)
+        out[idx] = candles or []
+    return {"available": any(out.values()), "series": out}
+
+
+@router.get("/index-history")
+async def index_history(days: int = Query(default=90, ge=5, le=365)):
+    """NIFTY/BANKNIFTY daily candles for the FinDash index charts -
+    AngelOne first, yfinance fallback."""
+    return await run_in_threadpool(_index_history_sync, days)
+
+
 # --------------------------------------------------------------- News feed
 
 def _news_feed_sync(sentiment: str, limit: int) -> Dict[str, Any]:
