@@ -1731,6 +1731,33 @@ async def get_ticker_realtime(ticker: str):
             if current_price and prev_close:
                 change = current_price - prev_close
                 change_percent = (change / prev_close) * 100 if prev_close != 0 else 0
+
+                # Finnhub cross-check for US tickers - a genuine backstop
+                # (per the original spec's framing), not a second data
+                # source the app depends on. Flags a real data-quality
+                # issue (either source could be stale/wrong) rather than
+                # silently trusting yfinance alone; never blocks the
+                # response either way.
+                if market == "US":
+                    try:
+                        import sys as _sys
+                        from pathlib import Path as _Path
+                        _qs_dir = str(_Path(__file__).resolve().parent.parent.parent / "quant_system")
+                        if _qs_dir not in _sys.path:
+                            _sys.path.insert(0, _qs_dir)
+                        from macro_signals import fetch_finnhub_quote
+                        finnhub_quote = await run_in_threadpool(fetch_finnhub_quote, ticker)
+                        if finnhub_quote and finnhub_quote.get("current"):
+                            finnhub_price = finnhub_quote["current"]
+                            discrepancy_pct = abs(finnhub_price - current_price) / current_price * 100 if current_price else 0
+                            if discrepancy_pct > 2:
+                                logger.warning(
+                                    f"Price cross-check discrepancy for {ticker}: yfinance={current_price} "
+                                    f"vs Finnhub={finnhub_price} ({discrepancy_pct:.1f}% apart)"
+                                )
+                    except Exception as fh_err:  # noqa: BLE001
+                        logger.debug(f"Finnhub cross-check unavailable for {ticker}: {fh_err}")
+
                 return {
                     "ticker": ticker,
                     "current_price": float(current_price),
