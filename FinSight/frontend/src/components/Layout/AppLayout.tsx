@@ -6,6 +6,7 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import AppSidebar from './AppSidebar';
+import CommandPalette from './CommandPalette';
 
 export default function AppLayout() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -13,6 +14,10 @@ export default function AppLayout() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-[#0a0a0f]">
+      {/* Global command palette (Ctrl+K / Cmd+K) - lives here so it's
+          available from every route without each page mounting it. */}
+      <CommandPalette />
+
       {/* Mobile overlay */}
       {mobileOpen && (
         <div 

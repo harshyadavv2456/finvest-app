@@ -24,7 +24,7 @@ interface AppSidebarProps {
   setMobileOpen: (open: boolean) => void;
 }
 
-interface NavItem {
+export interface NavItem {
   id: string;
   label: string;
   icon: React.ElementType;
@@ -35,7 +35,9 @@ interface NavItem {
 }
 
 // RESTORED: Original navigation items
-const NAV_ITEMS: NavItem[] = [
+// Exported so CommandPalette can reuse the same source of truth instead of
+// duplicating this list - one place to add a page, not two.
+export const NAV_ITEMS: NavItem[] = [
   { 
     id: 'dashboard', 
     label: 'Dashboard', 
