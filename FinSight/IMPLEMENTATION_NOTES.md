@@ -112,9 +112,15 @@ Checked all named locations: `FinSight/frontend/` has no FinDash-equivalent page
 
 **Not started**: E2 (the actual new India-only build inside `FinSight/frontend/`) and E3 (retiring the old copies) - correctly sequenced after D4 (option-chain reconstruction) per the user's own priority order, since E's spec explicitly requires it to be "powered primarily by the Angel One provider module" - building it before D4 exists would mean building it against nothing, or against yFinance only, which isn't what was asked for.
 
-### Workstream B (UI) - not started this session
+### Workstream B (UI)
 
-User flagged StrataX's option-chain UI as "shitty" mid-session. Read `StrataXOptionChain.tsx` (548 lines) - it's actually already reasonably well-built (ATM highlighting, tooltips, sticky columns, color-coded IV/OI/change). Assessment: the frustration is far more likely about the underlying *data* being a stale Dec-2025 CSV snapshot (see StrataX's own `/api/stratax/data-status` reporting `nse_available: false`) than the CSS - D4's real option-chain reconstruction is the actual fix, prioritized ahead of a cosmetic pass on a page whose data will change anyway once D4 lands. B1 (command palette) and the rest of B not started.
+User flagged StrataX's option-chain UI as "shitty" mid-session. Read `StrataXOptionChain.tsx` (548 lines) - it's actually already reasonably well-built (ATM highlighting, tooltips, sticky columns, color-coded IV/OI/change). Assessment: the frustration is far more likely about the underlying *data* being a stale Dec-2025 CSV snapshot (see StrataX's own `/api/stratax/data-status` reporting `nse_available: false`) than the CSS - D4's real option-chain reconstruction is the actual fix, prioritized ahead of a cosmetic pass on a page whose data will change anyway once D4 lands.
+
+**B1 (command palette) - shipped and verified live.** New `CommandPalette.tsx`, Ctrl+K/Cmd+K global overlay, jump to any page (reuses `AppSidebar`'s own `NAV_ITEMS`, exported as the single source of truth) or any ticker (client-side substring search over the existing `/api/tickers` list, fetched lazily on first open). No new npm dependency - built against the app's existing `bloomberg-*` Tailwind tokens. Deployed via a real Vercel build (not just "the code compiles" - an actual production build succeeded), and verified interactively in the browser: opened with Ctrl+K, page list renders correctly, typing "AAPL" correctly narrows to the ticker result.
+
+Also surfaced a separate, real problem while shipping this: **Vercel's GitHub auto-deploy integration for the production `finvest` project has stopped working** (confirmed twice now - the screener HK/AU fix and this command palette both required a manual `POST /v13/deployments` trigger; a plain `git push` to the linked repo does not start a new deployment on its own). Needs a manual reconnect in the Vercel dashboard (Project → Settings → Git) - can't be fixed via API, requires the OAuth flow in a browser. Documented here a second time since it'll keep affecting every future frontend change until fixed.
+
+**B2 (correlation-surface view)** and **B3 (ticker dossier modal)** - not started this session.
 
 ### Workstream C - status
 
