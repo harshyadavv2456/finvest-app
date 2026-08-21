@@ -78,10 +78,13 @@ class _AngelOneSession:
     ensure() - returns None on failure, callers must treat that as
     "fall back to yFinance", never as an error to surface upward."""
 
+    _LOGIN_FAILURE_COOLDOWN = timedelta(seconds=45)
+
     def __init__(self):
         self._client = None
         self._authed_at: Optional[datetime] = None
         self._lock = threading.Lock()
+        self._last_login_failure_at: Optional[datetime] = None
 
     def _configured(self) -> bool:
         return bool(
@@ -114,6 +117,23 @@ class _AngelOneSession:
             return None
 
         with self._lock:
+            # Cooldown after a recent login failure - discovered live
+            # (2026-08-21): repeated "Invalid Token" errors piling up in
+            # production logs right before the whole backend became
+            # unresponsive. Every concurrent request finding a stale
+            # session all queue on this same lock and each retries
+            # _login() in turn; if AngelOne itself is throttling/
+            # rejecting rapid successive logins (same TOTP window, or
+            # anti-abuse limits), that serializes N requests each
+            # waiting out a real network call before giving up - a
+            # thundering herd, not a single slow call. Failing fast to
+            # the yFinance fallback during a cooldown window turns that
+            # into "briefly stale prices" instead of "the app hangs."
+            if self._last_login_failure_at is not None:
+                since_failure = datetime.utcnow() - self._last_login_failure_at
+                if since_failure < self._LOGIN_FAILURE_COOLDOWN:
+                    return None
+
             stale = (
                 self._client is None
                 or self._authed_at is None
@@ -123,11 +143,13 @@ class _AngelOneSession:
                 try:
                     self._client = self._login()
                     self._authed_at = datetime.utcnow()
+                    self._last_login_failure_at = None
                     logger.info("AngelOne session established")
                 except Exception as e:  # noqa: BLE001
-                    logger.warning("AngelOne auth failed, falling back to yFinance for IN data: %s", _safe_error(e))
+                    logger.warning("AngelOne auth failed, falling back to yFinance for IN data (cooling down %ds): %s", self._LOGIN_FAILURE_COOLDOWN.seconds, _safe_error(e))
                     self._client = None
                     self._authed_at = None
+                    self._last_login_failure_at = datetime.utcnow()
             return self._client
 
     def invalidate(self):
