@@ -7,6 +7,7 @@ import logging
 from typing import List
 from pathlib import Path
 from fastapi import APIRouter, HTTPException, Query, Body
+from fastapi.concurrency import run_in_threadpool
 from app.stratax.schemas import OptionChainResponse, StrataXOptionRow, PaperTrade
 from app.stratax.csv_data_provider import (
     get_option_chain_from_csv,
@@ -30,28 +31,45 @@ async def get_option_chain_endpoint(
     symbol: str = Query(..., description="Symbol (e.g., NIFTY, BANKNIFTY, RELIANCE)"),
 ):
     """
-    Get option chain data for a symbol from CSV file.
-    
-    Returns flat list of option rows matching CSV schema.
+    Get option chain data for a symbol.
+
+    AngelOne first (Workstream D4 - real-time reconstruction from the
+    instrument master + batched quotes, only supports NIFTY/BANKNIFTY
+    currently), falling back to the CSV snapshot for anything AngelOne
+    doesn't cover or if it's unavailable - same fallback discipline as
+    the rest of angelone_provider.py. Both paths return the exact same
+    row shape, so this is invisible to the frontend either way.
     """
     symbol_upper = symbol.upper()
-    
+
     try:
-        # Get data from CSV
-        rows = get_option_chain_from_csv(symbol_upper)
-        
+        rows = []
+        source = "csv"
+        if symbol_upper in ("NIFTY", "BANKNIFTY"):
+            try:
+                from app.angelone_option_chain import get_option_chain
+                rows = await run_in_threadpool(get_option_chain, symbol_upper)
+                if rows:
+                    source = "angelone"
+            except Exception as e:  # noqa: BLE001
+                logger.warning(f"AngelOne option chain failed for {symbol_upper}, falling back to CSV: {e}")
+
+        if not rows:
+            rows = get_option_chain_from_csv(symbol_upper)
+            source = "csv"
+
         if not rows:
             raise HTTPException(
                 status_code=404,
                 detail=f"No option chain data found for symbol: {symbol_upper}"
             )
-        
+
         # Convert to Pydantic models
         option_rows = [StrataXOptionRow(**row) for row in rows]
-        
-        logger.info(f"Returned {len(option_rows)} option rows for {symbol_upper} from CSV")
+
+        logger.info(f"Returned {len(option_rows)} option rows for {symbol_upper} from {source}")
         return OptionChainResponse(rows=option_rows)
-        
+
     except HTTPException:
         raise
     except Exception as e:
@@ -78,13 +96,33 @@ async def get_underlyings():
 
 @router.get("/expiries")
 async def get_expiries(symbol: str = Query(..., description="Symbol")):
-    """Get available expiry dates for a symbol from CSV."""
+    """Get available expiry dates for a symbol - AngelOne (real, current
+    weekly/monthly expiries) for NIFTY/BANKNIFTY, CSV fallback otherwise."""
+    symbol_upper = symbol.upper()
+    if symbol_upper in ("NIFTY", "BANKNIFTY"):
+        try:
+            from app.angelone_option_chain import get_available_expiries
+            expiries = await run_in_threadpool(get_available_expiries, symbol_upper)
+            if expiries:
+                return [_parse_expiry_display(e) for e in expiries]
+        except Exception as e:  # noqa: BLE001
+            logger.warning(f"AngelOne expiries failed for {symbol_upper}, falling back to CSV: {e}")
+
     try:
         expiries = get_available_expiries_from_csv(symbol)
         return expiries
     except Exception as e:
         logger.error(f"Error getting expiries for {symbol}: {e}")
         return []
+
+
+def _parse_expiry_display(angelone_expiry: str) -> str:
+    """'29DEC2026' -> '2026-12-29', matching the CSV path's date format."""
+    from datetime import datetime
+    try:
+        return datetime.strptime(angelone_expiry, "%d%b%Y").strftime("%Y-%m-%d")
+    except ValueError:
+        return angelone_expiry
 
 
 def load_paper_trades() -> List[dict]:
