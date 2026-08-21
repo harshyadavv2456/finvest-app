@@ -33,3 +33,21 @@ async def angelone_verify_live(symbol: str = "RELIANCE-EQ", exchange: str = "NSE
     except Exception as e:  # noqa: BLE001
         logger.error("AngelOne verify-live failed: %s", e, exc_info=True)
         return {"ok": False, "step": "unexpected", "detail": str(e)}
+
+
+@router.get("/market-depth")
+async def angelone_market_depth(symbol: str, exchange: str = "NSE"):
+    """5-level bid/ask order book depth - a capability yFinance never
+    had at all, built in D2 and left unsurfaced anywhere until now.
+    `symbol` should be an AngelOne trading symbol, e.g. RELIANCE-EQ.
+    Fail-open: {"available": false} rather than a 500 when AngelOne
+    isn't reachable, matching every other endpoint in this module."""
+    from app.angelone_provider import get_market_depth
+    try:
+        depth = await run_in_threadpool(get_market_depth, symbol, exchange)
+        if not depth:
+            return {"available": False, "symbol": symbol}
+        return {"available": True, "symbol": symbol, "depth": depth}
+    except Exception as e:  # noqa: BLE001
+        logger.error("AngelOne market-depth failed for %s: %s", symbol, e, exc_info=True)
+        return {"available": False, "symbol": symbol, "error": str(e)}
