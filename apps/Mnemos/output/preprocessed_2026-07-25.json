@@ -1,0 +1,153 @@
+{
+  "processing_date": "2026-07-25",
+  "email_count": 4,
+  "article_count": 0,
+  "total_content_size": 24605,
+  "linked_articles": [],
+  "all_entities": [
+    "Tesla",
+    "Meta",
+    "Google",
+    "Walmart",
+    "Coca-Cola",
+    "Reliance",
+    "Boeing",
+    "Microsoft",
+    "Visa",
+    "Intel",
+    "Alphabet",
+    "Apple",
+    "Amazon"
+  ],
+  "all_metrics": [
+    {
+      "value": "8%",
+      "type": "percentage"
+    },
+    {
+      "value": "3.9%",
+      "type": "percentage"
+    },
+    {
+      "value": "10%",
+      "type": "percentage"
+    },
+    {
+      "value": "10%",
+      "type": "percentage"
+    },
+    {
+      "value": "12.5%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.6%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.5%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.41%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.04%",
+      "type": "percentage"
+    },
+    {
+      "value": "-2.29%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.20%",
+      "type": "percentage"
+    },
+    {
+      "value": "-1.08%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.04%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.11%",
+      "type": "percentage"
+    },
+    {
+      "value": "50%",
+      "type": "percentage"
+    },
+    {
+      "value": "19%",
+      "type": "percentage"
+    },
+    {
+      "value": "$100",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$97",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "Nasdaq 100",
+      "type": "index_level"
+    },
+    {
+      "value": "84%",
+      "type": "percentage"
+    },
+    {
+      "value": "$81 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$650 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$1 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$7.2 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$700 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 4,
+    "india": 3,
+    "sector_corporate": 3
+  },
+  "source_registry": {
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 3
+    },
+    "thomsonreuters.com": {
+      "type": "email",
+      "attribution": "reuters.com (Newsletter)",
+      "item_count": 1
+    }
+  }
+}

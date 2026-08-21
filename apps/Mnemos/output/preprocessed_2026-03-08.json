@@ -1,0 +1,51 @@
+{
+  "processing_date": "2026-03-08",
+  "email_count": 1,
+  "article_count": 0,
+  "total_content_size": 6482,
+  "linked_articles": [],
+  "all_entities": [
+    "Disney",
+    "Volkswagen",
+    "Amazon",
+    "Tesla"
+  ],
+  "all_metrics": [
+    {
+      "value": "50%",
+      "type": "percentage"
+    },
+    {
+      "value": "50%",
+      "type": "percentage"
+    },
+    {
+      "value": "62%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$3 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$26 billion",
+      "type": "currency_usd"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 1,
+    "india": 1,
+    "sector_corporate": 1
+  },
+  "source_registry": {
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 1
+    }
+  }
+}

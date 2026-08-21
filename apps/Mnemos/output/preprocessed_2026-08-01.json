@@ -1,0 +1,127 @@
+{
+  "processing_date": "2026-08-01",
+  "email_count": 2,
+  "article_count": 0,
+  "total_content_size": 12571,
+  "linked_articles": [],
+  "all_entities": [
+    "Apple",
+    "GOLDMAN SACHS",
+    "Amazon",
+    "Goldman Sachs",
+    "Chevron",
+    "Exxon",
+    "ExxonMobil",
+    "Tesla"
+  ],
+  "all_metrics": [
+    {
+      "value": "15%",
+      "type": "percentage"
+    },
+    {
+      "value": "37%",
+      "type": "percentage"
+    },
+    {
+      "value": "7%",
+      "type": "percentage"
+    },
+    {
+      "value": "1%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.7%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.5%",
+      "type": "percentage"
+    },
+    {
+      "value": "1%",
+      "type": "percentage"
+    },
+    {
+      "value": "4.743%",
+      "type": "percentage"
+    },
+    {
+      "value": "2.3%",
+      "type": "percentage"
+    },
+    {
+      "value": "1%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.53%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.62%",
+      "type": "percentage"
+    },
+    {
+      "value": "+1.08%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.05%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.50%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.07%",
+      "type": "percentage"
+    },
+    {
+      "value": "-1.34%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "Nasdaq 100",
+      "type": "index_level"
+    },
+    {
+      "value": "$36 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$45 billion",
+      "type": "currency_usd"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 2,
+    "india": 2,
+    "sector_corporate": 2
+  },
+  "source_registry": {
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 2
+    }
+  }
+}

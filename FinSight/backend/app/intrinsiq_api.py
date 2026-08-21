@@ -42,7 +42,7 @@ DATA_DIR = PROJECT_ROOT / "data"
 INTELLIGENCE_DIR = PROJECT_ROOT / "public" / "intelligence"
 
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-GROQ_MODEL = "llama-3.3-70b-versatile"
+GROQ_MODEL = "openai/gpt-oss-120b"  # Groq deprecated the llama-3.x family (2026-08-21) - see FinSight/IMPLEMENTATION_NOTES.md
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 
 
@@ -108,17 +108,28 @@ class IntrinsIQResponse(BaseModel):
 # ═══════════════════════════════════════════════════════════════════════
 
 def _find_ticker_dir(ticker: str) -> Optional[Path]:
-    """Find data directory for a ticker across all markets."""
-    for market_dir in DATA_DIR.iterdir():
-        if not market_dir.is_dir():
-            continue
-        ticker_dir = market_dir / ticker
-        if ticker_dir.exists():
-            return ticker_dir
-        # Try with .NS suffix for Indian stocks
-        for td in market_dir.iterdir():
-            if td.is_dir() and td.name.upper() == ticker.upper():
-                return td
+    """Find data directory for a ticker across all markets.
+
+    Delegates to app.utils.paths.get_ticker_dir, which self-heals from R2
+    on a local miss (see REPO_AUDIT_REPORT.md §6/§7). This module used to
+    walk DATA_DIR directly with no R2 awareness at all, so on Render -
+    where DATA_DIR only ever holds whatever another request happened to
+    already cache - IntrinsIQ came back "No data found" for any ticker
+    nothing else had touched yet.
+    """
+    from app.utils.paths import get_ticker_dir
+    result = get_ticker_dir(ticker)
+    if result:
+        return result
+    # Fall back to a same-directory case-insensitive scan for whatever is
+    # already on local disk (e.g. .NS suffix variants), same as before.
+    if DATA_DIR.exists():
+        for market_dir in DATA_DIR.iterdir():
+            if not market_dir.is_dir():
+                continue
+            for td in market_dir.iterdir():
+                if td.is_dir() and td.name.upper() == ticker.upper():
+                    return td
     return None
 
 

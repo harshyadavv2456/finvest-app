@@ -1,0 +1,47 @@
+{
+  "processing_date": "2026-03-29",
+  "email_count": 1,
+  "article_count": 0,
+  "total_content_size": 6683,
+  "linked_articles": [],
+  "all_entities": [
+    "Facebook",
+    "META",
+    "Meta",
+    "Apple"
+  ],
+  "all_metrics": [
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$200",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$40,000",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$10,000",
+      "type": "currency_usd"
+    },
+    {
+      "value": "eps,",
+      "type": "eps"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 1,
+    "india": 1,
+    "sector_corporate": 1
+  },
+  "source_registry": {
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 1
+    }
+  }
+}

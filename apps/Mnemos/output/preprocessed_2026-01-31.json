@@ -1,0 +1,130 @@
+{
+  "processing_date": "2026-01-31",
+  "email_count": 4,
+  "article_count": 0,
+  "total_content_size": 24797,
+  "linked_articles": [],
+  "all_entities": [
+    "Goldman Sachs",
+    "Alphabet",
+    "Toyota",
+    "power grid",
+    "Microsoft",
+    "Intel",
+    "Meta",
+    "Disney",
+    "Nvidia",
+    "Oracle",
+    "GOLDMAN SACHS",
+    "Apple",
+    "Amazon",
+    "Google"
+  ],
+  "all_metrics": [
+    {
+      "value": "31%",
+      "type": "percentage"
+    },
+    {
+      "value": "11%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.9%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.4%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.5%",
+      "type": "percentage"
+    },
+    {
+      "value": "6.9%",
+      "type": "percentage"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$18,000",
+      "type": "currency_usd"
+    },
+    {
+      "value": "23%",
+      "type": "percentage"
+    },
+    {
+      "value": "2%",
+      "type": "percentage"
+    },
+    {
+      "value": "45%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$100 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$135 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$30 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$50 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$20 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$625 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$20 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$5 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$1.6 billion",
+      "type": "currency_usd"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 4,
+    "india": 3,
+    "sector_corporate": 4
+  },
+  "source_registry": {
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 2
+    },
+    "thomsonreuters.com": {
+      "type": "email",
+      "attribution": "reuters.com (Newsletter)",
+      "item_count": 2
+    }
+  }
+}

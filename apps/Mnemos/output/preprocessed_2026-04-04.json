@@ -1,0 +1,129 @@
+{
+  "processing_date": "2026-04-04",
+  "email_count": 4,
+  "article_count": 0,
+  "total_content_size": 23659,
+  "linked_articles": [],
+  "all_entities": [
+    "Boeing"
+  ],
+  "all_metrics": [
+    {
+      "value": "4.3%",
+      "type": "percentage"
+    },
+    {
+      "value": "4.4%",
+      "type": "percentage"
+    },
+    {
+      "value": "10%",
+      "type": "percentage"
+    },
+    {
+      "value": "4%",
+      "type": "percentage"
+    },
+    {
+      "value": "70%",
+      "type": "percentage"
+    },
+    {
+      "value": "54%",
+      "type": "percentage"
+    },
+    {
+      "value": "94%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$1.5 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$1.1 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$350 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$660 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$380,000,",
+      "type": "currency_usd"
+    },
+    {
+      "value": "2%",
+      "type": "percentage"
+    },
+    {
+      "value": "5%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$1.8 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$15.7 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$66 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$65 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "20%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$65 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 4,
+    "india": 4,
+    "sector_corporate": 4
+  },
+  "source_registry": {
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 2
+    },
+    "thomsonreuters.com": {
+      "type": "email",
+      "attribution": "reuters.com (Newsletter)",
+      "item_count": 2
+    }
+  }
+}

@@ -1,0 +1,249 @@
+{
+  "processing_date": "2026-04-11",
+  "email_count": 5,
+  "article_count": 0,
+  "total_content_size": 30090,
+  "linked_articles": [],
+  "all_entities": [
+    "Goldman Sachs",
+    "META",
+    "Meta",
+    "Nvidia",
+    "IOC",
+    "JPMorgan",
+    "Tesla",
+    "Facebook",
+    "Boeing"
+  ],
+  "all_metrics": [
+    {
+      "value": "0.9%",
+      "type": "percentage"
+    },
+    {
+      "value": "3.3%",
+      "type": "percentage"
+    },
+    {
+      "value": "18.9%",
+      "type": "percentage"
+    },
+    {
+      "value": "44.2%",
+      "type": "percentage"
+    },
+    {
+      "value": "12.7%",
+      "type": "percentage"
+    },
+    {
+      "value": "13.4%",
+      "type": "percentage"
+    },
+    {
+      "value": "4.68%",
+      "type": "percentage"
+    },
+    {
+      "value": "3.56%",
+      "type": "percentage"
+    },
+    {
+      "value": "3%",
+      "type": "percentage"
+    },
+    {
+      "value": "5%",
+      "type": "percentage"
+    },
+    {
+      "value": "$95.20",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$96.57",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$132",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "3.3%",
+      "type": "percentage"
+    },
+    {
+      "value": "2.6%",
+      "type": "percentage"
+    },
+    {
+      "value": "12.5%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.5%",
+      "type": "percentage"
+    },
+    {
+      "value": "18.9%",
+      "type": "percentage"
+    },
+    {
+      "value": "44.2%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs\n,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs 65",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$150,000",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$600,000",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$40,000",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$10,000",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$6,000",
+      "type": "currency_usd"
+    },
+    {
+      "value": "22%",
+      "type": "percentage"
+    },
+    {
+      "value": "5%",
+      "type": "percentage"
+    },
+    {
+      "value": "20%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$7.5",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$11 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$500 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$60 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$80 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$6.6 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$7.5 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$500 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$10 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$65 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$17 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$1 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$1.75 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$1.25 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 5,
+    "india": 3,
+    "sector_corporate": 5
+  },
+  "source_registry": {
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 3
+    },
+    "thomsonreuters.com": {
+      "type": "email",
+      "attribution": "reuters.com (Newsletter)",
+      "item_count": 2
+    }
+  }
+}

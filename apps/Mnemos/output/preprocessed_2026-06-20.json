@@ -1,0 +1,89 @@
+{
+  "processing_date": "2026-06-20",
+  "email_count": 3,
+  "article_count": 0,
+  "total_content_size": 18052,
+  "linked_articles": [],
+  "all_entities": [
+    "visa"
+  ],
+  "all_metrics": [
+    {
+      "value": "4%",
+      "type": "percentage"
+    },
+    {
+      "value": "5%",
+      "type": "percentage"
+    },
+    {
+      "value": "2%",
+      "type": "percentage"
+    },
+    {
+      "value": "10%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$220 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$4 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$120",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$80",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs\n,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$30 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 3,
+    "india": 3,
+    "sector_corporate": 3
+  },
+  "source_registry": {
+    "thomsonreuters.com": {
+      "type": "email",
+      "attribution": "reuters.com (Newsletter)",
+      "item_count": 2
+    },
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 1
+    }
+  }
+}

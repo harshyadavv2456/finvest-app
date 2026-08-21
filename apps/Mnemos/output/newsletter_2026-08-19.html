@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<title>MNEMOS Daily Intelligence Brief</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'SF Mono', 'Consolas', 'Monaco', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #e6edf3;
+    background: #0d1117;
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.header {
+    background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+    border: 1px solid #30363d;
+    border-left: 4px solid #58a6ff;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 8px;
+}
+.header h1 {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: #58a6ff;
+    margin-bottom: 10px;
+}
+.header .meta {
+    font-size: 12px;
+    color: #8b949e;
+}
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+    margin-bottom: 25px;
+}
+.stat-card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    padding: 15px 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+.stat-card .value {
+    font-size: 26px;
+    font-weight: bold;
+    color: #58a6ff;
+}
+.stat-card .label {
+    font-size: 9px;
+    color: #8b949e;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 5px;
+}
+.section {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+.section h2 {
+    font-size: 12px;
+    font-weight: 600;
+    color: #c9d1d9;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 15px 20px;
+    background: linear-gradient(90deg, #21262d 0%, #161b22 100%);
+    border-bottom: 1px solid #30363d;
+}
+.section-content {
+    padding: 20px;
+}
+.signal {
+    background: #0d1117;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-left: 3px solid #30363d;
+}
+.signal-title {
+    color: #e6edf3;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+.badge {
+    font-size: 9px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    margin-right: 8px;
+    background: #238636;
+    color: #fff;
+}
+.facts {
+    color: #8b949e;
+    font-size: 12px;
+    padding-left: 15px;
+    margin: 10px 0;
+}
+.facts li {
+    margin-bottom: 5px;
+    list-style: none;
+}
+.facts li:before {
+    content: "•";
+    color: #484f58;
+    margin-right: 8px;
+}
+.sources {
+    font-size: 11px;
+    color: #58a6ff;
+    margin-top: 10px;
+}
+.numbers {
+    font-size: 11px;
+    color: #3fb950;
+    margin: 5px 0;
+    padding: 5px 10px;
+    background: rgba(63, 185, 80, 0.1);
+    border-radius: 4px;
+    display: inline-block;
+}
+.quote-card {
+    background: #0d1117;
+    border-left: 3px solid #f59e0b;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 0 6px 6px 0;
+}
+.quote-text {
+    font-style: italic;
+    color: #e6edf3;
+    font-size: 14px;
+}
+.quote-speaker {
+    color: #8b949e;
+    font-size: 12px;
+    margin-top: 8px;
+}
+.earnings-card {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+.earnings-company {
+    color: #58a6ff;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+.earnings-data {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+    font-size: 12px;
+}
+.earnings-item {
+    color: #8b949e;
+}
+.earnings-item .label {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #484f58;
+}
+.earnings-item .value {
+    color: #e6edf3;
+}
+.footer {
+    margin-top: 30px;
+    padding: 20px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 11px;
+    color: #8b949e;
+}
+</style>
+</head>
+<body>
+
+<div class='header'>
+    <h1>MNEMOS — COMPREHENSIVE DAILY INTELLIGENCE</h1>
+    <div class='meta'>Date: 2026-08-19 | Chunks: 8 | Items: 0</div>
+</div>
+
+<div class='dashboard'>
+    <div class='stat-card'><div class='value'>0</div><div class='label'>Signals</div></div>
+    <div class='stat-card'><div class='value'>0</div><div class='label'>India</div></div>
+    <div class='stat-card'><div class='value'>0</div><div class='label'>Macro</div></div>
+    <div class='stat-card'><div class='value'>0</div><div class='label'>Corporate</div></div>
+    <div class='stat-card'><div class='value'>0</div><div class='label'>Earnings</div></div>
+    <div class='stat-card'><div class='value'>0</div><div class='label'>Quotes</div></div>
+</div>
+<div class='section'><h2>Top Market Signals</h2><div class='section-content'>
+<p style='color:#8b949e'>No signals extracted.</p>
+</div></div>
+<div class='section'><h2>India — Markets, Policy & Economy</h2><div class='section-content'>
+<p style='color:#8b949e'>No India items.</p>
+</div></div>
+<div class='section'><h2>Global Macro & Geopolitics</h2><div class='section-content'>
+<p style='color:#8b949e'>No macro items.</p>
+</div></div>
+<div class='section'><h2>Sector & Corporate Intelligence</h2><div class='section-content'>
+<p style='color:#8b949e'>No corporate items.</p>
+</div></div>
+
+<div class='footer'>
+    <p><strong>MNEMOS — Financial Intelligence System</strong></p>
+    <p>Generated: 2026-08-19 23:07:05</p>
+    <p style='margin-top:10px;'>All content extracted from premium financial newsletters. No external knowledge applied.</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+{
+  "processing_date": "2026-01-25",
+  "email_count": 1,
+  "article_count": 0,
+  "total_content_size": 7030,
+  "linked_articles": [],
+  "all_entities": [],
+  "all_metrics": [
+    {
+      "value": "100%",
+      "type": "percentage"
+    },
+    {
+      "value": "100%",
+      "type": "percentage"
+    },
+    {
+      "value": "RS\n1",
+      "type": "currency_inr"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 1,
+    "india": 1,
+    "sector_corporate": 1
+  },
+  "source_registry": {
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 1
+    }
+  }
+}

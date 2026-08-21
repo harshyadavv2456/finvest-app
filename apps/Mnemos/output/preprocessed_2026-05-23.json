@@ -1,0 +1,121 @@
+{
+  "processing_date": "2026-05-23",
+  "email_count": 5,
+  "article_count": 0,
+  "total_content_size": 29705,
+  "linked_articles": [],
+  "all_entities": [
+    "Visa",
+    "Walmart",
+    "Salesforce",
+    "Tesla",
+    "Amazon"
+  ],
+  "all_metrics": [
+    {
+      "value": "0.4%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.6%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.2%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.9%",
+      "type": "percentage"
+    },
+    {
+      "value": "4.57%",
+      "type": "percentage"
+    },
+    {
+      "value": "$103.54",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "50%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$100,000",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "50%",
+      "type": "percentage"
+    },
+    {
+      "value": "17%",
+      "type": "percentage"
+    },
+    {
+      "value": "93%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$1.75 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$1.75 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$1.776 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "20%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 5,
+    "india": 4,
+    "sector_corporate": 5
+  },
+  "source_registry": {
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 3
+    },
+    "thomsonreuters.com": {
+      "type": "email",
+      "attribution": "reuters.com (Newsletter)",
+      "item_count": 2
+    }
+  }
+}

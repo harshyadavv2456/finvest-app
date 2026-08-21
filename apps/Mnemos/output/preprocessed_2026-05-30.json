@@ -1,0 +1,162 @@
+{
+  "processing_date": "2026-05-30",
+  "email_count": 5,
+  "article_count": 0,
+  "total_content_size": 31563,
+  "linked_articles": [],
+  "all_entities": [
+    "Samsung",
+    "Google"
+  ],
+  "all_metrics": [
+    {
+      "value": "5.2%",
+      "type": "percentage"
+    },
+    {
+      "value": "8.4%",
+      "type": "percentage"
+    },
+    {
+      "value": "33%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.8%",
+      "type": "percentage"
+    },
+    {
+      "value": "2.7%",
+      "type": "percentage"
+    },
+    {
+      "value": "51%",
+      "type": "percentage"
+    },
+    {
+      "value": "12.1%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.63%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.15%",
+      "type": "percentage"
+    },
+    {
+      "value": "-1.30%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.40%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.27%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.30%",
+      "type": "percentage"
+    },
+    {
+      "value": "+1.01%",
+      "type": "percentage"
+    },
+    {
+      "value": "22%",
+      "type": "percentage"
+    },
+    {
+      "value": "$1 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$1.8 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "Nasdaq 100",
+      "type": "index_level"
+    },
+    {
+      "value": "50%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$1.8 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$15",
+      "type": "currency_usd"
+    },
+    {
+      "value": "20%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$150 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$1.75 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "70%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$1.776 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 5,
+    "india": 2,
+    "sector_corporate": 5
+  },
+  "source_registry": {
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 3
+    },
+    "thomsonreuters.com": {
+      "type": "email",
+      "attribution": "reuters.com (Newsletter)",
+      "item_count": 2
+    }
+  }
+}

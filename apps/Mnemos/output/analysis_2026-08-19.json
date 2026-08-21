@@ -1,0 +1,573 @@
+{
+  "date": "2026-08-19",
+  "top_market_signals": [],
+  "india_markets_policy": [],
+  "global_macro_geopolitics": [],
+  "sector_corporate": [],
+  "earnings_roundup": [],
+  "key_quotes": [],
+  "market_snapshot": {},
+  "continuing_themes": [],
+  "upcoming_events": [],
+  "contradictions_dislocations": [],
+  "data_gaps_risks": [
+    "Corporate intelligence absent. Earnings signals, management changes, and sector developments not available.",
+    "Chunk 3 failed",
+    "Chunk 4 failed",
+    "Chunk 5 failed",
+    "No linked articles fetched. Detailed analysis and context unavailable.",
+    "Chunk 6 failed",
+    "India-specific coverage absent. RBI commentary, domestic policy updates, and Indian corporate signals not available in today's corpus.",
+    "Chunk 7 failed",
+    "Chunk 8 failed",
+    "Chunk 2 failed",
+    "No multi-day theme patterns detected. Corpus may lack continuity with prior days.",
+    "Chunk 1 failed",
+    "Global macro signals absent. Central bank commentary, sovereign policy developments, and geopolitical updates not present in corpus."
+  ],
+  "_metadata": {
+    "analysis_mode": "chunked",
+    "chunks_processed": 8,
+    "total_signals_extracted": 0,
+    "total_items_extracted": 0,
+    "items_analyzed": 11,
+    "sources_used": [
+      "substack.com (Nifty extends losing streak to)",
+      "reuters.com (Newsletter)",
+      "interactive.wsj.com"
+    ]
+  },
+  "historical_patterns": [
+    {
+      "type": "entity_momentum",
+      "entity": "US",
+      "mentions_7d": 420,
+      "assessment": "High activity: 420 mentions in 7 days"
+    },
+    {
+      "type": "entity_momentum",
+      "entity": "India",
+      "mentions_7d": 211,
+      "assessment": "High activity: 211 mentions in 7 days"
+    },
+    {
+      "type": "entity_momentum",
+      "entity": "China",
+      "mentions_7d": 106,
+      "assessment": "High activity: 106 mentions in 7 days"
+    }
+  ],
+  "intelligence_summary": {
+    "thesis_summary": {
+      "active_count": 112,
+      "archived_count": 0,
+      "thesis_types": [
+        "TRADE_THESIS",
+        "RATE_THESIS",
+        "TURNAROUND_THESIS",
+        "M&A_THESIS"
+      ],
+      "entities_tracked": [
+        "Cencora",
+        "Angelini Pharma",
+        "Boeing",
+        "Wipro Limited",
+        "Medtronic",
+        "US Catalyst Pharma",
+        "Adani Group",
+        "Angelini",
+        "Universal Health",
+        "Tesla",
+        "Itau",
+        "Nvidia",
+        "Spirit Airlines",
+        "Meta",
+        "Paramount",
+        "AstraZeneca",
+        "BPCL",
+        "Autodesk",
+        "Zymeworks",
+        "Texas Instruments",
+        "Adani Power",
+        "GSK",
+        "Lilly",
+        "Sanofi",
+        "Snap",
+        "CAB Payments Holdings",
+        "Central Banks",
+        "Gilead",
+        "Pfizer",
+        "JPMorgan",
+        "IndusInd Bank",
+        "Sun Pharmaceutical Industries",
+        "Sysco",
+        "Abivax",
+        "Morgan Stanley",
+        "Intel",
+        "Disney",
+        "Olaplex",
+        "Persistent Systems",
+        "Hyundai",
+        "GameStop",
+        "Janux Therapeutics, Bristol Myers",
+        "Walmart",
+        "Jared Kushner",
+        "Madrigal",
+        "Frontier Biotechnologies",
+        "easyJet",
+        "Denso",
+        "Workday",
+        "EBay",
+        "Samsung Electronics",
+        "Nike",
+        "HPCL",
+        "General",
+        "Snowflake",
+        "AMD",
+        "SpaceX",
+        "Starbucks",
+        "San Diego Padres",
+        "Alcoa",
+        "Micron",
+        "Curium",
+        "Oracle",
+        "Hansa",
+        "Sun Pharma",
+        "Mindspace REIT",
+        "BMW",
+        "Aditya Birla Renewables",
+        "JPMorgan Chase",
+        "Unilever",
+        "Alnylam, Inceptive",
+        "FedEx",
+        "Novo Nordisk",
+        "Soleno",
+        "Chevron",
+        "Walt Disney",
+        "Tech Mahindra",
+        "Anthropic",
+        "Global Trade",
+        "Volkswagen",
+        "Kenvue",
+        "Reliance",
+        "WGA",
+        "Anta",
+        "Sabadell",
+        "Google",
+        "AlzeCure",
+        "Intesa Sanpaolo",
+        "EasyJet",
+        "Chery",
+        "Tata Steel",
+        "Biogen",
+        "Levi Strauss",
+        "MPS",
+        "Glencore",
+        "China's Anta",
+        "Eli Lilly",
+        "Samsung",
+        "OpenAI",
+        "Rio Tinto",
+        "Agilent",
+        "Amazon",
+        "Apple",
+        "Burberry",
+        "Honda",
+        "Netflix",
+        "Vedanta",
+        "Kotak Mahindra Bank"
+      ]
+    },
+    "entity_profiles_count": 922,
+    "high_conviction_count": 12,
+    "deteriorating_count": 2,
+    "generated_at": "2026-08-19T23:07:05.351980"
+  },
+  "active_theses": [
+    {
+      "type": "TURNAROUND_THESIS",
+      "entity": "Nike",
+      "signal": "Shares surge on signs turnaround is paying off",
+      "thesis": "Nike undergoing strategic transformation",
+      "catalysts": [
+        "Execution milestones",
+        "Margin improvement",
+        "Revenue stabilization"
+      ],
+      "detected_date": "2026-01-19",
+      "id": "f7216a06",
+      "status": "ACTIVE",
+      "conviction_history": [
+        {
+          "date": "2026-01-19",
+          "conviction": 0.5
+        }
+      ],
+      "supporting_evidence": [],
+      "contradicting_evidence": []
+    },
+    {
+      "type": "TRADE_THESIS",
+      "entity": "Global Trade",
+      "signal": "EU and Mercosur sign trade deal after 25 years of negotiations",
+      "thesis": "Trade policy shifts may impact cross-border flows",
+      "catalysts": [
+        "Policy announcements",
+        "Retaliation measures",
+        "Supply chain shifts"
+      ],
+      "detected_date": "2026-01-19",
+      "id": "fd698306",
+      "status": "ACTIVE",
+      "conviction_history": [
+        {
+          "date": "2026-01-19",
+          "conviction": 0.5
+        }
+      ],
+      "supporting_evidence": [
+        {
+          "date": "2026-01-19",
+          "signal": "EU and Mercosur sign trade deal"
+        },
+        {
+          "date": "2026-01-20",
+          "signal": "Trump threatens tariffs on European allies over Greenland"
+        },
+        {
+          "date": "2026-01-20",
+          "signal": "Trump threatens to impose tariffs on European allies"
+        },
+        {
+          "date": "2026-01-21",
+          "signal": "President Trump threatened European allies with tariffs over his desire for the U.S. to acquire Greenland"
+        },
+        {
+          "date": "2026-01-21",
+          "signal": "U.S. President Donald Trump's latest foreign policy and trade war salvos are upsetting global markets"
+        },
+        {
+          "date": "2026-01-21",
+          "signal": "Trump threatens 200% tariffs on French wines"
+        },
+        {
+          "date": "2026-01-27",
+          "signal": "US tariffs on South Korea increased to 25% from 15%"
+        },
+        {
+          "date": "2026-01-27",
+          "signal": "EU carmakers face tough India market even after trade deal"
+        },
+        {
+          "date": "2026-01-27",
+          "signal": "India and EU reach landmark trade deal, tariffs to be slashed on most goods"
+        },
+        {
+          "date": "2026-02-25",
+          "signal": "Trump's tariff reduction and its impact on the market"
+        },
+        {
+          "date": "2026-02-25",
+          "signal": "New US tariffs come in at lower 10% rate"
+        },
+        {
+          "date": "2026-04-03",
+          "signal": "U.S. to impose tariffs of up to 100% on branded pharmaceuticals"
+        },
+        {
+          "date": "2026-05-12",
+          "signal": "Trump administration plans to temporarily reduce tariffs on beef imports"
+        },
+        {
+          "date": "2026-07-21",
+          "signal": "U.S. to impose 50% tariffs on certain Canadian goods"
+        },
+        {
+          "date": "2026-07-24",
+          "signal": "Trump Unveils New Tariffs Built to Withstand Legal Scrutiny"
+        },
+        {
+          "date": "2026-07-25",
+          "signal": "U.S. to Consider Applying Additional Tariffs to Goods from the EU"
+        }
+      ],
+      "contradicting_evidence": []
+    },
+    {
+      "type": "M&A_THESIS",
+      "entity": "General",
+      "signal": "EU and Mercosur sign trade deal after 25 years of negotiations",
+      "thesis": "M&A activity may create value/risk for General",
+      "catalysts": [
+        "Deal completion",
+        "Regulatory approval",
+        "Synergy realization"
+      ],
+      "detected_date": "2026-01-19",
+      "id": "7915fb0e",
+      "status": "ACTIVE",
+      "conviction_history": [
+        {
+          "date": "2026-01-19",
+          "conviction": 0.5
+        }
+      ],
+      "supporting_evidence": [
+        {
+          "date": "2026-01-21",
+          "signal": "GSK makes $2.2 billion deal for RAPT Therapeutics' food allergy drug"
+        },
+        {
+          "date": "2026-01-21",
+          "signal": "Pfizer to exit ViiV Healthcare in $1.9 billion deal as Shionogi doubles stake"
+        },
+        {
+          "date": "2026-01-21",
+          "signal": "Netflix-Warner Bros deal could offer viewers relief from subscription fatigue"
+        },
+        {
+          "date": "2026-01-27",
+          "signal": "India and EU reach landmark trade deal"
+        },
+        {
+          "date": "2026-01-27",
+          "signal": "China's Anta buys $1.8 billion Puma stake from Pinault family, rules out takeover"
+        },
+        {
+          "date": "2026-01-27",
+          "signal": "India, EU reach landmark trade deal, tariffs to be slashed on most goods"
+        },
+        {
+          "date": "2026-01-27",
+          "signal": "India and EU conclude trade deal to slash tariffs on most goods"
+        },
+        {
+          "date": "2026-02-05",
+          "signal": "Mergers and acquisitions are becoming increasingly attractive for copper companies"
+        },
+        {
+          "date": "2026-02-25",
+          "signal": "Meta Platforms announces deal worth over $100 billion to purchase AI chips from AMD"
+        },
+        {
+          "date": "2026-02-25",
+          "signal": "Meta Platforms announces deal to purchase AI chips from AMD worth over $100 billion"
+        },
+        {
+          "date": "2026-03-11",
+          "signal": "Novo Nordisk strikes deal for Hims to sell Wegovy and Ozempic"
+        },
+        {
+          "date": "2026-03-25",
+          "signal": "Gilead to buy biotech firm Ouro Medicines in over $2 billion deal"
+        },
+        {
+          "date": "2026-03-25",
+          "signal": "Cencora buys EyeSouth's retina business in $1.1 billion deal"
+        },
+        {
+          "date": "2026-03-31",
+          "signal": "Sysco agreed to acquire family-owned Jetro Restaurant Depot in a $29 billion deal"
+        },
+        {
+          "date": "2026-04-04",
+          "signal": "Unilever-McCormick deal causes some dyspepsia"
+        },
+        {
+          "date": "2026-04-06",
+          "signal": "WGA reaches a four-year deal with the Alliance of Motion Picture and Television Producers"
+        },
+        {
+          "date": "2026-04-23",
+          "signal": "Trump administration nearing rescue deal for Spirit Airlines"
+        },
+        {
+          "date": "2026-04-30",
+          "signal": "China's state planner orders unwinding of Meta's acquisition of Chinese AI startup Manus"
+        },
+        {
+          "date": "2026-05-08",
+          "signal": "Angelini to buy US Catalyst Pharma in $4.1 billion deal"
+        },
+        {
+          "date": "2026-05-27",
+          "signal": "Acquisitions in Indian pharma sector"
+        },
+        {
+          "date": "2026-05-28",
+          "signal": "The biggest U.S. bank is on the hunt for deals"
+        },
+        {
+          "date": "2026-06-11",
+          "signal": "NextEra Energy's acquisition of Dominion Energy looks like a bargain"
+        },
+        {
+          "date": "2026-06-13",
+          "signal": "The U.S., Iran and the chief mediator Pakistan agreed that a peace deal was nearly complete"
+        },
+        {
+          "date": "2026-06-14",
+          "signal": "Lebanon conflict threatens Iran deal"
+        },
+        {
+          "date": "2026-06-18",
+          "signal": "President Trump defended the latest Iran ceasefire deal"
+        },
+        {
+          "date": "2026-07-25",
+          "signal": "Paramount Pauses Warner Bros. Merger Over Legal Challenges"
+        },
+        {
+          "date": "2026-08-01",
+          "signal": "Tesla considers sale of China business ahead of potential merger with SpaceX"
+        },
+        {
+          "date": "2026-08-09",
+          "signal": "Jared Kushner's Albania deal faces investigation and protests"
+        }
+      ],
+      "contradicting_evidence": []
+    },
+    {
+      "type": "M&A_THESIS",
+      "entity": "Abivax",
+      "signal": "Abivax Chief Executive Marc de Garidel dismissed reports of a potential takeover by Eli Lilly",
+      "thesis": "M&A activity may create value/risk for Abivax",
+      "catalysts": [
+        "Deal completion",
+        "Regulatory approval",
+        "Synergy realization"
+      ],
+      "detected_date": "2026-01-20",
+      "id": "c54db474",
+      "status": "ACTIVE",
+      "conviction_history": [
+        {
+          "date": "2026-01-20",
+          "conviction": 0.5
+        }
+      ],
+      "supporting_evidence": [],
+      "contradicting_evidence": []
+    },
+    {
+      "type": "M&A_THESIS",
+      "entity": "Eli Lilly",
+      "signal": "Abivax Chief Executive Marc de Garidel dismissed reports of a potential takeover by Eli Lilly",
+      "thesis": "M&A activity may create value/risk for Eli Lilly",
+      "catalysts": [
+        "Deal completion",
+        "Regulatory approval",
+        "Synergy realization"
+      ],
+      "detected_date": "2026-01-20",
+      "id": "ec27b9fa",
+      "status": "ACTIVE",
+      "conviction_history": [
+        {
+          "date": "2026-01-20",
+          "conviction": 0.5
+        }
+      ],
+      "supporting_evidence": [],
+      "contradicting_evidence": []
+    }
+  ],
+  "high_conviction_entities": [
+    {
+      "entity": "Nvidia",
+      "type": "company",
+      "conviction": 0.9,
+      "signal_count": 50
+    },
+    {
+      "entity": "Apple",
+      "type": "company",
+      "conviction": 0.85,
+      "signal_count": 50
+    },
+    {
+      "entity": "Intel",
+      "type": "company",
+      "conviction": 0.85,
+      "signal_count": 38
+    },
+    {
+      "entity": "Samsung Electronics",
+      "type": "company",
+      "conviction": 0.8,
+      "signal_count": 29
+    },
+    {
+      "entity": "Microsoft",
+      "type": "company",
+      "conviction": 0.75,
+      "signal_count": 33
+    }
+  ],
+  "deteriorating_entities": [
+    {
+      "entity": "Tesla",
+      "type": "company",
+      "conviction": 0.15,
+      "signal_count": 50
+    },
+    {
+      "entity": "Nike",
+      "type": "company",
+      "conviction": 0.3,
+      "signal_count": 14
+    }
+  ],
+  "risk_lens_views": {
+    "LONG_ONLY_EQUITY": {
+      "lens": "LONG_ONLY_EQUITY",
+      "focus": "Quality longs, earnings catalysts, sector rotation",
+      "opportunities": [],
+      "risks": [],
+      "watchlist": [],
+      "factor_exposure": {}
+    },
+    "LONG_SHORT_EQUITY": {
+      "lens": "LONG_SHORT_EQUITY",
+      "focus": "Alpha generation, pair trades, relative value",
+      "long_candidates": [],
+      "short_candidates": [],
+      "pair_opportunities": [],
+      "sector_rotation": []
+    },
+    "GLOBAL_MACRO": {
+      "lens": "GLOBAL_MACRO",
+      "focus": "Cross-asset themes, policy divergence, geopolitical risk",
+      "rate_signals": [],
+      "fx_signals": [],
+      "commodity_signals": [],
+      "geopolitical_signals": [],
+      "cross_asset_themes": [],
+      "risk_events": [
+        {
+          "event": "RBI MPC",
+          "category": "RATES",
+          "risk_level": "HIGH"
+        }
+      ]
+    },
+    "CREDIT": {
+      "lens": "CREDIT",
+      "focus": "Spread movements, default risk, duration positioning",
+      "spread_signals": [],
+      "rate_signals": [],
+      "issuer_signals": [],
+      "liquidity_signals": [],
+      "duration_view": "LONG_DURATION"
+    },
+    "cross_asset_summary": {
+      "equity_bias": "UNDERWEIGHT",
+      "rate_bias": "NEUTRAL",
+      "fx_bias": "NEUTRAL",
+      "commodity_bias": "NEUTRAL",
+      "risk_appetite": "NEUTRAL",
+      "key_themes": []
+    }
+  }
+}

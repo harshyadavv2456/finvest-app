@@ -1,0 +1,473 @@
+{
+  "processing_date": "2026-07-27",
+  "email_count": 5,
+  "article_count": 0,
+  "total_content_size": 58714,
+  "linked_articles": [],
+  "all_entities": [
+    "Google",
+    "Adani",
+    "Microsoft",
+    "Nvidia",
+    "HDFC Bank",
+    "Airbus",
+    "Infosys",
+    "Amazon",
+    "Qualcomm",
+    "Chevron",
+    "ExxonMobil",
+    "Meta",
+    "Tata Power",
+    "Apple",
+    "Coal India",
+    "Reliance"
+  ],
+  "all_metrics": [
+    {
+      "value": "9%",
+      "type": "percentage"
+    },
+    {
+      "value": "29%",
+      "type": "percentage"
+    },
+    {
+      "value": "18%",
+      "type": "percentage"
+    },
+    {
+      "value": "13%",
+      "type": "percentage"
+    },
+    {
+      "value": "7%",
+      "type": "percentage"
+    },
+    {
+      "value": "-35%",
+      "type": "percentage"
+    },
+    {
+      "value": "76%",
+      "type": "percentage"
+    },
+    {
+      "value": "87%",
+      "type": "percentage"
+    },
+    {
+      "value": "95%",
+      "type": "percentage"
+    },
+    {
+      "value": "70%",
+      "type": "percentage"
+    },
+    {
+      "value": "75%",
+      "type": "percentage"
+    },
+    {
+      "value": "63%",
+      "type": "percentage"
+    },
+    {
+      "value": "40%",
+      "type": "percentage"
+    },
+    {
+      "value": "57%",
+      "type": "percentage"
+    },
+    {
+      "value": "10%",
+      "type": "percentage"
+    },
+    {
+      "value": "37%",
+      "type": "percentage"
+    },
+    {
+      "value": "73%",
+      "type": "percentage"
+    },
+    {
+      "value": "64%",
+      "type": "percentage"
+    },
+    {
+      "value": "78%",
+      "type": "percentage"
+    },
+    {
+      "value": "58%",
+      "type": "percentage"
+    },
+    {
+      "value": "10%",
+      "type": "percentage"
+    },
+    {
+      "value": "37%",
+      "type": "percentage"
+    },
+    {
+      "value": "44%",
+      "type": "percentage"
+    },
+    {
+      "value": "59%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹50 crore",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹50 crore",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$75 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$44 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$31 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$11 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$1.2 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "225 basis points",
+      "type": "basis_points"
+    },
+    {
+      "value": "4%",
+      "type": "percentage"
+    },
+    {
+      "value": "2%",
+      "type": "percentage"
+    },
+    {
+      "value": "1%",
+      "type": "percentage"
+    },
+    {
+      "value": "26.5%",
+      "type": "percentage"
+    },
+    {
+      "value": "500%",
+      "type": "percentage"
+    },
+    {
+      "value": "$92.80",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$100",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$250 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$8.6 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "3 basis points",
+      "type": "basis_points"
+    },
+    {
+      "value": "FTSE 100",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "+0.98%",
+      "type": "percentage"
+    },
+    {
+      "value": "+1.03%",
+      "type": "percentage"
+    },
+    {
+      "value": "+1.61%",
+      "type": "percentage"
+    },
+    {
+      "value": "-6.85%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.58%",
+      "type": "percentage"
+    },
+    {
+      "value": "$1 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$10 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$250 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "Nasdaq 100",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "revenue\n,",
+      "type": "financial_metric"
+    },
+    {
+      "value": "86%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$100 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "0.7%",
+      "type": "percentage"
+    },
+    {
+      "value": "8.2%",
+      "type": "percentage"
+    },
+    {
+      "value": "25.3%",
+      "type": "percentage"
+    },
+    {
+      "value": "12%",
+      "type": "percentage"
+    },
+    {
+      "value": "25.1%",
+      "type": "percentage"
+    },
+    {
+      "value": "28.1%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.6%",
+      "type": "percentage"
+    },
+    {
+      "value": "7.8%",
+      "type": "percentage"
+    },
+    {
+      "value": "4.1%",
+      "type": "percentage"
+    },
+    {
+      "value": "26.1%",
+      "type": "percentage"
+    },
+    {
+      "value": "29.3%",
+      "type": "percentage"
+    },
+    {
+      "value": "11%",
+      "type": "percentage"
+    },
+    {
+      "value": "6%",
+      "type": "percentage"
+    },
+    {
+      "value": "37%",
+      "type": "percentage"
+    },
+    {
+      "value": "32%",
+      "type": "percentage"
+    },
+    {
+      "value": "23%",
+      "type": "percentage"
+    },
+    {
+      "value": "5.9%",
+      "type": "percentage"
+    },
+    {
+      "value": "5%",
+      "type": "percentage"
+    },
+    {
+      "value": "466%",
+      "type": "percentage"
+    },
+    {
+      "value": "7.67%",
+      "type": "percentage"
+    },
+    {
+      "value": "53.4%",
+      "type": "percentage"
+    },
+    {
+      "value": "40.8%",
+      "type": "percentage"
+    },
+    {
+      "value": "4.64%",
+      "type": "percentage"
+    },
+    {
+      "value": "15.1%",
+      "type": "percentage"
+    },
+    {
+      "value": "21.1%",
+      "type": "percentage"
+    },
+    {
+      "value": "18.7%",
+      "type": "percentage"
+    },
+    {
+      "value": "1.7%",
+      "type": "percentage"
+    },
+    {
+      "value": "1.8%",
+      "type": "percentage"
+    },
+    {
+      "value": "₹1,048 crore",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹5,533 crore",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹1,389 crore",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹8,852 crore",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹46,255 crore",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹12,069 crore",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹1 lakh",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹1,176 crore",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹19,051 crore",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹796 crore",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹2,695 crore",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$89",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$8.6 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$641.1 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "125 basis points",
+      "type": "basis_points"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 5,
+    "india": 4,
+    "sector_corporate": 5
+  },
+  "source_registry": {
+    "substack.com": {
+      "type": "email",
+      "attribution": "substack.com (What does it take to dig under)",
+      "item_count": 2
+    },
+    "thomsonreuters.com": {
+      "type": "email",
+      "attribution": "reuters.com (Newsletter)",
+      "item_count": 1
+    },
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 2
+    }
+  }
+}

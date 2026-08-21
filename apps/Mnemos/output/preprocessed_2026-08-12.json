@@ -1,0 +1,113 @@
+{
+  "processing_date": "2026-08-12",
+  "email_count": 1,
+  "article_count": 0,
+  "total_content_size": 3945,
+  "linked_articles": [],
+  "all_entities": [
+    "Intel",
+    "Cisco"
+  ],
+  "all_metrics": [
+    {
+      "value": "1.4%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.3%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.3%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.6%",
+      "type": "percentage"
+    },
+    {
+      "value": "30%",
+      "type": "percentage"
+    },
+    {
+      "value": "60%",
+      "type": "percentage"
+    },
+    {
+      "value": "-80%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.32%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.33%",
+      "type": "percentage"
+    },
+    {
+      "value": "+1.66%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.15%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.36%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.22%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.22%",
+      "type": "percentage"
+    },
+    {
+      "value": "$90",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$88.91",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$20 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$15 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$2.8 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "Nasdaq 100",
+      "type": "index_level"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 1,
+    "india": 0,
+    "sector_corporate": 1
+  },
+  "source_registry": {
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 1
+    }
+  }
+}

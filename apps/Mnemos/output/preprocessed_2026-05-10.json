@@ -1,0 +1,21 @@
+{
+  "processing_date": "2026-05-10",
+  "email_count": 1,
+  "article_count": 0,
+  "total_content_size": 1401,
+  "linked_articles": [],
+  "all_entities": [],
+  "all_metrics": [],
+  "classification_summary": {
+    "global_macro": 1,
+    "india": 0,
+    "sector_corporate": 0
+  },
+  "source_registry": {
+    "thomsonreuters.com": {
+      "type": "email",
+      "attribution": "reuters.com (Newsletter)",
+      "item_count": 1
+    }
+  }
+}

@@ -1,0 +1,177 @@
+{
+  "processing_date": "2026-05-16",
+  "email_count": 5,
+  "article_count": 0,
+  "total_content_size": 27957,
+  "linked_articles": [],
+  "all_entities": [
+    "Walmart",
+    "TSMC",
+    "Nvidia",
+    "Berkshire",
+    "Berkshire Hathaway"
+  ],
+  "all_metrics": [
+    {
+      "value": "1.2%",
+      "type": "percentage"
+    },
+    {
+      "value": "1.5%",
+      "type": "percentage"
+    },
+    {
+      "value": "1.1%",
+      "type": "percentage"
+    },
+    {
+      "value": "5.127%",
+      "type": "percentage"
+    },
+    {
+      "value": "4.595%",
+      "type": "percentage"
+    },
+    {
+      "value": "10%",
+      "type": "percentage"
+    },
+    {
+      "value": "91%",
+      "type": "percentage"
+    },
+    {
+      "value": "77%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs\n,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$80 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$67 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "4.595%",
+      "type": "percentage"
+    },
+    {
+      "value": "4.2%",
+      "type": "percentage"
+    },
+    {
+      "value": "1.2%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs\n,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$80 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$105.42",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$9 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$19 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "3%",
+      "type": "percentage"
+    },
+    {
+      "value": "6%",
+      "type": "percentage"
+    },
+    {
+      "value": "16%",
+      "type": "percentage"
+    },
+    {
+      "value": "5%",
+      "type": "percentage"
+    },
+    {
+      "value": "$25 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$100 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$100 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "10%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs 10",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 5,
+    "india": 4,
+    "sector_corporate": 5
+  },
+  "source_registry": {
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 3
+    },
+    "thomsonreuters.com": {
+      "type": "email",
+      "attribution": "reuters.com (Newsletter)",
+      "item_count": 2
+    }
+  }
+}

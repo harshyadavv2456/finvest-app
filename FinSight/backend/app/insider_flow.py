@@ -119,30 +119,45 @@ def load_insider_trades(days: int = 30, limit: int = 100) -> list[dict]:
         
         df['transactionDate'] = pd.to_datetime(df['transactionDate'], errors='coerce')
         df = df.dropna(subset=['transactionDate'])
-        
-        # Filter to buy/sell only (not compensation)
-        df = df[df['is_compensation'] == 0]
-        
+
+        # Filter to buy/sell only (not compensation). Current CSV schema
+        # (as of the pipeline that generates insider_trades_with_flags.csv)
+        # carries this as signalCategory=='compensation', not a boolean
+        # is_compensation column - support both so this survives either
+        # schema without silently returning nothing again.
+        if 'is_compensation' in df.columns:
+            df = df[df['is_compensation'] == 0]
+        elif 'signalCategory' in df.columns:
+            df = df[df['signalCategory'] != 'compensation']
+
         # Try requested window first
         cutoff = datetime.now() - timedelta(days=days)
         filtered = df[df['transactionDate'] >= cutoff]
-        
+
         # If no data in requested window, show the most recent data available
         if filtered.empty and not df.empty:
             logger.info(f"No trades in last {days} days, showing latest available data")
             filtered = df.sort_values('transactionDate', ascending=False).head(limit)
-        
+
         filtered = filtered.copy()
+        # transactionValueAbs isn't in the current schema either - derive it
+        # from transactionValue (present) rather than requiring the old name.
+        if 'transactionValueAbs' not in filtered.columns:
+            filtered['transactionValueAbs'] = filtered.get('transactionValue', 0).abs()
         filtered['transactionValueAbs'] = filtered['transactionValueAbs'].fillna(0)
         filtered = filtered.sort_values('transactionValueAbs', ascending=False)
-        
+
         result = []
         for _, row in filtered.head(limit).iterrows():
+            if 'is_bullish' in row and pd.notna(row.get('is_bullish')):
+                trade_type = "BUY" if row['is_bullish'] == 1 else "SELL"
+            else:
+                trade_type = "BUY" if row.get('signalCategory') == 'bullish' else "SELL"
             result.append({
                 "symbol": row['issuerTradingSymbol'],
                 "insider": row['reportingOwnerName'] if pd.notna(row['reportingOwnerName']) else 'Unknown',
                 "date": row['transactionDate'].strftime('%Y-%m-%d'),
-                "type": "BUY" if row['is_bullish'] == 1 else "SELL",
+                "type": trade_type,
                 "shares": int(row['transactionShares']) if pd.notna(row['transactionShares']) else 0,
                 "price": round(float(row['transactionPricePerShare']), 2) if pd.notna(row['transactionPricePerShare']) else 0,
                 "value": float(row['transactionValueAbs']) if pd.notna(row['transactionValueAbs']) else 0,

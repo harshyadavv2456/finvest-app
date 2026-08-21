@@ -33,8 +33,8 @@ router = APIRouter(prefix="/api/finbot", tags=["FinBot"])
 # Groq Configuration - Use llama models only
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-# llama-3.1-8b-instant is the recommended free model
-GROQ_MODEL = "llama-3.1-8b-instant"
+# Groq deprecated the llama-3.x family (2026-08-21) - see FinSight/IMPLEMENTATION_NOTES.md
+GROQ_MODEL = "openai/gpt-oss-20b"
 
 # Path to intelligence data - works on both local and Render
 # Local: FinSight/backend/app/ -> FinSight/public/intelligence
@@ -176,7 +176,8 @@ async def call_groq(messages: List[Dict], temperature: float = 0.3) -> str:
     api_keys = [k.strip() for k in [GROQ_API_KEY] + _extra.split(",") if k.strip()]
     
     # Models to try in order
-    models_to_try = ["llama-3.1-8b-instant", "gemma2-9b-it"]
+    # gpt-oss family only - see ai_engine.py's call_groq for why qwen was tried and dropped
+    models_to_try = ["openai/gpt-oss-20b", "openai/gpt-oss-120b"]
     
     for model in models_to_try:
         for api_key in api_keys:

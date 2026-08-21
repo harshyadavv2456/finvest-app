@@ -1,0 +1,296 @@
+{
+  "processing_date": "2026-08-14",
+  "email_count": 4,
+  "article_count": 0,
+  "total_content_size": 25409,
+  "linked_articles": [],
+  "all_entities": [
+    "Netflix",
+    "Microsoft",
+    "Cisco",
+    "JPMorgan"
+  ],
+  "all_metrics": [
+    {
+      "value": "0.1%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.2%",
+      "type": "percentage"
+    },
+    {
+      "value": "35%",
+      "type": "percentage"
+    },
+    {
+      "value": "55%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.65%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.8%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.1%",
+      "type": "percentage"
+    },
+    {
+      "value": "9%",
+      "type": "percentage"
+    },
+    {
+      "value": "16.5%",
+      "type": "percentage"
+    },
+    {
+      "value": "18%",
+      "type": "percentage"
+    },
+    {
+      "value": "30%",
+      "type": "percentage"
+    },
+    {
+      "value": "60%",
+      "type": "percentage"
+    },
+    {
+      "value": "-80%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.12%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.67%",
+      "type": "percentage"
+    },
+    {
+      "value": "-2.51%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.24%",
+      "type": "percentage"
+    },
+    {
+      "value": "+1.20%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.06%",
+      "type": "percentage"
+    },
+    {
+      "value": "-1.36%",
+      "type": "percentage"
+    },
+    {
+      "value": "5.2%",
+      "type": "percentage"
+    },
+    {
+      "value": "3%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$8.4 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$8.5 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$8.47 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "Nasdaq 100",
+      "type": "index_level"
+    },
+    {
+      "value": "37%",
+      "type": "percentage"
+    },
+    {
+      "value": "33%",
+      "type": "percentage"
+    },
+    {
+      "value": "$12.5 Billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "11%",
+      "type": "percentage"
+    },
+    {
+      "value": "92%",
+      "type": "percentage"
+    },
+    {
+      "value": "81%",
+      "type": "percentage"
+    },
+    {
+      "value": "85%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "+3.6%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.5%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.7%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.8%",
+      "type": "percentage"
+    },
+    {
+      "value": "+1.6%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.7%",
+      "type": "percentage"
+    },
+    {
+      "value": "+18%",
+      "type": "percentage"
+    },
+    {
+      "value": "+13%",
+      "type": "percentage"
+    },
+    {
+      "value": "+5%",
+      "type": "percentage"
+    },
+    {
+      "value": "-16%",
+      "type": "percentage"
+    },
+    {
+      "value": "-8%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.8%",
+      "type": "percentage"
+    },
+    {
+      "value": "-2%",
+      "type": "percentage"
+    },
+    {
+      "value": "-1%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.4%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.6%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.1%",
+      "type": "percentage"
+    },
+    {
+      "value": "1.1%",
+      "type": "percentage"
+    },
+    {
+      "value": "10%",
+      "type": "percentage"
+    },
+    {
+      "value": "13%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$1 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$4,000",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$400,",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 4,
+    "india": 4,
+    "sector_corporate": 4
+  },
+  "source_registry": {
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 2
+    },
+    "thomsonreuters.com": {
+      "type": "email",
+      "attribution": "reuters.com (Newsletter)",
+      "item_count": 2
+    }
+  }
+}

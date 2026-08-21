@@ -1,0 +1,177 @@
+{
+  "processing_date": "2026-02-07",
+  "email_count": 5,
+  "article_count": 0,
+  "total_content_size": 28431,
+  "linked_articles": [],
+  "all_entities": [
+    "Meta",
+    "Nvidia",
+    "Netflix",
+    "Amazon",
+    "Google",
+    "Tesla",
+    "PepsiCo",
+    "Alphabet",
+    "Coca-Cola"
+  ],
+  "all_metrics": [
+    {
+      "value": "2.5%",
+      "type": "percentage"
+    },
+    {
+      "value": "7.8%",
+      "type": "percentage"
+    },
+    {
+      "value": "7.1%",
+      "type": "percentage"
+    },
+    {
+      "value": "2%",
+      "type": "percentage"
+    },
+    {
+      "value": "1.8%",
+      "type": "percentage"
+    },
+    {
+      "value": "60%",
+      "type": "percentage"
+    },
+    {
+      "value": "5.6%",
+      "type": "percentage"
+    },
+    {
+      "value": "10%",
+      "type": "percentage"
+    },
+    {
+      "value": "26%",
+      "type": "percentage"
+    },
+    {
+      "value": "24%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$200 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$70,000",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$26 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "$45 Million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "Dow 50000",
+      "type": "index_level"
+    },
+    {
+      "value": "70%",
+      "type": "percentage"
+    },
+    {
+      "value": "$47",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$13 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$277 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$183 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$250 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$12 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$60 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$1 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$250 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$1.5 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "13%",
+      "type": "percentage"
+    },
+    {
+      "value": "$49",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$4.7 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 4,
+    "india": 4,
+    "sector_corporate": 5
+  },
+  "source_registry": {
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 3
+    },
+    "thomsonreuters.com": {
+      "type": "email",
+      "attribution": "reuters.com (Newsletter)",
+      "item_count": 2
+    }
+  }
+}

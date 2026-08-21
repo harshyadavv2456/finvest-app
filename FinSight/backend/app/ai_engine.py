@@ -32,14 +32,19 @@ def get_next_api_key() -> str:
 
 async def call_groq(
     messages: List[Dict],
-    model: str = "llama-3.3-70b-versatile",  # Current GROQ model Dec 2024
+    model: str = "openai/gpt-oss-120b",  # Groq deprecated the llama-3.x family (2026-08-21)
     max_tokens: int = 2000,
     temperature: float = 0.7
 ) -> str:
     """Call GROQ API with automatic key rotation"""
     
     # Current GROQ models as of Dec 2024 (old ones decommissioned)
-    models_to_try = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "gemma2-9b-it"]
+    # Sticking to the gpt-oss family only: qwen/qwen3.6-27b puts its
+    # chain-of-thought inline in the response content (<think> tags and
+    # all) instead of a separate reasoning field like gpt-oss does, which
+    # would leak straight into the UI - verified live against the real
+    # Groq API on 2026-08-21.
+    models_to_try = ["openai/gpt-oss-120b", "openai/gpt-oss-20b"]
     
     for model_name in models_to_try:
         for attempt in range(len(GROQ_API_KEYS)):

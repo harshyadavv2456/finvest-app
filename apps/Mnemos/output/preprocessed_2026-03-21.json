@@ -1,0 +1,203 @@
+{
+  "processing_date": "2026-03-21",
+  "email_count": 4,
+  "article_count": 0,
+  "total_content_size": 21963,
+  "linked_articles": [],
+  "all_entities": [
+    "Goldman Sachs",
+    "JPMorgan",
+    "AMD",
+    "Nvidia",
+    "reliance",
+    "GOLDMAN SACHS",
+    "Microsoft"
+  ],
+  "all_metrics": [
+    {
+      "value": "3.3%",
+      "type": "percentage"
+    },
+    {
+      "value": "2.3%",
+      "type": "percentage"
+    },
+    {
+      "value": "33%",
+      "type": "percentage"
+    },
+    {
+      "value": "3.2%",
+      "type": "percentage"
+    },
+    {
+      "value": "2%",
+      "type": "percentage"
+    },
+    {
+      "value": "1.5%",
+      "type": "percentage"
+    },
+    {
+      "value": "1%",
+      "type": "percentage"
+    },
+    {
+      "value": "2.1%",
+      "type": "percentage"
+    },
+    {
+      "value": "1.9%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$112.19",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$98.32",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$3.91",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "364%",
+      "type": "percentage"
+    },
+    {
+      "value": "95%",
+      "type": "percentage"
+    },
+    {
+      "value": "16.5%",
+      "type": "percentage"
+    },
+    {
+      "value": "6%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs.\n5",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$112",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$112",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$112.19",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$2 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$584,000",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$16.8 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$1.1 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$3.995 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$110",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$60",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$1,000",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$4 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$35,000",
+      "type": "currency_usd"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 4,
+    "india": 2,
+    "sector_corporate": 4
+  },
+  "source_registry": {
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 3
+    },
+    "thomsonreuters.com": {
+      "type": "email",
+      "attribution": "reuters.com (Newsletter)",
+      "item_count": 1
+    }
+  }
+}

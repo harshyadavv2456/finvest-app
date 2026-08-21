@@ -1,0 +1,153 @@
+{
+  "processing_date": "2026-08-08",
+  "email_count": 3,
+  "article_count": 0,
+  "total_content_size": 19666,
+  "linked_articles": [],
+  "all_entities": [
+    "Amazon",
+    "WELLS FARGO",
+    "Berkshire Hathaway",
+    "Wells Fargo",
+    "Goldman Sachs"
+  ],
+  "all_metrics": [
+    {
+      "value": "22%",
+      "type": "percentage"
+    },
+    {
+      "value": "17%",
+      "type": "percentage"
+    },
+    {
+      "value": "1.3%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.3%",
+      "type": "percentage"
+    },
+    {
+      "value": "2.3%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.20%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.50%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.32%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.08%",
+      "type": "percentage"
+    },
+    {
+      "value": "+1.07%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.02%",
+      "type": "percentage"
+    },
+    {
+      "value": "+2.23%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$30 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$100 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$380 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "Nasdaq 100",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "4.1%",
+      "type": "percentage"
+    },
+    {
+      "value": "4.2%",
+      "type": "percentage"
+    },
+    {
+      "value": "$2 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$2 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "$400 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$1 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$100,000",
+      "type": "currency_usd"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 3,
+    "india": 2,
+    "sector_corporate": 3
+  },
+  "source_registry": {
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 2
+    },
+    "thomsonreuters.com": {
+      "type": "email",
+      "attribution": "reuters.com (Newsletter)",
+      "item_count": 1
+    }
+  }
+}

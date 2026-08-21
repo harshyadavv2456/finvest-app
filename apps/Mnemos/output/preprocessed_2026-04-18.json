@@ -1,0 +1,191 @@
+{
+  "processing_date": "2026-04-18",
+  "email_count": 6,
+  "article_count": 0,
+  "total_content_size": 29635,
+  "linked_articles": [],
+  "all_entities": [
+    "Intel",
+    "Shell",
+    "Netflix",
+    "Amazon",
+    "TSMC",
+    "UnitedHealth",
+    "Goldman Sachs"
+  ],
+  "all_metrics": [
+    {
+      "value": "1.2%",
+      "type": "percentage"
+    },
+    {
+      "value": "1.5%",
+      "type": "percentage"
+    },
+    {
+      "value": "1.8%",
+      "type": "percentage"
+    },
+    {
+      "value": "9%",
+      "type": "percentage"
+    },
+    {
+      "value": "11%",
+      "type": "percentage"
+    },
+    {
+      "value": "10%",
+      "type": "percentage"
+    },
+    {
+      "value": "10%",
+      "type": "percentage"
+    },
+    {
+      "value": "9%",
+      "type": "percentage"
+    },
+    {
+      "value": "$90",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$84",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "Dow,",
+      "type": "index_level"
+    },
+    {
+      "value": "1%",
+      "type": "percentage"
+    },
+    {
+      "value": "1.8%",
+      "type": "percentage"
+    },
+    {
+      "value": "10%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs\n,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$6",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$3.9 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$2.4 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$18 Trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$30 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$100 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$200 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$300 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$350 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$20,000",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "6%",
+      "type": "percentage"
+    },
+    {
+      "value": "3%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$286",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$1.8 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 6,
+    "india": 3,
+    "sector_corporate": 5
+  },
+  "source_registry": {
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 3
+    },
+    "thomsonreuters.com": {
+      "type": "email",
+      "attribution": "reuters.com (Newsletter)",
+      "item_count": 3
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "processing_date": "2026-04-12",
+  "email_count": 1,
+  "article_count": 0,
+  "total_content_size": 5636,
+  "linked_articles": [],
+  "all_entities": [
+    "Google",
+    "Meta",
+    "META",
+    "Facebook"
+  ],
+  "all_metrics": [
+    {
+      "value": "rs.\n5",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$32,500",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$100,000,",
+      "type": "currency_usd"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 1,
+    "india": 1,
+    "sector_corporate": 1
+  },
+  "source_registry": {
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 1
+    }
+  }
+}

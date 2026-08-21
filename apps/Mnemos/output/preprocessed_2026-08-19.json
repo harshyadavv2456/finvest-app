@@ -1,0 +1,538 @@
+{
+  "processing_date": "2026-08-19",
+  "email_count": 11,
+  "article_count": 0,
+  "total_content_size": 83692,
+  "linked_articles": [],
+  "all_entities": [
+    "Bank of America",
+    "Coal India",
+    "Disney",
+    "Tata Steel",
+    "JSW Steel",
+    "Johnson & Johnson",
+    "Apple",
+    "Alphabet",
+    "Facebook",
+    "Goldman Sachs",
+    "L&T",
+    "Meta",
+    "Google"
+  ],
+  "all_metrics": [
+    {
+      "value": "5.337%",
+      "type": "percentage"
+    },
+    {
+      "value": "1.3%",
+      "type": "percentage"
+    },
+    {
+      "value": "5%",
+      "type": "percentage"
+    },
+    {
+      "value": "7%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.7%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.2%",
+      "type": "percentage"
+    },
+    {
+      "value": "23%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.25%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.70%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.57%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.03%",
+      "type": "percentage"
+    },
+    {
+      "value": "-1.73%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.02%",
+      "type": "percentage"
+    },
+    {
+      "value": "-1.73%",
+      "type": "percentage"
+    },
+    {
+      "value": "$91",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$90",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "Nasdaq 100",
+      "type": "index_level"
+    },
+    {
+      "value": "0.1%",
+      "type": "percentage"
+    },
+    {
+      "value": "6.9%",
+      "type": "percentage"
+    },
+    {
+      "value": "6.7%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "-1.5%",
+      "type": "percentage"
+    },
+    {
+      "value": "-2.5%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.6%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.2%",
+      "type": "percentage"
+    },
+    {
+      "value": "1.3%",
+      "type": "percentage"
+    },
+    {
+      "value": "-2%",
+      "type": "percentage"
+    },
+    {
+      "value": "+1.7%",
+      "type": "percentage"
+    },
+    {
+      "value": "-5%",
+      "type": "percentage"
+    },
+    {
+      "value": "+3.3%",
+      "type": "percentage"
+    },
+    {
+      "value": "-4.6%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.5%",
+      "type": "percentage"
+    },
+    {
+      "value": "-1%",
+      "type": "percentage"
+    },
+    {
+      "value": "+1%",
+      "type": "percentage"
+    },
+    {
+      "value": "2.945%",
+      "type": "percentage"
+    },
+    {
+      "value": "4.7480%",
+      "type": "percentage"
+    },
+    {
+      "value": "5.33%",
+      "type": "percentage"
+    },
+    {
+      "value": "-1%",
+      "type": "percentage"
+    },
+    {
+      "value": "27%",
+      "type": "percentage"
+    },
+    {
+      "value": "40%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$1.7 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$2.2 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$100",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$16.6 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$329 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$16 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "5.3%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$1 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$410 Million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "13%",
+      "type": "percentage"
+    },
+    {
+      "value": "75%",
+      "type": "percentage"
+    },
+    {
+      "value": "100%",
+      "type": "percentage"
+    },
+    {
+      "value": "80%",
+      "type": "percentage"
+    },
+    {
+      "value": "15%",
+      "type": "percentage"
+    },
+    {
+      "value": "4.9%",
+      "type": "percentage"
+    },
+    {
+      "value": "31.8%",
+      "type": "percentage"
+    },
+    {
+      "value": "1.5%",
+      "type": "percentage"
+    },
+    {
+      "value": "3.2%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs, cr",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹17,350 crore",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹4,690 crore",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹70,000",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹15,800 crore",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹1,000",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹3,000",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹7,900 crore",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹69,000 crore",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$1 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$7 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$10 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "revenue,",
+      "type": "financial_metric"
+    },
+    {
+      "value": "2.9%",
+      "type": "percentage"
+    },
+    {
+      "value": "2.6%",
+      "type": "percentage"
+    },
+    {
+      "value": "$40 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$16 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "18%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.01%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.02%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.14%",
+      "type": "percentage"
+    },
+    {
+      "value": "+1.36%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.04%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.03%",
+      "type": "percentage"
+    },
+    {
+      "value": "2%",
+      "type": "percentage"
+    },
+    {
+      "value": "10%",
+      "type": "percentage"
+    },
+    {
+      "value": "19%",
+      "type": "percentage"
+    },
+    {
+      "value": "$28 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "Nasdaq 100",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500,",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "15%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "32%",
+      "type": "percentage"
+    },
+    {
+      "value": "60%",
+      "type": "percentage"
+    },
+    {
+      "value": "50%",
+      "type": "percentage"
+    },
+    {
+      "value": "19%",
+      "type": "percentage"
+    },
+    {
+      "value": "19%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹95.75",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹95.68",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹2,000 crore",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹13,000 crore",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹9,450 crore",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹3,591 crore",
+      "type": "currency_inr"
+    },
+    {
+      "value": "₹2.75 lakh",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$75 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$86",
+      "type": "currency_usd"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "1.3%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 11,
+    "india": 8,
+    "sector_corporate": 10
+  },
+  "source_registry": {
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 4
+    },
+    "thomsonreuters.com": {
+      "type": "email",
+      "attribution": "reuters.com (Newsletter)",
+      "item_count": 5
+    },
+    "substack.com": {
+      "type": "email",
+      "attribution": "substack.com (A 40-year old battle over Indi)",
+      "item_count": 2
+    }
+  }
+}

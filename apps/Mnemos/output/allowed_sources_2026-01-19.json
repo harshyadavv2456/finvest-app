@@ -1,0 +1,33 @@
+{
+  "sender_domains": [
+    "substack.com",
+    "interactive.wsj.com",
+    "email.reuters.com",
+    "thomsonreuters.com"
+  ],
+  "article_domains": [
+    "thedailybrief.zerodha.com",
+    "newslink.reuters.com",
+    "open.substack.com",
+    "aftermarketreport.zerodha.com",
+    "substack.com"
+  ],
+  "all_allowed": [
+    "www.aftermarketreport.zerodha.com",
+    "thedailybrief.zerodha.com",
+    "www.newslink.reuters.com",
+    "www.open.substack.com",
+    "www.thomsonreuters.com",
+    "newslink.reuters.com",
+    "www.interactive.wsj.com",
+    "open.substack.com",
+    "www.substack.com",
+    "interactive.wsj.com",
+    "thomsonreuters.com",
+    "www.email.reuters.com",
+    "email.reuters.com",
+    "aftermarketreport.zerodha.com",
+    "substack.com",
+    "www.thedailybrief.zerodha.com"
+  ]
+}

@@ -1,0 +1,215 @@
+{
+  "processing_date": "2026-06-13",
+  "email_count": 5,
+  "article_count": 0,
+  "total_content_size": 32071,
+  "linked_articles": [],
+  "all_entities": [
+    "Morgan Stanley",
+    "Bank of America",
+    "Goldman Sachs",
+    "Netflix",
+    "Amazon",
+    "JPMorgan",
+    "Citigroup"
+  ],
+  "all_metrics": [
+    {
+      "value": "19%",
+      "type": "percentage"
+    },
+    {
+      "value": "3.4%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.7%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.5%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.3%",
+      "type": "percentage"
+    },
+    {
+      "value": "9%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.77%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.59%",
+      "type": "percentage"
+    },
+    {
+      "value": "-3.80%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.06%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.81%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.10%",
+      "type": "percentage"
+    },
+    {
+      "value": "+2.94%",
+      "type": "percentage"
+    },
+    {
+      "value": "$135",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$161",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$2.1 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "Nasdaq 100",
+      "type": "index_level"
+    },
+    {
+      "value": "19%",
+      "type": "percentage"
+    },
+    {
+      "value": "80%",
+      "type": "percentage"
+    },
+    {
+      "value": "22%",
+      "type": "percentage"
+    },
+    {
+      "value": "20%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$2.1 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$135",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$161.11",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$100 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$75 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$1.8 billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$250",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$30",
+      "type": "currency_usd"
+    },
+    {
+      "value": "13%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$340 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$2 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$2 trillion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "9%",
+      "type": "percentage"
+    },
+    {
+      "value": "99.9%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 5,
+    "india": 4,
+    "sector_corporate": 5
+  },
+  "source_registry": {
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 3
+    },
+    "thomsonreuters.com": {
+      "type": "email",
+      "attribution": "reuters.com (Newsletter)",
+      "item_count": 2
+    }
+  }
+}

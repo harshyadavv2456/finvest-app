@@ -466,6 +466,22 @@ def get_intelligence_announcements() -> List[Dict]:
     return announcements[:15]
 
 
+def _sanitize_nan(obj):
+    """Recursively replace NaN/inf with None. FastAPI's JSONResponse encoder
+    rejects them outright (500, no traceback useful to the client) - Python's
+    own json.dumps would silently emit an invalid bareword `NaN` instead,
+    which is just as broken for any real JSON consumer. Values here come
+    straight out of pandas (row.get(...) on a DataFrame column), which is
+    exactly where NaN turns up unannounced."""
+    if isinstance(obj, float) and (obj != obj or obj in (float("inf"), float("-inf"))):
+        return None
+    if isinstance(obj, dict):
+        return {k: _sanitize_nan(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_sanitize_nan(v) for v in obj]
+    return obj
+
+
 @router.get("/today")
 async def get_todays_announcements():
     """
@@ -567,7 +583,7 @@ async def get_todays_announcements():
             results["corporate_in"]["announcements"] = intel_announcements
             results["status"] = "OK_INTELLIGENCE_FALLBACK" if not has_any_data else "OK_WITH_FALLBACK"
     
-    return results
+    return _sanitize_nan(results)
 
 
 @router.get("/{market}/{symbol}")

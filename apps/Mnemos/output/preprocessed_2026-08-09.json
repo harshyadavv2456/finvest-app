@@ -1,0 +1,58 @@
+{
+  "processing_date": "2026-08-09",
+  "email_count": 1,
+  "article_count": 0,
+  "total_content_size": 6087,
+  "linked_articles": [],
+  "all_entities": [
+    "Berkshire Hathaway",
+    "Intel",
+    "power grid"
+  ],
+  "all_metrics": [
+    {
+      "value": "86%",
+      "type": "percentage"
+    },
+    {
+      "value": "45%",
+      "type": "percentage"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$125 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$25,000",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$25,000",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 1,
+    "india": 1,
+    "sector_corporate": 1
+  },
+  "source_registry": {
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 1
+    }
+  }
+}

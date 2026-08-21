@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     #   export GROQ_API_KEY="your-key-here"
     #   Or create backend/.env with: GROQ_API_KEY=your-key-here
     GROQ_API_KEY: Optional[str] = None
-    GROQ_MODEL: str = "llama-3.1-8b-instant"  # Free, fast model. Alternative: llama-3.3-70b-versatile (paid)
+    GROQ_MODEL: str = "openai/gpt-oss-20b"  # Groq deprecated the llama-3.x family (2026-08-21). Alternative: openai/gpt-oss-120b (larger)
     
     # API settings
     API_HOST: str = "0.0.0.0"

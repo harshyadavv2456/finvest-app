@@ -1,0 +1,140 @@
+{
+  "processing_date": "2026-08-15",
+  "email_count": 2,
+  "article_count": 0,
+  "total_content_size": 11646,
+  "linked_articles": [],
+  "all_entities": [
+    "Amazon",
+    "Walmart",
+    "shell",
+    "PepsiCo",
+    "JPMorgan"
+  ],
+  "all_metrics": [
+    {
+      "value": "0.6%",
+      "type": "percentage"
+    },
+    {
+      "value": "0.1%",
+      "type": "percentage"
+    },
+    {
+      "value": "8%",
+      "type": "percentage"
+    },
+    {
+      "value": "1.67%",
+      "type": "percentage"
+    },
+    {
+      "value": "5.95%",
+      "type": "percentage"
+    },
+    {
+      "value": "4.695%",
+      "type": "percentage"
+    },
+    {
+      "value": "5.216%",
+      "type": "percentage"
+    },
+    {
+      "value": "30%",
+      "type": "percentage"
+    },
+    {
+      "value": "60%",
+      "type": "percentage"
+    },
+    {
+      "value": "-80%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.29%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.28%",
+      "type": "percentage"
+    },
+    {
+      "value": "+1.32%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.09%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.20%",
+      "type": "percentage"
+    },
+    {
+      "value": "-0.01%",
+      "type": "percentage"
+    },
+    {
+      "value": "+0.20%",
+      "type": "percentage"
+    },
+    {
+      "value": "$88.52",
+      "type": "currency_usd"
+    },
+    {
+      "value": "S&P 500",
+      "type": "index_level"
+    },
+    {
+      "value": "Nasdaq 100",
+      "type": "index_level"
+    },
+    {
+      "value": "rs.\n5",
+      "type": "currency_inr"
+    },
+    {
+      "value": "rs,",
+      "type": "currency_inr"
+    },
+    {
+      "value": "$60.50",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$500 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$263 million",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$449",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$15 Billion",
+      "type": "currency_usd"
+    },
+    {
+      "value": "$500 Million",
+      "type": "currency_usd"
+    }
+  ],
+  "classification_summary": {
+    "global_macro": 2,
+    "india": 1,
+    "sector_corporate": 2
+  },
+  "source_registry": {
+    "interactive.wsj.com": {
+      "type": "email",
+      "attribution": "interactive.wsj.com",
+      "item_count": 2
+    }
+  }
+}
