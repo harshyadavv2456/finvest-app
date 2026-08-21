@@ -1677,10 +1677,38 @@ async def get_ticker_realtime(ticker: str):
     try:
         import yfinance as yf
         from datetime import datetime, timedelta
-        
+
         metadata = load_metadata(ticker)
         market = metadata.get("market")
-        
+
+        # AngelOne first for IN-market tickers - genuinely real-time (not
+        # yFinance's well-known 15-20min delay on Indian quotes). Falls
+        # through to yfinance below on any failure - same fallback
+        # discipline as everywhere else AngelOne is used.
+        if market == "IN":
+            try:
+                from app.angelone_provider import get_ltp
+                base_symbol = ticker.split(".")[0]
+                angelone_ltp = await run_in_threadpool(get_ltp, f"{base_symbol}-EQ", "NSE")
+                if angelone_ltp and angelone_ltp.get("ltp"):
+                    daily_df = load_daily(ticker, market)
+                    prev_close = float(daily_df.iloc[-1]["Close"]) if not daily_df.empty else None
+                    current_price = float(angelone_ltp["ltp"])
+                    if prev_close:
+                        change = current_price - prev_close
+                        change_percent = (change / prev_close) * 100 if prev_close != 0 else 0
+                    else:
+                        change, change_percent = 0.0, 0.0
+                    return {
+                        "ticker": ticker,
+                        "current_price": current_price,
+                        "change": float(change),
+                        "change_percent": float(change_percent),
+                        "source": "angelone_realtime"
+                    }
+            except Exception as ao_err:
+                logger.debug(f"AngelOne realtime failed for {ticker}, falling back to yfinance: {ao_err}")
+
         # Create yfinance ticker symbol
         yf_ticker = ticker
         if market == "IN" and not ticker.endswith(".NS"):
