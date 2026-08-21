@@ -27,45 +27,54 @@ def build_screener_snapshot() -> pd.DataFrame:
     
     tickers = list_tickers()
     logger.info(f"Found {len(tickers)} tickers")
-    
-    rows: List[Dict[str, Any]] = []
-    
-    for i, ticker_meta in enumerate(tickers):
+
+    # Parallelized - this job runs on a fresh GitHub Actions checkout
+    # every time (no local ticker data), so every one of ~2300 tickers
+    # self-heals from R2 (see utils/paths.py), up to 6 files each. A
+    # sequential loop here took 78+ minutes, right at the edge of this
+    # job's 90min timeout and the actual cause of stale screener/Market
+    # Intel data whenever it tipped over. Same R2 client timeout fix
+    # applied to the live backend's now-removed inline fallback (see
+    # main.py) applies here automatically via r2_client.py, so this is
+    # now safe to parallelize the same way - bounded per-call timeouts
+    # mean a stuck ticker can't stall the whole batch.
+    import concurrent.futures
+
+    def process_ticker(ticker_meta: Dict[str, Any]) -> Dict[str, Any] | None:
         ticker = ticker_meta.get("ticker")
         market = ticker_meta.get("market")
-        
         if not ticker:
-            continue
-        
+            return None
         try:
-            # Load data
             daily_df = load_daily(ticker, market)
             tech_df = load_technicals(ticker, market)
             fundamentals = load_fundamentals(ticker, market)
             metadata = load_metadata(ticker, market)
-            
-            # Ensure market is set
             if not metadata.get("market"):
                 metadata["market"] = market
-            
-            # Compute metrics
-            row = compute_screener_row(
-                ticker=ticker,
-                daily_df=daily_df,
-                tech_df=tech_df,
-                fundamentals=fundamentals,
-                metadata=metadata,
+            return compute_screener_row(
+                ticker=ticker, daily_df=daily_df, tech_df=tech_df,
+                fundamentals=fundamentals, metadata=metadata,
             )
-            
-            rows.append(row)
-            
-            if (i + 1) % 50 == 0:
-                logger.info(f"Processed {i + 1}/{len(tickers)} tickers")
-        
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             logger.error(f"Failed to process {ticker}: {e}")
-            continue
-    
+            return None
+
+    rows: List[Dict[str, Any]] = []
+    completed = 0
+    with concurrent.futures.ThreadPoolExecutor(max_workers=16) as executor:
+        futures = {executor.submit(process_ticker, tm): tm for tm in tickers}
+        for future in concurrent.futures.as_completed(futures):
+            completed += 1
+            try:
+                row = future.result()
+                if row:
+                    rows.append(row)
+            except Exception as e:  # noqa: BLE001
+                logger.error(f"Future failed: {e}")
+            if completed % 100 == 0:
+                logger.info(f"Processed {completed}/{len(tickers)} tickers")
+
     logger.info(f"Computed metrics for {len(rows)} tickers")
     
     if not rows:
