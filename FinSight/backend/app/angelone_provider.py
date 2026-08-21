@@ -188,56 +188,39 @@ _instrument_lock = threading.Lock()
 
 
 def _load_instrument_master() -> Optional[List[Dict]]:
-    """Fetches Angel One's public instrument master (no auth needed -
-    static file, updated daily by Angel One). Cached in-process with a
-    TTL; also cached to R2 so a fresh process doesn't need to
-    re-download this (several MB, tens of thousands of instruments) on
-    every cold start."""
-    import requests
+    """Reads the pre-filtered instrument master from R2
+    (angelone/instrument_master_filtered.json - NSE/BSE equities +
+    NIFTY/BANKNIFTY F&O, see refresh_angelone_instruments.py).
 
+    Deliberately NOT a live download of Angel One's full ~37MB file
+    here: that download is genuinely unreliable (confirmed via repeated
+    IncompleteRead failures on two different networks, including
+    Render's own), and a live API request can't reasonably wait out
+    that flakiness. refresh_angelone_instruments.py handles the real
+    download on a schedule with a generous retry budget; this just
+    reads the small, already-filtered result."""
     with _instrument_lock:
         if _instrument_cache["data"] is not None and _instrument_cache["at"]:
             age_hours = (datetime.utcnow() - _instrument_cache["at"]).total_seconds() / 3600
-            if age_hours < INSTRUMENT_MASTER_TTL_HOURS if (INSTRUMENT_MASTER_TTL_HOURS := INSTRUMENT_CACHE_TTL_HOURS) else True:
+            if age_hours < INSTRUMENT_CACHE_TTL_HOURS:
                 return _instrument_cache["data"]
 
-        # Try R2 first (fast, cheap) before hitting Angel One's file directly.
         data = None
         try:
             from app.storage.r2_client import get_r2_client
-            cached = get_r2_client().get_json("angelone/instrument_master.json")
-            if cached and cached.get("_cached_at"):
-                cached_at = datetime.fromisoformat(cached["_cached_at"])
-                if (datetime.utcnow() - cached_at).total_seconds() / 3600 < INSTRUMENT_CACHE_TTL_HOURS:
-                    data = cached.get("instruments")
+            cached = get_r2_client().get_json("angelone/instrument_master_filtered.json")
+            if cached:
+                data = cached.get("instruments")
         except Exception as e:  # noqa: BLE001
-            logger.debug("Instrument master R2 cache read failed: %s", e)
+            logger.warning("Instrument master R2 read failed: %s", e)
 
         if data is None:
-            # ~37MB file - large downloads over an unreliable connection can
-            # drop mid-transfer (confirmed during dev: IncompleteRead at
-            # ~250KB of 37MB on this session's dev machine). Retry a few
-            # times before giving up; Render's network should be far more
-            # reliable than that, but this costs nothing either way.
-            for attempt in range(3):
-                try:
-                    resp = requests.get(INSTRUMENT_MASTER_URL, timeout=120)
-                    resp.raise_for_status()
-                    data = resp.json()
-                    break
-                except Exception as e:  # noqa: BLE001
-                    logger.warning("Instrument master fetch attempt %d failed: %s", attempt + 1, e)
-                    time.sleep(2 * (attempt + 1))
-            if data is None:
-                return _instrument_cache["data"]  # stale data beats none, if we have any
-            try:
-                from app.storage.r2_client import get_r2_client
-                get_r2_client().put_json("angelone/instrument_master.json", {
-                    "_cached_at": datetime.utcnow().isoformat(),
-                    "instruments": data,
-                })
-            except Exception as e:  # noqa: BLE001
-                logger.debug("Instrument master R2 cache write failed (non-fatal): %s", e)
+            logger.warning(
+                "No instrument master available in R2 yet - run "
+                "scripts/refresh_angelone_instruments.py at least once. "
+                "AngelOne LTP/candle/depth lookups will fall back to yFinance until then."
+            )
+            return _instrument_cache["data"]  # stale data beats none, if we have any
 
         _instrument_cache["data"] = data
         _instrument_cache["at"] = datetime.utcnow()
