@@ -45,6 +45,17 @@ BUNDLE_DIRS = [
     "data/alpha_tracking",
 ]
 
+# Individual files (not whole dirs) that belong in the same bundle for the
+# same reason - small, gitignored, read eagerly. screener.parquet added
+# 2026-08-21: /api/screener came back empty (India especially - it's later
+# in ticker order than the incomplete-snapshot 80% fallback would tolerate)
+# because this file was never migrated anywhere, so the backend fell back
+# to building it from 2,298 individual per-ticker files - up to ~9,000
+# individual R2 GETs, which is far too slow to ever actually complete.
+BUNDLE_FILES = [
+    "data/screener.parquet",
+]
+
 
 def _load_env_file():
     env_path = Path(__file__).resolve().parent.parent / ".env"
@@ -78,6 +89,15 @@ def main():
                     count += 1
             log.info("Added %d files from %s", count, rel_dir)
             total_files += count
+
+        for rel_file in BUNDLE_FILES:
+            src = FINSIGHT_ROOT / rel_file
+            if not src.exists():
+                log.warning("Skipping missing file: %s", src)
+                continue
+            zf.write(src, rel_file)
+            log.info("Added file %s", rel_file)
+            total_files += 1
 
     if total_files == 0:
         log.error("No files found to bundle - refusing to upload an empty bundle")
