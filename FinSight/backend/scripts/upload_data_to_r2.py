@@ -9,9 +9,17 @@ Safety guarantees, per instruction:
   - Resumable: a small state file tracks which local files have already
     been uploaded (by path + mtime + size), so re-running after an
     interruption only uploads what changed, not everything again.
-  - Sequential, not parallel: on this machine's RAM budget, a
-    multi-threaded bulk copy is exactly what caused a crash earlier this
-    session. One file at a time, deliberately slower but safe.
+  - Bounded parallelism (UPLOAD_WORKERS, default 16): sequential uploads
+    of ~13k small files at ~1 file/sec took 2.5-3.5h alone, blowing past
+    the daily-refresh workflow's 4h job cap and leaving screener/
+    intelligence (which `needs: market-data`) never running at all -
+    root-caused 2026-08-21 from a run that hung mid-upload for hours.
+    The earlier "sequential, one file at a time" design was deliberately
+    conservative because a multi-threaded bulk copy crashed a local dev
+    machine's RAM budget once - but this runs on GitHub Actions' 7GB
+    ephemeral runners uploading small files over the network (I/O bound,
+    not memory bound), a different environment than the one that crashed.
+    A modest thread pool is safe here and turns hours into minutes.
   - Live cost guard: checks actual bucket size against R2 (not a local
     estimate) every N files, and stops immediately - before uploading
     anything that would push past the 10GB free tier - rather than
@@ -46,6 +54,7 @@ PER_FILE_TIMEOUT_SECONDS = 30  # seen actual hangs this session with no timeout 
 # might land in the same bucket later.
 SAFETY_CAP_BYTES = 9 * 1024 * 1024 * 1024  # 9GB, 1GB of margin under the 10GB free tier
 CHECK_SIZE_EVERY = 200  # files
+UPLOAD_WORKERS = int(os.environ.get("UPLOAD_WORKERS", "16"))
 
 
 def _load_env_file():
@@ -130,62 +139,81 @@ def main():
 
     uploaded_count = 0
     uploaded_bytes_this_run = 0
+    checked_count = 0  # separate counter for the size-check cadence, since completion order isn't sequential anymore
     start = time.time()
+    stop_requested = False
 
-    for i, (market, ticker, f, rel, fp) in enumerate(to_upload):
-        # Live cost guard: check actual bucket size periodically, not a
-        # local estimate - stop before crossing the free-tier cap.
-        if i % CHECK_SIZE_EVERY == 0:
+    # Bounded worker pool, reused across the whole run (not one pool per
+    # file - that was fine at 1 worker but wasteful/pointless at scale).
+    # Each submitted job still gets its own hard per-file timeout via
+    # future.result(timeout=...), preserving the "stuck disk read"
+    # protection the original design had.
+    pool = ThreadPoolExecutor(max_workers=UPLOAD_WORKERS)
+    try:
+        pending = {}
+        upload_iter = iter(to_upload)
+
+        def _submit_next():
+            item = next(upload_iter, None)
+            if item is None:
+                return False
+            market, ticker, f, rel, fp = item
+            key = ticker_data_key(market, ticker, f.name)
+            fut = pool.submit(client.put_file, key, f)
+            pending[fut] = item
+            return True
+
+        # Prime the pool up to UPLOAD_WORKERS in-flight uploads.
+        for _ in range(UPLOAD_WORKERS):
+            if not _submit_next():
+                break
+
+        while pending and not stop_requested:
+            # Wait for the oldest-submitted future with a hard deadline -
+            # if it's stuck, log it as a per-file timeout and move on
+            # rather than blocking the whole run.
+            fut = next(iter(pending))
+            item = pending.pop(fut)
+            market, ticker, f, rel, fp = item
             try:
-                current_size = client.approx_bucket_size_bytes()
+                fut.result(timeout=PER_FILE_TIMEOUT_SECONDS)
+                uploaded[rel] = fp
+                uploaded_count += 1
+                uploaded_bytes_this_run += f.stat().st_size
+            except FuturesTimeout:
+                log.warning("Upload TIMED OUT for %s after %ds - likely a stuck disk read, skipping (will retry next run)", rel, PER_FILE_TIMEOUT_SECONDS)
             except Exception as e:
-                log.warning("Could not check bucket size (%s) - continuing cautiously", e)
-                current_size = 0
-            if current_size >= SAFETY_CAP_BYTES:
-                log.error(
-                    "STOPPING: bucket is at %.2f GB, safety cap is %.2f GB. "
-                    "Nothing further uploaded this run - no risk of exceeding the free tier.",
-                    current_size / 1e9, SAFETY_CAP_BYTES / 1e9,
+                log.warning("Upload failed for %s: %s (will retry next run)", rel, e)
+
+            checked_count += 1
+            if checked_count % CHECK_SIZE_EVERY == 0:
+                try:
+                    current_size = client.approx_bucket_size_bytes()
+                except Exception as e:
+                    log.warning("Could not check bucket size (%s) - continuing cautiously", e)
+                    current_size = 0
+                if current_size >= SAFETY_CAP_BYTES:
+                    log.error(
+                        "STOPPING: bucket is at %.2f GB, safety cap is %.2f GB. "
+                        "No further uploads submitted this run - in-flight ones still finish, no risk of exceeding the free tier.",
+                        current_size / 1e9, SAFETY_CAP_BYTES / 1e9,
+                    )
+                    stop_requested = True
+                else:
+                    log.info("Bucket size check: %.2f GB (cap %.2f GB)", current_size / 1e9, SAFETY_CAP_BYTES / 1e9)
+
+            if uploaded_count % 50 == 0 and uploaded_count > 0:
+                elapsed = time.time() - start
+                log.info(
+                    "Progress: %d/%d uploaded (%.1f MB), %.1fs elapsed",
+                    uploaded_count, len(to_upload), uploaded_bytes_this_run / 1e6, elapsed,
                 )
-                save_state({"uploaded": uploaded})
-                return 1
-            log.info("Bucket size check: %.2f GB (cap %.2f GB)", current_size / 1e9, SAFETY_CAP_BYTES / 1e9)
+                save_state({"uploaded": uploaded})  # checkpoint periodically, not just at the end
 
-        key = ticker_data_key(market, ticker, f.name)
-        try:
-            # Hard per-file timeout, not just boto3's socket_timeout. The
-            # actual hangs seen in this run had CPU and network activity
-            # both flatline mid-file - almost certainly a stuck local disk
-            # read (this external drive), not a network stall, so a socket
-            # timeout alone never fired. A thread with a real deadline
-            # is what lets the script self-recover instead of needing a
-            # human to notice and kill it.
-            # Not a `with` block deliberately: __exit__ would call
-            # shutdown(wait=True) and block on the same stuck thread we're
-            # trying to time out on. Let it leak on timeout instead - a
-            # rare, small cost versus the alternative of the timeout never
-            # actually firing.
-            pool = ThreadPoolExecutor(max_workers=1)
-            future = pool.submit(client.put_file, key, f)
-            future.result(timeout=PER_FILE_TIMEOUT_SECONDS)
-            pool.shutdown(wait=False)
-            uploaded[rel] = fp
-            uploaded_count += 1
-            uploaded_bytes_this_run += f.stat().st_size
-        except FuturesTimeout:
-            log.warning("Upload TIMED OUT for %s after %ds - likely a stuck disk read, skipping (will retry next run)", rel, PER_FILE_TIMEOUT_SECONDS)
-            continue
-        except Exception as e:
-            log.warning("Upload failed for %s: %s (will retry next run)", rel, e)
-            continue
-
-        if uploaded_count % 50 == 0:
-            elapsed = time.time() - start
-            log.info(
-                "Progress: %d/%d uploaded (%.1f MB), %.1fs elapsed",
-                uploaded_count, len(to_upload), uploaded_bytes_this_run / 1e6, elapsed,
-            )
-            save_state({"uploaded": uploaded})  # checkpoint periodically, not just at the end
+            if not stop_requested:
+                _submit_next()  # keep the pool full
+    finally:
+        pool.shutdown(wait=False, cancel_futures=True)
 
     save_state({"uploaded": uploaded})
     log.info(

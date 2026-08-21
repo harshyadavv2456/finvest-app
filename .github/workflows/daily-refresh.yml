@@ -38,7 +38,7 @@ env:
 jobs:
   market-data:
     runs-on: ubuntu-latest
-    timeout-minutes: 240
+    timeout-minutes: 300  # was 240; the R2 upload parallelism fix should make this generous margin, not a requirement
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
