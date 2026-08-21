@@ -22,6 +22,7 @@ MARKET-LEVEL DATA:
 """
 
 import logging
+import os
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Any
 from dataclasses import dataclass, field
@@ -420,12 +421,26 @@ def validate_startup() -> bool:
     logger.info("=" * 60)
     
     errors = []
-    
-    # Check data directories
+    r2_configured = bool(os.environ.get("R2_ACCESS_KEY_ID"))
+
+    # Check data directories. On a fresh CI checkout with R2 configured,
+    # FinSight/data/{market}/ genuinely doesn't exist yet - it's
+    # gitignored and self-heals per-ticker on first access (see
+    # utils/paths.py), the same architecture every other endpoint in
+    # this app already relies on. This check predates that migration
+    # and was still treating a missing directory as a hard failure,
+    # which made the intelligence job fail its startup gate on every
+    # single CI run - it never had a local checkout with pre-existing
+    # data to begin with. Only enforce this strictly when R2 isn't
+    # configured (i.e. genuinely local dev with no self-heal available).
     for market in ['US', 'IN']:
         market_dir = DATA_DIR / market
         if not market_dir.exists():
-            errors.append(f"Data directory missing: {market_dir}")
+            if r2_configured:
+                logger.info(f"[STARTUP] {market} data directory not present locally yet - R2 configured, will self-heal per-ticker on demand")
+                market_dir.mkdir(parents=True, exist_ok=True)
+            else:
+                errors.append(f"Data directory missing: {market_dir}")
         else:
             stock_count = len([d for d in market_dir.iterdir() if d.is_dir()])
             logger.info(f"[STARTUP] {market} data directory: {stock_count} stocks")
