@@ -636,6 +636,8 @@ export default function ScreenerTable() {
               <option value="JP">Japan</option>
               <option value="CN">China</option>
               <option value="SG">Singapore</option>
+              <option value="HK">Hong Kong</option>
+              <option value="AU">Australia</option>
             </select>
           </div>
           <div>
