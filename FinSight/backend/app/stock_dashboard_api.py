@@ -98,15 +98,24 @@ async def get_stock_dashboard(ticker: str, market: Optional[str] = None):
     if daily_df is not None and not daily_df.empty:
         close_col = "Adj Close" if "Adj Close" in daily_df.columns else "Close"
         if close_col in daily_df.columns:
-            prices = daily_df[close_col]
-            current = float(prices.iloc[-1])
+            # Drop trailing NaN rows before reading "current" - a freshly
+            # fetched daily file can have its most recent row incomplete
+            # (e.g. a still-in-progress market session, or a pipeline
+            # write that landed mid-update). .tail(N).mean()/.max() below
+            # silently skip NaNs and looked fine; .iloc[-1] on the raw
+            # series did not, which is why "current"/"change_1d" came back
+            # null while sma20/50/200 and 52w high/low were real numbers -
+            # confirmed live on RELIANCE.NS right after today's market-data
+            # pipeline run. Real bug, not a frontend issue.
+            prices = daily_df[close_col].dropna()
+            current = float(prices.iloc[-1]) if len(prices) > 0 else None
             price_summary = {
                 "current": current,
                 "change_1d": float(prices.iloc[-1] - prices.iloc[-2]) if len(prices) > 1 else 0,
                 "change_1d_pct": float((prices.iloc[-1] / prices.iloc[-2] - 1) * 100) if len(prices) > 1 else 0,
-                "high_52w": float(prices.tail(252).max()) if len(prices) >= 252 else float(prices.max()),
-                "low_52w": float(prices.tail(252).min()) if len(prices) >= 252 else float(prices.min()),
-                "sma20": float(prices.tail(20).mean()),
+                "high_52w": float(prices.tail(252).max()) if len(prices) >= 252 else float(prices.max()) if len(prices) > 0 else None,
+                "low_52w": float(prices.tail(252).min()) if len(prices) >= 252 else float(prices.min()) if len(prices) > 0 else None,
+                "sma20": float(prices.tail(20).mean()) if len(prices) > 0 else None,
                 "sma50": float(prices.tail(50).mean()) if len(prices) >= 50 else None,
                 "sma200": float(prices.tail(200).mean()) if len(prices) >= 200 else None,
             }

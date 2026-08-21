@@ -130,9 +130,19 @@ def compute_screener_row(
     
     # Price & Size
     if not daily_df.empty:
-        # Use Adj Close for price calculations
+        # Use Adj Close for price calculations. Drop trailing NaN rows before
+        # reading "current" - a freshly-fetched daily file can have its most
+        # recent row incomplete (still-in-progress market session, or a
+        # pipeline write that landed mid-update). `.tail(N).mean()`/`.max()`
+        # elsewhere silently skip NaNs and look fine; `.iloc[-1]` on the raw
+        # series does not - confirmed live (RELIANCE.NS showed sma20/50/200
+        # and 52w high/low as real numbers but current_price/ret_1d as null,
+        # right after a fresh market-data pipeline run). Real, systemic bug -
+        # every return window and 52w-high/low-vs-current calc below shared
+        # the same raw series, so this one `.dropna()` fixes all of them.
         price_col = "Adj Close" if "Adj Close" in daily_df.columns else "Close"
-        current_price = float(daily_df[price_col].iloc[-1]) if len(daily_df) > 0 else None
+        clean_prices = daily_df[price_col].dropna()
+        current_price = float(clean_prices.iloc[-1]) if len(clean_prices) > 0 else None
         result["current_price"] = current_price
         
         # Volume metrics
@@ -162,10 +172,10 @@ def compute_screener_row(
             result["avg_volume_60d"] = None
             result["volume_spike_20d"] = None
         
-        # Returns (using Adj Close)
-        if len(daily_df) >= 2:
-            prices = daily_df[price_col]
-            
+        # Returns (using Adj Close, NaN-tail-safe series from above)
+        if len(clean_prices) >= 2:
+            prices = clean_prices
+
             # 1 day return
             if len(prices) >= 2:
                 result["ret_1d"] = float((prices.iloc[-1] / prices.iloc[-2] - 1) * 100)
