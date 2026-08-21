@@ -58,7 +58,7 @@ def _index_quotes_sync() -> Dict[str, Any]:
         try:
             import yfinance as yf
             sym = "^NSEI" if index == "NIFTY" else "^NSEBANK"
-            hist = yf.Ticker(sym).history(period="2d")
+            hist = yf.Ticker(sym).history(period="2d", timeout=10)
             if hist is None or hist.empty:
                 return None
             last = hist.iloc[-1]
@@ -166,7 +166,7 @@ def _correlation_matrix_sync(window_days: int) -> Dict[str, Any]:
             # this codebase already falls back to yfinance.
             try:
                 import yfinance as yf
-                hist = yf.Ticker(ticker).history(period="6mo")
+                hist = yf.Ticker(ticker).history(period="6mo", timeout=10)
                 if hist is not None and not hist.empty and "Close" in hist.columns:
                     closes[label] = hist["Close"].tail(window_days)
                     continue
