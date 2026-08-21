@@ -35,8 +35,9 @@ Legend: `[x]` done + verified live · `[~]` in progress · `[ ]` not started
 - [x] D4/D5 widened to the FULL F&O universe (64 symbols: 4 indices + 60 stocks) — not limited to NIFTY/BANKNIFTY, per explicit instruction
 - [x] D5: `/api/stratax/data-status` reflects real AngelOne health
 - [ ] D5 remainder: retire/archive `nse_fetcher.py` (deliberately deferred — CSV still the safety-net fallback, not actively harmful to leave)
-- [~] **"All real-time Indian-market data should come from AngelOne"** (explicit follow-up instruction) — StrataX option chain: done. Still needed: wire AngelOne LTP as the primary live-price source for the main ticker/screener/dashboard IN-market data paths (currently those still run on yFinance/daily snapshots, not AngelOne real-time)
-- [ ] **"Sensibull level, top it"** (explicit follow-up instruction) — pro-level options analytics not yet built: Max Pain, PCR (Put-Call Ratio), OI change tracking (needs a snapshot-over-time mechanism), IV skew/smile view, strategy payoff chart quality bar, straddle/strangle pricing helpers
+- [x] StrataX widened to the FULL F&O universe (64 symbols) - verified live for both NIFTY (index) and RELIANCE (stock)
+- [x] **"Sensibull level, top it"** — Max Pain, PCR (OI), ATM straddle price, resistance/support strikes, OI-change tracking (R2 snapshot-diff), total call/put OI+volume - all shipped, verified live in the actual browser at finvest.fintaxlife.com/stratax with real numbers (Max Pain 24250, PCR 1.05, ATM Straddle 162.55, Resistance 24300)
+- [~] **"All real-time Indian-market data should come from AngelOne"** — StrataX: done (option chain + analytics). Still needed: wire AngelOne LTP as the primary live-price source for the main ticker/screener/dashboard IN-market data paths (currently those still run on yFinance/daily snapshots, not AngelOne real-time) - this is the next item being worked
 - [ ] Market depth (D2 already exposes it) not yet surfaced anywhere in the UI
 - [ ] WebSocket streaming — deliberately not built (no concrete latency need yet, per the spec's own instruction not to add it speculatively)
 
