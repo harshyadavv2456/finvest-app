@@ -8,7 +8,7 @@ from typing import List
 from pathlib import Path
 from fastapi import APIRouter, HTTPException, Query, Body
 from fastapi.concurrency import run_in_threadpool
-from app.stratax.schemas import OptionChainResponse, StrataXOptionRow, PaperTrade
+from app.stratax.schemas import OptionChainResponse, StrataXOptionRow, PaperTrade, ChainAnalytics
 from app.stratax.csv_data_provider import (
     get_option_chain_from_csv,
     get_available_symbols_from_csv,
@@ -24,6 +24,28 @@ router = APIRouter(prefix="/api/stratax", tags=["stratax"])
 
 # Paper trades storage (file-based for v1, can be migrated to DB later)
 PAPER_TRADES_FILE = Path(__file__).parent.parent.parent / "data" / "stratax_paper_trades.json"
+
+
+async def _fetch_chain_rows(symbol_upper: str) -> tuple[list, str]:
+    """AngelOne first for every symbol (the full F&O universe, not a
+    hardcoded whitelist), CSV as a pure fallback. Shared by the
+    option-chain and analytics endpoints so both agree on source
+    selection instead of duplicating the fallback logic."""
+    rows: list = []
+    source = "csv"
+    try:
+        from app.angelone_option_chain import get_option_chain
+        rows = await run_in_threadpool(get_option_chain, symbol_upper)
+        if rows:
+            source = "angelone"
+    except Exception as e:  # noqa: BLE001
+        logger.warning(f"AngelOne option chain failed for {symbol_upper}, falling back to CSV: {e}")
+
+    if not rows:
+        rows = get_option_chain_from_csv(symbol_upper)
+        source = "csv"
+
+    return rows, source
 
 
 @router.get("/option-chain", response_model=OptionChainResponse)
@@ -45,19 +67,7 @@ async def get_option_chain_endpoint(
     symbol_upper = symbol.upper()
 
     try:
-        rows = []
-        source = "csv"
-        try:
-            from app.angelone_option_chain import get_option_chain
-            rows = await run_in_threadpool(get_option_chain, symbol_upper)
-            if rows:
-                source = "angelone"
-        except Exception as e:  # noqa: BLE001
-            logger.warning(f"AngelOne option chain failed for {symbol_upper}, falling back to CSV: {e}")
-
-        if not rows:
-            rows = get_option_chain_from_csv(symbol_upper)
-            source = "csv"
+        rows, source = await _fetch_chain_rows(symbol_upper)
 
         if not rows:
             raise HTTPException(
@@ -79,6 +89,31 @@ async def get_option_chain_endpoint(
             status_code=500,
             detail=f"Error fetching option chain: {str(e)}"
         )
+
+
+@router.get("/analytics", response_model=ChainAnalytics)
+async def get_chain_analytics(
+    symbol: str = Query(..., description="Symbol (e.g., NIFTY, BANKNIFTY, RELIANCE)"),
+):
+    """
+    Sensibull-style option chain summary: Max Pain, Put-Call Ratio (OI),
+    ATM straddle price, total call/put OI and volume, and the
+    highest-OI strikes read as implied support/resistance. Computed
+    purely from the same reconstructed chain (AngelOne first, CSV
+    fallback) - no separate data source, no invented numbers.
+    """
+    symbol_upper = symbol.upper()
+    try:
+        rows, _source = await _fetch_chain_rows(symbol_upper)
+        if not rows:
+            return ChainAnalytics(available=False)
+
+        from app.angelone_option_chain import compute_chain_analytics
+        analytics = compute_chain_analytics(rows)
+        return ChainAnalytics(**analytics)
+    except Exception as e:
+        logger.error(f"Error computing chain analytics for {symbol_upper}: {e}", exc_info=True)
+        return ChainAnalytics(available=False)
 
 
 @router.get("/underlyings")

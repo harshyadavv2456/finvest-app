@@ -77,3 +77,20 @@ class PaperTrade(BaseModel):
     current_pnl: Optional[float] = None
     notes: Optional[str] = None
 
+
+
+class ChainAnalytics(BaseModel):
+    """Sensibull-style option chain summary metrics - Workstream D
+    "pro level" analytics, computed purely from real OI/LTP already in
+    the chain, no invented numbers."""
+    available: bool
+    spot: Optional[float] = None
+    max_pain: Optional[float] = None
+    pcr_oi: Optional[float] = None
+    atm_straddle_price: Optional[float] = None
+    total_call_oi: Optional[int] = None
+    total_put_oi: Optional[int] = None
+    total_call_volume: Optional[int] = None
+    total_put_volume: Optional[int] = None
+    resistance_strike: Optional[float] = None
+    support_strike: Optional[float] = None
