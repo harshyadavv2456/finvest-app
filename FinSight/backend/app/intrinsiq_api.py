@@ -1054,7 +1054,14 @@ RULES:
                 },
             )
             if resp.status_code == 200:
-                return resp.json()["choices"][0]["message"]["content"]
+                result = resp.json()
+                try:
+                    from app.groq_usage_tracker import track_groq_call
+                    usage = result.get("usage", {})
+                    track_groq_call("intrinsiq_api", prompt_tokens=usage.get("prompt_tokens"), completion_tokens=usage.get("completion_tokens"))
+                except Exception:  # noqa: BLE001
+                    pass
+                return result["choices"][0]["message"]["content"]
     except Exception as e:
         logger.warning(f"Narrative generation failed: {e}")
 

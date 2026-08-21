@@ -89,7 +89,12 @@ Be concise, professional, and data-driven. Focus on actionable insights."""
         )
         
         analysis_text = chat_completion.choices[0].message.content
-        
+        try:
+            from app.groq_usage_tracker import track_groq_call
+            track_groq_call("stratax_ai_analyzer.analyze_option_chain", response=chat_completion)
+        except Exception:  # noqa: BLE001
+            pass
+
         return {
             "symbol": symbol,
             "spot_price": spot_price,
@@ -172,7 +177,12 @@ Be specific, practical, and actionable."""
         )
         
         analysis_text = chat_completion.choices[0].message.content
-        
+        try:
+            from app.groq_usage_tracker import track_groq_call
+            track_groq_call("stratax_ai_analyzer.analyze_strategy", response=chat_completion)
+        except Exception:  # noqa: BLE001
+            pass
+
         return {
             "strategy_type": strategy_data.get('strategy_type', 'Custom'),
             "analysis": analysis_text,

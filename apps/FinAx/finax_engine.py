@@ -154,6 +154,16 @@ TEXT:
             max_tokens=120
         )
 
+        try:
+            import sys
+            _backend_dir = os.path.join(BASE_DIR, "..", "..", "FinSight", "backend")
+            if _backend_dir not in sys.path:
+                sys.path.insert(0, _backend_dir)
+            from app.groq_usage_tracker import track_groq_call
+            track_groq_call("finax_engine", response=r)
+        except Exception:  # noqa: BLE001 - FinAx may run standalone, outside the FinSight backend env entirely
+            pass
+
         refined = r.choices[0].message.content.strip()
 
         if quality_gate(refined) and event_gate(refined):

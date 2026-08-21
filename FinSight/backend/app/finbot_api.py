@@ -199,6 +199,12 @@ async def call_groq(messages: List[Dict], temperature: float = 0.3) -> str:
                     
                     if response.status_code == 200:
                         result = response.json()
+                        try:
+                            from app.groq_usage_tracker import track_groq_call
+                            usage = result.get("usage", {})
+                            track_groq_call("finbot_api", prompt_tokens=usage.get("prompt_tokens"), completion_tokens=usage.get("completion_tokens"))
+                        except Exception:  # noqa: BLE001 - tracking must never break the actual AI call
+                            pass
                         return result["choices"][0]["message"]["content"]
                     elif response.status_code == 429:
                         logger.warning(f"Rate limited on {model}, trying next key...")
