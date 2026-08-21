@@ -43,6 +43,8 @@ signal source). Wiring macro_context into the regime engine as an
 actual strictness modifier (matching PM regime's role) is a follow-up,
 not done in this file.
 """
+import csv
+import io
 import json
 import logging
 import os
@@ -216,6 +218,79 @@ def fetch_firms_activity() -> Dict[str, Any]:
         return {"available": False, "reason": str(e)}
 
 
+def fetch_firms_points(max_points: int = 800) -> Dict[str, Any]:
+    """Individual fire-detection points for map display - fetch_firms_activity()
+    above only ever kept the count, discarding lat/lon. The raw world feed
+    is 70k+ rows/day (too many to render), so this keeps only 'nominal'/
+    'high' confidence detections, ranks by FRP (fire radiative power - the
+    actual intensity signal, not just detection count) and caps at
+    max_points. Separate from fetch_firms_activity's own cache - this is
+    for the map page, refreshed on its own shorter cadence."""
+    map_key = os.environ.get("FIRMS_MAP_KEY")
+    if not map_key:
+        return {"available": False, "reason": "FIRMS_MAP_KEY not set", "points": []}
+    try:
+        resp = requests.get(
+            f"https://firms.modaps.eosdis.nasa.gov/api/area/csv/{map_key}/VIIRS_SNPP_NRT/world/1",
+            timeout=20,
+        )
+        resp.raise_for_status()
+        reader = csv.DictReader(io.StringIO(resp.text))
+        points = []
+        for row in reader:
+            if row.get("confidence") not in ("n", "h"):
+                continue
+            try:
+                points.append({
+                    "lat": float(row["latitude"]),
+                    "lon": float(row["longitude"]),
+                    "frp": float(row.get("frp") or 0),
+                    "confidence": row.get("confidence"),
+                })
+            except (ValueError, KeyError):
+                continue
+        points.sort(key=lambda p: p["frp"], reverse=True)
+        return {
+            "available": True,
+            "source": "NASA FIRMS",
+            "total_detections_24h": len(points),
+            "points": points[:max_points],
+        }
+    except Exception as e:  # noqa: BLE001
+        logger.warning("FIRMS points fetch failed: %s", e)
+        return {"available": False, "reason": str(e), "points": []}
+
+
+def fetch_usgs_earthquake_points() -> Dict[str, Any]:
+    """Individual earthquake points (M2.5+, last 7 days - the 'all' feed
+    at that magnitude, wider coverage than the significant-only summary
+    fetch_usgs_earthquakes() uses) for map display."""
+    try:
+        resp = requests.get(
+            "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojson",
+            timeout=15,
+        )
+        resp.raise_for_status()
+        features = resp.json().get("features", [])
+        points = []
+        for f in features:
+            coords = f.get("geometry", {}).get("coordinates")
+            props = f.get("properties", {})
+            if not coords or len(coords) < 2:
+                continue
+            points.append({
+                "lat": coords[1],
+                "lon": coords[0],
+                "mag": props.get("mag"),
+                "place": props.get("place"),
+                "time": props.get("time"),
+            })
+        return {"available": True, "source": "USGS", "points": points}
+    except Exception as e:  # noqa: BLE001
+        logger.warning("USGS points fetch failed: %s", e)
+        return {"available": False, "reason": str(e), "points": []}
+
+
 def fetch_usgs_earthquakes() -> Dict[str, Any]:
     """USGS significant-earthquake feed, last 7 days. No key required."""
     try:
@@ -352,6 +427,51 @@ def _synthesize_summary(us: Dict, india: Dict, physical: Dict) -> str:
     if not parts:
         return "Macro context unavailable - no data sources configured or reachable."
     return " ".join(parts)
+
+
+MAP_CACHE_KEY = "macro/map_points.json"
+MAP_CACHE_TTL_HOURS = 1  # points refresh more often than the 6h macro summary - they're the actual "live map" feature
+
+
+def compute_map_context(force_refresh: bool = False) -> Dict[str, Any]:
+    """FIRMS fire points + USGS earthquake points for the Macro Intel map
+    page. Separate cache from compute_macro_context - shorter TTL since
+    a map that never visibly updates isn't much of a live map, and
+    keeping it independent means a slow point-fetch never adds latency
+    to the (already 5-source) main macro context call."""
+    _load_env_file()
+
+    if not force_refresh:
+        try:
+            from app.storage.r2_client import get_r2_client
+            cached = get_r2_client().get_json(MAP_CACHE_KEY)
+            if cached and cached.get("as_of"):
+                age_hours = (
+                    datetime.now(timezone.utc) - datetime.fromisoformat(cached["as_of"])
+                ).total_seconds() / 3600
+                if age_hours < MAP_CACHE_TTL_HOURS:
+                    cached["from_cache"] = True
+                    return cached
+        except Exception as e:  # noqa: BLE001
+            logger.debug("Map context cache read failed (will recompute): %s", e)
+
+    firms = fetch_firms_points()
+    usgs = fetch_usgs_earthquake_points()
+
+    context = {
+        "as_of": datetime.now(timezone.utc).isoformat(),
+        "from_cache": False,
+        "firms": firms,
+        "usgs": usgs,
+    }
+
+    try:
+        from app.storage.r2_client import get_r2_client
+        get_r2_client().put_json(MAP_CACHE_KEY, context)
+    except Exception as e:  # noqa: BLE001
+        logger.debug("Map context cache write failed (non-fatal): %s", e)
+
+    return context
 
 
 def compute_macro_context(force_refresh: bool = False) -> Dict[str, Any]:

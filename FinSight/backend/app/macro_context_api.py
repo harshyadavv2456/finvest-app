@@ -43,3 +43,21 @@ async def get_current_macro_context():
             "error": str(e),
             "summary": "Macro context unavailable.",
         }
+
+
+@router.get("/map")
+async def get_map_context():
+    """NASA FIRMS fire detections + USGS earthquakes as point arrays -
+    for the Macro Intel map page. Cached 1h (see compute_map_context),
+    separate from /current's 6h cache."""
+    try:
+        from macro_signals import compute_map_context
+        return await run_in_threadpool(compute_map_context)
+    except Exception as e:  # noqa: BLE001
+        logger.error("Map context fetch failed entirely: %s", e, exc_info=True)
+        return {
+            "as_of": None,
+            "firms": {"available": False, "points": []},
+            "usgs": {"available": False, "points": []},
+            "error": str(e),
+        }
