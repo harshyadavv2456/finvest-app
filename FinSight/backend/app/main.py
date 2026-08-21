@@ -62,6 +62,7 @@ from app import finbot_api
 from app import timeline_api
 from app import position_tracker_api
 from app import pm_regime_api
+from app import macro_context_api
 from app import intrinsiq_api
 from app import stock_dashboard_api
 from app import notifications_api
@@ -199,6 +200,7 @@ app.include_router(position_tracker_api.router)
 
 # PM Regime API - Precious Metals macro context
 app.include_router(pm_regime_api.router)
+app.include_router(macro_context_api.router)
 
 # IntrinsIQ API - AI Value Investor (internal data valuation)
 app.include_router(intrinsiq_api.router)

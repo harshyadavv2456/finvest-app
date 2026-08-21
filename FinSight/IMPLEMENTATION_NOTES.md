@@ -52,4 +52,26 @@ Classification key: **(a)** doesn't exist · **(b)** exists but stubbed/dead · 
 
 ---
 
-## Status: Phase 0 complete. Awaiting confirmation on priority order before starting Phase 1 implementation, per instruction.
+## Status update (2026-08-21, before this session): Phase 0 complete; Phase 1 (call-ID logging, live outcome scoring, live-vs-backtest divergence report) and part of Phase 4 (Groq usage tracking in `ai_analysis.py` only) shipped and verified live in a prior session, per `OVERNIGHT_STATUS.md`. Phases 2 and 3 not started. This section is being corrected rather than left stale, per this session's own instruction not to repeat that mistake.
+
+---
+
+## 2026-08-21 — Macro Overlay, StrataX Rebuild, UI, Full Hardening (this session)
+
+Six workstreams (A-F), user-specified priority order: A+F together, D, E, B, C throughout. Updating this file after every meaningful commit, not just at the end.
+
+### Workstream A + F — Macro/geopolitical overlay (in progress)
+
+**Shipped and verified live:**
+- `FinSight/quant_system/macro_signals.py` — new module. Sources: FRED (US yield curve 2Y/10Y spread, Fed funds rate, CPI index, unemployment), NASA FIRMS (active-fire count, physical-disruption proxy), USGS (significant earthquakes, no key needed), data.gov.in (India retail CPI-C — one confirmed resource ID), Mnemos 1.0's existing geopolitical/macro narrative (reused, not duplicated). Each source independently optional — verified locally with real keys: FRED/FIRMS/USGS all returned real live data; data.gov.in intermittently times out (government API, confirmed flaky via direct curl testing — sometimes <1s, sometimes 30s+) but degrades cleanly to `available: false` rather than blocking anything.
+- R2-backed cache, 6h TTL (`macro/context.json`), reusing the existing `app.storage.r2_client` pattern rather than a new local-file cache.
+- `FinSight/backend/app/macro_context_api.py` — new `/api/macro-context/current` endpoint, fail-open pattern matching `pm_regime_api.py`. Registered in `main.py`. Runs off the event loop (`run_in_threadpool`) since a cache-miss hits up to 5 external APIs.
+- ACLED explicitly not built, per the ground rules — FIRMS + USGS cover the physical-disruption-proxy role instead.
+- RBI DBIE explicitly not built this pass — confirmed no public API exists; would need a scheduled download-and-parse job against their CSV/Excel exports, tracked as an open gap in `fetch_rbi_dbie()`'s own docstring rather than silently skipped.
+
+**Known gap, needs a 10-minute manual step, not an engineering blocker:** only 1 of the 9 requested data.gov.in datasets (retail CPI) has a confirmed resource ID. WPI, IIP, GST collection, forex reserves, crude oil production, PLFS unemployment, fiscal deficit, and GDP growth all need their resource IDs looked up via data.gov.in's catalog search UI (the site 403s on scripted/automated search) and added to `DATA_GOV_IN_RESOURCES` in `macro_signals.py` — the fetch/cache/degrade code already handles any number of them via that one config dict, so each addition is a one-line change, not new code.
+
+**Not yet done:** A2's deeper integration (feeding `macro_context` into `layer2b_pm_regime_engine.py` as an actual strictness modifier, the way gold/silver already work) — deliberately sequenced after verifying the standalone module and API work correctly first, since threading new logic into the live decision engine's modifier chain is the higher-risk part of this workstream and deserves focused testing on its own, not a rushed add alongside six other new files. A3 (no-key graceful degradation for Groq-dependent features) — `ai_engine.py`/`finbot_api.py` already return a graceful "trouble connecting" message rather than erroring when a Groq call fails (verified working in this session's earlier live testing), so the no-key path already degrades acceptably; formal review of this specific requirement still pending.
+
+Secrets: `FRED_API_KEY`, `FINNHUB_API_KEY`, `FIRMS_MAP_KEY`, `DATA_GOV_IN_API_KEY` set on both Render (backend runtime) and GitHub Actions (daily-refresh workflow env). AngelOne credentials (Workstream D) also set on Render and in the local `.env`, deliberately *not* added to GitHub Actions yet — sequenced to land alongside D2's provider module once auth is verified working, not added speculatively ahead of the code that uses them.
+
