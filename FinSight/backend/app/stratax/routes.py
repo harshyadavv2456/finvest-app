@@ -173,15 +173,30 @@ async def delete_paper_trade(trade_id: str):
 @router.get("/data-status")
 async def get_data_status():
     """
-    Get current data source status including CSV file info.
+    Get current data source status - AngelOne (Workstream D) health plus
+    the CSV fallback's own file info, so an all-fallback state is
+    visible rather than silent (D5's own requirement - the same "don't
+    let a degraded state go unnoticed" discipline as
+    angelone_provider.py's health_status()).
     """
     from app.stratax.csv_data_provider import load_csv_data
+    from app.angelone_provider import health_status as angelone_health_status
+
     csv_data = load_csv_data()
     file_info = get_current_csv_file_info()
-    
+    angelone_status = angelone_health_status()
+    last_source = angelone_status.get("last_source_used", {})
+
     return {
-        "active_source": "csv",
-        "fallback_used_recently": False,
+        "active_source": last_source.get("source") or ("angelone" if angelone_status.get("session_active") else "csv"),
+        "angelone_configured": angelone_status.get("angelone_configured", False),
+        "angelone_session_active": angelone_status.get("session_active", False),
+        "last_source_used": last_source,
+        # Kept for backward compatibility with anything still reading the
+        # old field names - nse_available was always about the retired
+        # direct-scrape path, not AngelOne, so it stays false/None; the
+        # real signal now is angelone_session_active above.
+        "fallback_used_recently": last_source.get("source") == "csv",
         "last_successful_nse_fetch": None,
         "nse_available": False,
         "csv_rows_loaded": len(csv_data),
