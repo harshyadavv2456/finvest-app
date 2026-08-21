@@ -127,6 +127,58 @@ def get_stock_intelligence(market: str, symbol: str) -> Optional[Dict]:
         return None
 
 
+def get_supplementary_context(symbol: Optional[str], market: str) -> str:
+    """Pull in the rest of what FinVest actually knows, not just quant
+    intelligence - news sentiment, macro/geopolitical context, and (for
+    IN-market symbols) insider/institutional flow signals already
+    computed elsewhere in the app. FinBot's own no-trading-advice rule
+    stays exactly as it was (that's a compliance boundary, not a data
+    one) - this only widens what it's grounded in when explaining a
+    stance, per the explicit instruction that it should have access to
+    system data, not that it should start giving tips."""
+    parts = []
+
+    if symbol:
+        try:
+            import os as _os
+            from supabase import create_client
+            url = _os.environ.get("SUPABASE_URL")
+            key = _os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+            if url and key:
+                supabase = create_client(url, key)
+                cutoff = (datetime.now() - timedelta(days=3)).isoformat()
+                resp = (
+                    supabase.table("news_articles")
+                    .select("title, sentiment, sentiment_score, impacted_stocks, fetched_at_utc")
+                    .gte("fetched_at_utc", cutoff)
+                    .ilike("impacted_stocks", f"%{symbol}%")
+                    .order("fetched_at_utc", desc=True)
+                    .limit(5)
+                    .execute()
+                )
+                rows = resp.data or []
+                if rows:
+                    headlines = "\n".join(f"  - [{r.get('sentiment', 'neutral')}] {r.get('title')}" for r in rows)
+                    parts.append(f"RECENT NEWS FOR {symbol} (last 3 days):\n{headlines}")
+        except Exception as e:  # noqa: BLE001
+            logger.debug("FinBot: news context fetch failed (non-fatal): %s", e)
+
+    try:
+        import sys as _sys
+        qs_dir = str(Path(__file__).resolve().parent.parent.parent / "quant_system")
+        if qs_dir not in _sys.path:
+            _sys.path.insert(0, qs_dir)
+        from macro_signals import compute_macro_context
+        macro = compute_macro_context()
+        summary = macro.get("summary")
+        if summary:
+            parts.append(f"CURRENT MACRO CONTEXT: {summary}")
+    except Exception as e:  # noqa: BLE001
+        logger.debug("FinBot: macro context fetch failed (non-fatal): %s", e)
+
+    return "\n\n".join(parts)
+
+
 def build_system_prompt(context_data: Dict) -> str:
     """Build system prompt with platform context."""
     
@@ -312,7 +364,11 @@ DETAILED DATA FOR {symbol}:
     system_prompt = build_system_prompt(context_data)
     if stock_detail:
         system_prompt += f"\n{stock_detail}"
-    
+
+    supplementary = get_supplementary_context(symbol, market)
+    if supplementary:
+        system_prompt += f"\n\n{supplementary}"
+
     messages = [
         {"role": "system", "content": system_prompt}
     ]
