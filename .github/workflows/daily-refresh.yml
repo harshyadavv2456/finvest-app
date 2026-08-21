@@ -83,6 +83,8 @@ jobs:
   insider-flow:
     runs-on: ubuntu-latest
     timeout-minutes: 90  # matches the existing 90-min cap in daily_refresh2.py
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -92,10 +94,38 @@ jobs:
       - name: SEC Form 4 + 13F (incremental)
         working-directory: FinSight/InsiderFlow
         run: python run_finsight_pipeline.py --incremental --max-age-hours 24
+      - name: Commit updated signals_output
+        # Real bug found (2026-08-22): this job has never persisted its
+        # output anywhere since moving to GH Actions. signals_output/ is
+        # git-tracked (not gitignored, unlike data/) - a retired local
+        # orchestrator (daily_refresh2.py, referenced in this job's
+        # timeout comment) used to commit+push it after every run;
+        # that step never got carried over here. git history confirms:
+        # last real update to these files was 2026-08-17, days before
+        # this fix, despite this job running on schedule every night
+        # since - every run's output was silently discarded when its
+        # runner was destroyed. Pull-rebase-retry since insider-flow and
+        # fii-dii commit concurrently and can race for the same push.
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add FinSight/InsiderFlow/signals_output/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "data: automated insider-flow refresh $(date -u +%Y-%m-%d)"
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main && git push origin main && break
+              echo "Push attempt $i failed, retrying..."
+              sleep $((RANDOM % 10 + 5))
+            done
+          fi
 
   fii-dii:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -105,6 +135,24 @@ jobs:
       - name: FII/DII flows
         working-directory: "FinSight/Smart Money Flow"
         run: python fii_dii_pipeline.py
+      - name: Commit updated fii_dii_output
+        # Same real bug as insider-flow's commit step above - see that
+        # step for the full explanation. git history confirmed this
+        # job's output was last actually persisted 2026-08-15.
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "FinSight/Smart Money Flow/fii_dii_output/"
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "data: automated fii-dii refresh $(date -u +%Y-%m-%d)"
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main && git push origin main && break
+              echo "Push attempt $i failed, retrying..."
+              sleep $((RANDOM % 10 + 5))
+            done
+          fi
 
 
   indian-announcements:
