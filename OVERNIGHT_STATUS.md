@@ -18,6 +18,22 @@ You were right - the "site is live" claim below held for the two things I'd dire
 
 **Not fixed, flagged honestly:** StrataX's option chain is serving a Dec 2025 CSV snapshot (`nse_available: false` in `/api/stratax/data-status`) - the live NSE scrape is failing, most likely NSE blocking Render's cloud IP, a common issue scraping NSE from outside India. Not a regression from tonight's work; needs its own investigation (proxy, different data source, or accepting the staleness) whenever you want to look at it.
 
+## Why "only 615 stocks" and some pages felt stale/thin
+
+Checked `/api/coverage` directly: the intelligence pipeline's last successful run was **2026-08-19**, before this morning's fixes. `615` (US) / `853` (IN) is the actual scored universe from that run - a real number, not a bug, but it's a subset of the full 2,298-ticker raw-data manifest because not every ticker gets a full quant score (insufficient history, scoring failures, etc.) even when its raw price/fundamentals data exists. Same root cause as the daily-refresh failures (item 9 above): `market-data` and `fii-dii` were failing before I fixed `feedparser`/`nsepython`, so `intelligence` (which depends on both) never got to run and refresh this.
+
+**I manually triggered `daily-refresh.yml` to verify the fixes** - `fii-dii`, `insider-flow`, `indian-announcements` all passed. `market-data` was still running as I write this (crawling ~2,298 tickers via yfinance takes a long time - its own timeout is 4 hours, this is expected, not stuck). Once it and `intelligence` finish, `_top_opportunities.json` and every per-ticker snapshot should refresh to a current date and (likely) a larger scored universe - I can't promise a specific bigger number without knowing how many tickers actually pass the pipeline's own scoring bar, but the pipeline itself is unblocked now, running on a currently-correct universe, and every future scheduled 02:00 UTC run should keep it current going forward.
+
+**Individual stock pages ("many not loading")** - the specific bug I found and fixed was IntrinsIQ + the stock intelligence snapshot page both returning empty for any ticker outside whatever was already locally cached (same root cause as the screener fix, item 4/5 above - both are fixed now and verified live for GOOGL, AAPL, and Indian tickers like RELIANCE.NS). If you're still seeing a specific ticker fail after this, it's most likely one that genuinely isn't in this cycle's scored universe yet (see above) rather than the same bug recurring - tell me which ticker and I'll check.
+
+## World Monitor / Redis caching - what's done, what needs you
+
+The Redis/Upstash caching code (`app/storage/cache.py`) already existed from the earlier audit but was never wired to anything. **Wired it onto `/api/top-opportunities/{market}`** tonight - it's a real, functioning cache-aside layer now, just inactive until credentials exist. I cannot create the Upstash account myself (I don't create accounts on your behalf, even for genuinely free services) - when you want this live:
+1. Sign up at https://upstash.com (free tier, no card, 10K commands/day)
+2. Create a Redis database
+3. Add `REDIS_URL` (or `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN`) as a Render environment variable on `finvest-api`
+4. No code change or redeploy needed after that - `app/storage/cache.py` picks it up automatically on the next request.
+
 ## Bottom line
 
 **The site is live and serving real data end-to-end.** Frontend → Render backend → Cloudflare R2 (market data) / Supabase (news, intelligence), verified with real requests just now, not just "the build succeeded":
