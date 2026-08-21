@@ -3,6 +3,7 @@ import os
 import time
 import hashlib
 import logging
+from pathlib import Path
 from datetime import datetime, timedelta
 
 import requests
@@ -11,11 +12,30 @@ from urllib3.util.retry import Retry
 
 # ================= CONFIG =================
 
-# MAIN SAVE LOCATION
-BASE_DIR = r"D:\FinVest2\FinSight\Indian_Announcements"
+# Real bug, found live (2026-08-22): these were hardcoded absolute Windows
+# paths (`D:\FinVest2\...`) left over from local dev on the original
+# developer's machine. On GitHub Actions' ubuntu-latest runners, Python
+# doesn't error on a Windows-style path string - it just treats the
+# backslashes as literal characters in a single garbage directory name and
+# happily writes there. The collector always reported success ("Saved to
+# BOTH locations", "New announcements added: N") because the write itself
+# never failed - it just never landed anywhere `announcements_api.py`
+# (or anything else) could ever read from. This is the real root cause of
+# the main dashboard's news ticker showing months-old dates: CI has never
+# once produced usable output from this script.
+#
+# Fixed to portable, relative-to-this-file paths that match exactly what
+# announcements_api.py reads (DATA_ANNOUNCEMENTS_DIR primary,
+# INDIAN_ANN_DIR fallback) - both are real, valid locations on any machine
+# this runs on, not just one specific Windows box.
+_THIS_DIR = Path(__file__).resolve().parent  # FinSight/Indian_Announcements
+_FINSIGHT_DIR = _THIS_DIR.parent  # FinSight/
 
-# OPTIONAL BACKUP / SECOND SAVE LOCATION
-SECONDARY_DIR = r"D:\FinVest2\Indian_Announcements"
+# MAIN SAVE LOCATION - matches announcements_api.py's DATA_ANNOUNCEMENTS_DIR
+BASE_DIR = str(_FINSIGHT_DIR / "data" / "announcements")
+
+# SECOND SAVE LOCATION - matches announcements_api.py's INDIAN_ANN_DIR fallback
+SECONDARY_DIR = str(_THIS_DIR)
 
 # CREATE BOTH DIRECTORIES
 os.makedirs(BASE_DIR, exist_ok=True)

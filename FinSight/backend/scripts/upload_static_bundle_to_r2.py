@@ -43,6 +43,7 @@ BUNDLE_KEY = "bundles/static_bundle.zip"
 BUNDLE_DIRS = [
     "public/intelligence",
     "data/alpha_tracking",
+    "data/announcements",
 ]
 
 # Individual files (not whole dirs) that belong in the same bundle for the

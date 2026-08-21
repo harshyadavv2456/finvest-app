@@ -119,6 +119,19 @@ jobs:
       - name: NSE corporate announcements
         working-directory: FinSight/Indian_Announcements
         run: python run_collector_fixed.py
+      - name: Upload announcements artifact
+        # Same cross-job filesystem gap as screener/alpha-rankings/
+        # intelligence - see screener job's upload-artifact step for the
+        # full explanation. This is what actually gets the freshly-
+        # collected announcements (this job's script wrote to a hardcoded
+        # Windows path on every prior run - separately fixed) to
+        # publish-static-bundle, and from there to R2 and Render.
+        uses: actions/upload-artifact@v4
+        with:
+          name: announcements
+          path: FinSight/data/announcements/
+          retention-days: 1
+          if-no-files-found: warn
 
   intelligence:
     runs-on: ubuntu-latest
@@ -208,8 +221,8 @@ jobs:
   # the bundle at build time, not on a schedule).
   publish-static-bundle:
     runs-on: ubuntu-latest
-    needs: [screener, intelligence, alpha-rankings]
-    if: always() && (needs.screener.result == 'success' || needs.intelligence.result == 'success' || needs.alpha-rankings.result == 'success')
+    needs: [screener, intelligence, alpha-rankings, indian-announcements]
+    if: always() && (needs.screener.result == 'success' || needs.intelligence.result == 'success' || needs.alpha-rankings.result == 'success' || needs.indian-announcements.result == 'success')
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
@@ -243,6 +256,12 @@ jobs:
         with:
           name: intelligence-output
           path: FinSight/public/intelligence/
+      - name: Download announcements artifact
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: announcements
+          path: FinSight/data/announcements/
       - name: Bundle + upload public/intelligence, alpha_tracking, screener.parquet to R2
         working-directory: FinSight/backend/scripts
         run: python upload_static_bundle_to_r2.py
