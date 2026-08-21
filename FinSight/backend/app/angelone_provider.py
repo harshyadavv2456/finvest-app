@@ -379,3 +379,26 @@ def health_status() -> Dict[str, Any]:
         "session_active": _session._client is not None,
         "last_source_used": get_last_source_used(),
     }
+
+
+def verify_live(tradingsymbol: str = "RELIANCE-EQ", exchange: str = "NSE") -> Dict[str, Any]:
+    """Exercises the full path (auth -> instrument lookup -> a real
+    read) in one call - used by the /api/angelone/health diagnostic
+    endpoint to confirm auth and connectivity actually work from
+    wherever this is running (a dev machine's flaky network is not the
+    same thing as Render's), without needing a separate manual script."""
+    client = _session.ensure()
+    if client is None:
+        return {"ok": False, "step": "auth", "detail": "AngelOne not configured or auth failed - see server logs"}
+
+    token = get_instrument_token(tradingsymbol, exchange)
+    if not token:
+        return {"ok": False, "step": "instrument_lookup", "detail": f"No token found for {tradingsymbol}/{exchange} - instrument master fetch likely failed"}
+
+    try:
+        resp = client.ltpData(exchange, tradingsymbol, token)
+        if resp and resp.get("status"):
+            return {"ok": True, "step": "ltp", "symbol": tradingsymbol, "ltp": resp.get("data", {}).get("ltp")}
+        return {"ok": False, "step": "ltp", "detail": _safe_error(Exception(str(resp)))}
+    except Exception as e:  # noqa: BLE001
+        return {"ok": False, "step": "ltp", "detail": _safe_error(e)}
