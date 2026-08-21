@@ -33,26 +33,27 @@ async def get_option_chain_endpoint(
     """
     Get option chain data for a symbol.
 
-    AngelOne first (Workstream D4 - real-time reconstruction from the
-    instrument master + batched quotes, only supports NIFTY/BANKNIFTY
-    currently), falling back to the CSV snapshot for anything AngelOne
-    doesn't cover or if it's unavailable - same fallback discipline as
-    the rest of angelone_provider.py. Both paths return the exact same
-    row shape, so this is invisible to the frontend either way.
+    AngelOne is the real primary now (Workstream D4/D5 - live
+    reconstruction from the instrument master + batched quotes, covering
+    the full F&O universe: 4 indices + 60 stocks, matching
+    csv_data_provider.py's own symbol list). CSV is a pure fallback for
+    whatever AngelOne doesn't have cached or can't reach, not a second
+    "model" the page is built around - tried for every symbol, not a
+    hardcoded whitelist. Both paths return the exact same row shape, so
+    this is invisible to the frontend either way.
     """
     symbol_upper = symbol.upper()
 
     try:
         rows = []
         source = "csv"
-        if symbol_upper in ("NIFTY", "BANKNIFTY"):
-            try:
-                from app.angelone_option_chain import get_option_chain
-                rows = await run_in_threadpool(get_option_chain, symbol_upper)
-                if rows:
-                    source = "angelone"
-            except Exception as e:  # noqa: BLE001
-                logger.warning(f"AngelOne option chain failed for {symbol_upper}, falling back to CSV: {e}")
+        try:
+            from app.angelone_option_chain import get_option_chain
+            rows = await run_in_threadpool(get_option_chain, symbol_upper)
+            if rows:
+                source = "angelone"
+        except Exception as e:  # noqa: BLE001
+            logger.warning(f"AngelOne option chain failed for {symbol_upper}, falling back to CSV: {e}")
 
         if not rows:
             rows = get_option_chain_from_csv(symbol_upper)
@@ -82,31 +83,40 @@ async def get_option_chain_endpoint(
 
 @router.get("/underlyings")
 async def get_underlyings():
-    """Get list of available symbols from CSV."""
+    """Full F&O universe - union of whatever AngelOne's cached instrument
+    master actually has plus the CSV's own list, not limited to a
+    hardcoded subset. AngelOne is the real-time source; CSV just fills
+    in anything AngelOne's instrument master doesn't have yet."""
+    symbols = set()
     try:
-        symbols = get_available_symbols_from_csv()
-        if not symbols:
-            # Fallback to default list if CSV is empty
-            return ["NIFTY", "BANKNIFTY", "FINNIFTY", "MIDCPNIFTY"]
-        return symbols
+        from app.angelone_option_chain import get_available_symbols as get_angelone_symbols
+        symbols.update(await run_in_threadpool(get_angelone_symbols))
+    except Exception as e:  # noqa: BLE001
+        logger.warning(f"AngelOne underlyings list failed: {e}")
+
+    try:
+        symbols.update(get_available_symbols_from_csv())
     except Exception as e:
-        logger.error(f"Error getting symbols: {e}")
+        logger.error(f"Error getting CSV symbols: {e}")
+
+    if not symbols:
         return ["NIFTY", "BANKNIFTY", "FINNIFTY", "MIDCPNIFTY"]
+    return sorted(symbols)
 
 
 @router.get("/expiries")
 async def get_expiries(symbol: str = Query(..., description="Symbol")):
     """Get available expiry dates for a symbol - AngelOne (real, current
-    weekly/monthly expiries) for NIFTY/BANKNIFTY, CSV fallback otherwise."""
+    weekly/monthly expiries) for anything it covers, CSV fallback
+    otherwise. Not limited to a hardcoded symbol subset."""
     symbol_upper = symbol.upper()
-    if symbol_upper in ("NIFTY", "BANKNIFTY"):
-        try:
-            from app.angelone_option_chain import get_available_expiries
-            expiries = await run_in_threadpool(get_available_expiries, symbol_upper)
-            if expiries:
-                return [_parse_expiry_display(e) for e in expiries]
-        except Exception as e:  # noqa: BLE001
-            logger.warning(f"AngelOne expiries failed for {symbol_upper}, falling back to CSV: {e}")
+    try:
+        from app.angelone_option_chain import get_available_expiries
+        expiries = await run_in_threadpool(get_available_expiries, symbol_upper)
+        if expiries:
+            return [_parse_expiry_display(e) for e in expiries]
+    except Exception as e:  # noqa: BLE001
+        logger.warning(f"AngelOne expiries failed for {symbol_upper}, falling back to CSV: {e}")
 
     try:
         expiries = get_available_expiries_from_csv(symbol)

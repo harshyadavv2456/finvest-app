@@ -48,10 +48,18 @@ def _parse_expiry_to_iso(expiry: str) -> str:
 
 
 def get_available_symbols() -> List[str]:
-    """Underlyings this reconstruction supports - matches
-    RELEVANT_FNO_UNDERLYINGS in refresh_angelone_instruments.py (the only
-    ones actually filtered into the R2 instrument master)."""
-    return ["NIFTY", "BANKNIFTY"]
+    """Underlyings this reconstruction supports - derived live from
+    whatever NFO option instruments are actually present in the cached
+    instrument master, rather than a hardcoded list that could drift
+    from refresh_angelone_instruments.py's own RELEVANT_FNO_UNDERLYINGS."""
+    from app.angelone_provider import _load_instrument_master
+    instruments = _load_instrument_master()
+    if not instruments:
+        return []
+    return sorted({
+        inst["name"] for inst in instruments
+        if inst.get("exch_seg") == "NFO" and inst.get("instrumenttype") in ("OPTIDX", "OPTSTK") and inst.get("name")
+    })
 
 
 def get_available_expiries(symbol: str) -> List[str]:
@@ -88,7 +96,8 @@ def get_option_chain(symbol: str, expiry: Optional[str] = None) -> List[Dict[str
 
     symbol_options = [
         inst for inst in instruments
-        if inst.get("exch_seg") == "NFO" and inst.get("name") == symbol and inst.get("instrumenttype") == "OPTIDX"
+        if inst.get("exch_seg") == "NFO" and inst.get("name") == symbol
+        and inst.get("instrumenttype") in ("OPTIDX", "OPTSTK")  # index options and stock options both
     ]
     if not symbol_options:
         logger.warning("No NFO option instruments found for %s in the cached instrument master", symbol)
@@ -107,16 +116,23 @@ def get_option_chain(symbol: str, expiry: Optional[str] = None) -> List[Dict[str
     if not chain_instruments:
         return []
 
-    # Underlying spot price, for the frontend's ATM highlighting.
+    # Underlying spot price, for the frontend's ATM highlighting. Indices
+    # use the well-known static tokens (not in the equities-filtered
+    # instrument master, since they're not equities); stocks resolve via
+    # the normal equity instrument lookup (already in the same master).
     underlying_ltp = None
     index_token = INDEX_TOKENS.get(symbol)
-    if index_token:
-        try:
+    try:
+        if index_token:
             resp = client.ltpData("NSE", symbol, index_token)
-            if resp and resp.get("status"):
-                underlying_ltp = resp.get("data", {}).get("ltp")
-        except Exception as e:  # noqa: BLE001
-            logger.info("Underlying LTP fetch failed for %s (chain still works, just no ATM anchor): %s", symbol, _safe_error(e))
+        else:
+            from app.angelone_provider import get_instrument_token
+            eq_token = get_instrument_token(f"{symbol}-EQ", "NSE")
+            resp = client.ltpData("NSE", f"{symbol}-EQ", eq_token) if eq_token else None
+        if resp and resp.get("status"):
+            underlying_ltp = resp.get("data", {}).get("ltp")
+    except Exception as e:  # noqa: BLE001
+        logger.info("Underlying LTP fetch failed for %s (chain still works, just no ATM anchor): %s", symbol, _safe_error(e))
 
     # Batch quote pulls - getMarketData takes {exchange: [tokens]}, capped
     # at MAX_TOKENS_PER_QUOTE_REQUEST per AngelOne's documented limit.

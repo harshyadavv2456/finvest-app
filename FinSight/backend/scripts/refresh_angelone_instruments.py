@@ -3,8 +3,9 @@
 Downloads Angel One's instrument master (~37MB, ~115k instruments across
 every exchange/segment they support) and caches a filtered, much smaller
 subset to R2: NSE/BSE equities (needed for LTP/quote/candle lookups) plus
-NFO options for NIFTY and BANKNIFTY (needed for StrataX's option-chain
-reconstruction, Workstream D4).
+NFO derivatives for the full F&O universe StrataX supports - 4 indices +
+60 stocks, matching stratax/csv_data_provider.py's own symbol list
+exactly (needed for StrataX's option-chain reconstruction, Workstream D4).
 
 Why this is a separate scheduled script instead of a live in-request
 download (which is what angelone_provider.py originally tried): the full
@@ -37,7 +38,27 @@ log = logging.getLogger("refresh_angelone_instruments")
 INSTRUMENT_MASTER_URL = "https://margincalculator.angelone.in/OpenAPI_File/files/OpenAPIScripMaster.json"
 R2_KEY = "angelone/instrument_master_filtered.json"
 MAX_ATTEMPTS = 6
-RELEVANT_FNO_UNDERLYINGS = {"NIFTY", "BANKNIFTY"}
+# Full F&O universe StrataX already supports via the CSV fallback (see
+# stratax/csv_data_provider.py's own dynamic symbol list, read directly
+# from the CSV - this matches it exactly, not a superset/subset guess) -
+# 4 indices + 60 F&O stocks. Widened from just NIFTY/BANKNIFTY so
+# AngelOne can be the real primary source for the whole page, not just
+# two symbols, per the explicit instruction to stop treating CSV as the
+# model now that live data covers the same ground.
+RELEVANT_FNO_UNDERLYINGS = {
+    "NIFTY", "BANKNIFTY", "FINNIFTY", "MIDCPNIFTY",
+    "ADANIENT", "ADANIPORTS", "APOLLOHOSP", "ASIANPAINT", "AXISBANK",
+    "BAJAJFINSV", "BAJFINANCE", "BHARTIARTL", "BPCL", "BRITANNIA",
+    "CHOLAFIN", "CIPLA", "COALINDIA", "COLPAL", "DIVISLAB", "DLF",
+    "DRREDDY", "EICHERMOT", "GODREJCP", "GRASIM", "HAVELLS", "HCLTECH",
+    "HDFCBANK", "HDFCLIFE", "HEROMOTOCO", "HINDALCO", "HINDUNILVR",
+    "ICICIBANK", "ICICIPRULI", "INDIGO", "INDUSINDBK", "INFY", "IOC",
+    "ITC", "JSWSTEEL", "KOTAKBANK", "LT", "M&M", "MARUTI", "MUTHOOTFIN",
+    "NESTLEIND", "ONGC", "PIDILITIND", "POWERGRID", "RELIANCE", "SAIL",
+    "SBILIFE", "SBIN", "SHREECEM", "SRF", "SUNPHARMA", "TATACONSUM",
+    "TATASTEEL", "TCS", "TECHM", "TITAN", "ULTRACEMCO", "UPL", "VOLTAS",
+    "WIPRO",
+}
 
 
 def _load_env_file():
