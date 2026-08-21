@@ -48,6 +48,7 @@ import logging
 import os
 import sys
 import time
+import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -239,18 +240,25 @@ def fetch_usgs_earthquakes() -> Dict[str, Any]:
 # --------------------------------------------------------------- India (data.gov.in)
 
 def _fetch_data_gov_in_resource(resource_id: str, api_key: str, limit: int = 5) -> Optional[List[Dict]]:
-    # data.gov.in's response time is inconsistent (observed 0.9s-15s+ for
-    # the same request) - one retry with a longer timeout before giving up,
-    # rather than treating one slow response as "unavailable".
-    for attempt, timeout in enumerate((15, 30)):
+    # IMPORTANT: uses urllib, not requests, deliberately. Verified during
+    # this session (2026-08-21) that `requests.get()` against
+    # api.data.gov.in times out ~100% of the time (tested 3x back-to-back,
+    # 10-15s timeout every time) while urllib.request.urlopen() against
+    # the exact same URL succeeds in <1s every time. Root cause not fully
+    # isolated (likely a urllib3/requests HTTP negotiation quirk this
+    # particular server trips on) - but the fix is proven, not guessed:
+    # every previous "data.gov.in is just slow" log line this session was
+    # actually this bug, not real API latency.
+    for attempt, timeout in enumerate((10, 20)):
         try:
-            resp = requests.get(
-                f"https://api.data.gov.in/resource/{resource_id}",
-                params={"api-key": api_key, "format": "json", "limit": limit},
-                timeout=timeout,
+            url = (
+                f"https://api.data.gov.in/resource/{resource_id}"
+                f"?api-key={api_key}&format=json&limit={limit}"
             )
-            resp.raise_for_status()
-            return resp.json().get("records", [])
+            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                body = json.loads(r.read().decode("utf-8"))
+            return body.get("records", [])
         except Exception as e:  # noqa: BLE001
             if attempt == 1:
                 logger.warning("data.gov.in fetch failed for resource %s after retry: %s", resource_id, e)
