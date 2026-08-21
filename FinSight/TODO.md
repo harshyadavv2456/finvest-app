@@ -38,6 +38,7 @@ Legend: `[x]` done + verified live · `[~]` in progress · `[ ]` not started
 - [x] StrataX widened to the FULL F&O universe (64 symbols) - verified live for both NIFTY (index) and RELIANCE (stock)
 - [x] **"Sensibull level, top it"** — Max Pain, PCR (OI), ATM straddle price, resistance/support strikes, OI-change tracking (R2 snapshot-diff), total call/put OI+volume - all shipped, verified live in the actual browser at finvest.fintaxlife.com/stratax with real numbers (Max Pain 24250, PCR 1.05, ATM Straddle 162.55, Resistance 24300)
 - [x] **"All real-time Indian-market data should come from AngelOne"** — `/api/ticker/{ticker}/realtime` (the endpoint used app-wide for live price display) now tries AngelOne first for every IN-market ticker before yFinance. Verified live: RELIANCE.NS returns `"source": "angelone_realtime"` with a real current price, not the 15-20min-delayed yFinance figure.
+- [x] Real Greeks (delta/gamma/theta/vega) - was fetching from optionGreek and discarding; now wired through schema + Delta column in the table, verified live (real delta/theta/vega values in production API response, changeInOI also now populating via the R2 snapshot-diff)
 - [ ] Market depth (D2 already exposes it) not yet surfaced anywhere in the UI
 - [ ] WebSocket streaming — deliberately not built (no concrete latency need yet, per the spec's own instruction not to add it speculatively)
 
