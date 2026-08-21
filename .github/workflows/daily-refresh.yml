@@ -66,6 +66,19 @@ jobs:
       - name: Build screener snapshot
         working-directory: FinSight/backend
         run: python -c "from app.screener_snapshot import build_screener_snapshot; build_screener_snapshot()"
+      - name: Upload screener snapshot artifact
+        # publish-static-bundle runs on its own separate GH Actions runner
+        # (every job does) with no filesystem access to what this job just
+        # built - without this, that job always found "screener.parquet
+        # missing" and failed with "No files found to bundle", every run,
+        # forever. Artifacts are the actual cross-job file-sharing
+        # mechanism GH Actions provides; there's no shared disk between jobs.
+        uses: actions/upload-artifact@v4
+        with:
+          name: screener-snapshot
+          path: FinSight/data/screener.parquet
+          retention-days: 1
+          if-no-files-found: warn
 
   insider-flow:
     runs-on: ubuntu-latest
@@ -146,6 +159,19 @@ jobs:
       - name: Sync intelligence to Supabase
         working-directory: FinSight/backend/scripts
         run: python sync_intelligence_to_supabase.py
+      - name: Upload intelligence output artifact
+        # Same cross-job filesystem gap as screener's - see that job's
+        # upload-artifact step for the full explanation. if: always() so a
+        # failed pipeline run still uploads whatever partial output exists
+        # rather than publish-static-bundle getting nothing at all from
+        # this job on a bad night.
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: intelligence-output
+          path: FinSight/public/intelligence/
+          retention-days: 1
+          if-no-files-found: warn
 
   alpha-rankings:
     runs-on: ubuntu-latest
@@ -160,6 +186,15 @@ jobs:
       - name: Score alpha rankings (IntrinsIQ valuation batch)
         working-directory: FinSight
         run: python scripts/alpha_ranking_batch.py
+      - name: Upload alpha rankings artifact
+        # Same cross-job filesystem gap as screener's - see that job's
+        # upload-artifact step for the full explanation.
+        uses: actions/upload-artifact@v4
+        with:
+          name: alpha-tracking
+          path: FinSight/data/alpha_tracking/
+          retention-days: 1
+          if-no-files-found: warn
 
   # 2026-08-21 fix: Market Intel / Alpha Rankings / IntrinsIQ / real
   # screener count all read small aggregate files (public/intelligence/,
@@ -182,6 +217,32 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install -r FinSight/backend/requirements.txt
+      # Pull back what screener/intelligence/alpha-rankings each produced on
+      # their own separate runners - this job has never had access to those
+      # files otherwise (checkout only restores git-tracked files, and
+      # these three are all gitignored, build-time-only outputs). Each
+      # download is independent and non-fatal: a job that failed upstream
+      # (or one whose upload step didn't run) just means that piece is
+      # skipped from the bundle, not that this whole job fails - matches
+      # the existing "any succeeded" semantics on this job's `if:` above.
+      - name: Download screener snapshot artifact
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: screener-snapshot
+          path: FinSight/data/
+      - name: Download alpha rankings artifact
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: alpha-tracking
+          path: FinSight/data/alpha_tracking/
+      - name: Download intelligence output artifact
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: intelligence-output
+          path: FinSight/public/intelligence/
       - name: Bundle + upload public/intelligence, alpha_tracking, screener.parquet to R2
         working-directory: FinSight/backend/scripts
         run: python upload_static_bundle_to_r2.py
