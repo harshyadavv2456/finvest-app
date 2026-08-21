@@ -49,7 +49,7 @@ Legend: `[x]` done + verified live · `[~]` in progress · `[ ]` not started
 
 ## Workstream B — UI
 - [x] B1: Command palette (Ctrl+K/Cmd+K) — verified live in browser, real Vercel build
-- [ ] B2: Correlation-surface view (macro → sector → quant signal → news sentiment, one connected panel)
+- [x] B2: Correlation-surface view — shipped, verified live in the browser. Also found the whole "Signal Reconciliation" page/route/nav item existed in the dev repo but was NEVER actually deployed to production before this — restored it while shipping B2. Also found and fixed a real N+1 query bug along the way (`/api/insights/divergent`: 32s → 3.6s live, ~500 individual Supabase queries collapsed into one bulk fetch)
 - [ ] B3: Ticker dossier slide-over/modal
 - [ ] B4: General visual consistency pass
 
