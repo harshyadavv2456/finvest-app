@@ -17,6 +17,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.concurrency import run_in_threadpool
 
 from app.config import settings
 from app.data_access import (
@@ -2150,7 +2151,12 @@ async def get_insider_signals(days: int = Query(90, ge=1, le=365)):
     """Get insider trading signals (daily aggregated) from SEC Form 4."""
     try:
         from app.insider_flow import load_insider_signals
-        signals = load_insider_signals(days=days)
+        # These load/filter tens-of-thousands-row CSVs synchronously with
+        # pandas - run off the event loop so one slow request doesn't stall
+        # every other concurrent request on this single-worker deployment
+        # (confirmed live 2026-08-21: concurrent Dashboard requests were
+        # stacking up past the frontend's 30s timeout).
+        signals = await run_in_threadpool(load_insider_signals, days=days)
         return {"signals": signals, "count": len(signals)}
     except Exception as e:
         logger.error(f"Error in get_insider_signals: {e}", exc_info=True)
@@ -2162,7 +2168,7 @@ async def get_insider_trades(days: int = Query(30, ge=1, le=180), limit: int = Q
     """Get recent insider trades from SEC Form 4."""
     try:
         from app.insider_flow import load_insider_trades
-        trades = load_insider_trades(days=days, limit=limit)
+        trades = await run_in_threadpool(load_insider_trades, days=days, limit=limit)
         return {"trades": trades, "count": len(trades)}
     except Exception as e:
         logger.error(f"Error in get_insider_trades: {e}", exc_info=True)
@@ -2174,7 +2180,7 @@ async def get_insider_summary_endpoint():
     """Get summary statistics for insider trading."""
     try:
         from app.insider_flow import get_insider_summary
-        summary = get_insider_summary()
+        summary = await run_in_threadpool(get_insider_summary)
         return summary
     except Exception as e:
         logger.error(f"Error in get_insider_summary: {e}", exc_info=True)
@@ -2186,7 +2192,7 @@ async def get_13f_signals(days: int = Query(180, ge=1, le=365)):
     """Get 13F hedge fund position signals."""
     try:
         from app.insider_flow import load_13f_signals
-        signals = load_13f_signals(days=days)
+        signals = await run_in_threadpool(load_13f_signals, days=days)
         return {"signals": signals, "count": len(signals)}
     except Exception as e:
         logger.error(f"Error in get_13f_signals: {e}", exc_info=True)
@@ -2522,10 +2528,22 @@ async def get_intelligence_stocks(market: str):
 async def get_top_opportunities(market: str):
     """
     Get top opportunities and avoid list for a market.
-    
+
     Returns pre-computed ranked lists from _top_opportunities.json.
+
+    Redis-cached (REPO_AUDIT_REPORT.md §9.2, app.storage.cache) when
+    Upstash credentials are configured - a no-op cache miss otherwise, so
+    this behaves exactly as before until that's set up. The point: once
+    it is, a post-cold-start request serves this instantly from Redis
+    instead of waiting on the local disk read (which itself may still be
+    mid-hydration right after a fresh Render deploy).
     """
     try:
+        from app.storage.cache import cache_get_json, cache_set_json
+        cache_key = f"top-opportunities:{market.upper()}"
+        cached_result = cache_get_json(cache_key)
+        if cached_result is not None:
+            return cached_result
         market_upper = market.upper()
         opportunities_file = INTELLIGENCE_DIR / market_upper / "_top_opportunities.json"
         
@@ -2540,8 +2558,8 @@ async def get_top_opportunities(market: str):
         
         with open(opportunities_file, "r") as f:
             data = json.load(f)
-        
-        return {
+
+        response = {
             "success": True,
             "market": market_upper,
             "generated_at": data.get("generated_at"),
@@ -2553,7 +2571,9 @@ async def get_top_opportunities(market: str):
             "opportunities": data.get("opportunities", []),
             "avoid_list": data.get("avoid_list", []),
         }
-        
+        cache_set_json(cache_key, response, ttl_seconds=300)
+        return response
+
     except Exception as e:
         logger.error(f"Error loading top opportunities: {e}")
         return {

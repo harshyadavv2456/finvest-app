@@ -20,6 +20,7 @@ from datetime import datetime, timedelta
 
 import pandas as pd
 from fastapi import APIRouter, Query, HTTPException
+from fastapi.concurrency import run_in_threadpool
 
 logger = logging.getLogger(__name__)
 
@@ -524,6 +525,16 @@ def _sanitize_nan(obj):
 
 @router.get("/today")
 async def get_todays_announcements():
+    """Thin async wrapper - the real work is synchronous pandas over
+    several CSVs (even with the loaders cached, sorting/filtering still
+    isn't free), so it runs off the event loop. Confirmed live
+    (2026-08-21): without this, concurrent Dashboard requests stalled
+    every other request on this single-worker deployment past the
+    frontend's 30s timeout."""
+    return await run_in_threadpool(_get_todays_announcements_sync)
+
+
+def _get_todays_announcements_sync():
     """
     Get all announcements from today/recent.
     Falls back to intelligence-based announcements if local files unavailable.
