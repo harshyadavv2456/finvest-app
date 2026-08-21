@@ -91,6 +91,27 @@ Also this session: `REDIS_URL`/`UPSTASH_REDIS_REST_URL`/`_TOKEN` set on Render (
 
 **Not yet done:** D4 (option-chain reconstruction from the instrument master + batched `getMarketData`/`optionGreek` calls, matching the existing CSV-driven schema in `stratax/csv_data_provider.py` so the frontend doesn't need to change) - blocked on confirming the instrument master refresh actually completes successfully first; the schema to match has been read and understood, not yet built. D5 (retiring the old NSE-scrape path, updating `/api/stratax/data-status`) - not started, sequenced after D4 produces real data to switch to (don't retire the only working path before its replacement exists). E (new India FinDash) - not started, explicitly sequenced after D per the user's own priority order.
 
+### Workstream E1 — FinDash feature-parity audit (done; E2/E3 not started)
+
+Checked all named locations: `FinSight/frontend/` has no FinDash-equivalent pages of its own (the "Markets" nav item links out to the external FinDash app, per `FINDASH_URL` in `config/env.ts`). `FinSight/FinDash/FinDash/` and `apps/FinDash/FinDash/` are the two real copies - confirmed near-byte-identical (152 files each, `diff -rq` found only `vercel.json` and `vite.config.ts` differ, both deploy-config only, not app code). So there's really one FinDash codebase, duplicated twice, not two divergent ones - simplifies E2/E3 considerably (no need to reconcile diverged features, just build once against this one feature set).
+
+**Full feature inventory** (from `components/` and `services/`), the parity bar E2 needs to clear:
+
+- **Core views**: `Dashboard`, `StockDetail`, `StockList`, `StockChart` / `AdvancedChart` / `EnhancedAdvancedChart`, `ChartControls` / `ChartTimeframeSelector` / `ChartFeatureTooltip`
+- **Comparison**: `ComparativeAnalysis`, `ComparisonChart`, `ComparisonTable`, `ComparisonScoreCard`, `PeerComparisonService`
+- **Fundamentals/company detail**: `FinancialHealthPanel`, `AnalystCoveragePanel`, `DividendInfoPanel`, `PromoterInfoPanel`, `MarketPositionPanel`, `GapAnalysisPanel`, `AnalysisBreakdown`, `StockScoreCard`
+- **Portfolio**: `PortfolioManager`, `portfolioService.ts`, `InvestorTypeQuestionnaire` + `investorAssessmentService.ts`
+- **Strategy/backtesting**: `StrategyBuilder`, `StrategyBacktester`, `backtestService.ts`, `patternDetectionService.ts`, `volumeProfileService.ts`, `marketTimingService.ts`
+- **Macro**: `MacroDashboard`, `macroService.ts` - **direct overlap with this session's Workstream A** `macro_context` - E2 should consume the same backend endpoint (`/api/macro-context/current`) rather than a separate macro data source.
+- **Alerts**: `AlertBuilder`, `AlertList`, `AlertNotification`, `alertService.ts`
+- **AI features** (the ones the repo audit specifically flagged): `AIChatbot.tsx`, `chatbotService.ts`, `geminiService.ts` (Gemini - a *different* provider than this codebase's Groq standard; E2's instruction is to reuse the existing Groq integration, so this is a deliberate provider swap, not a straight port), `groqService.ts` / `highEndGroqService.ts` (these already target Groq - closer to a straight port), `openRouterService.ts`, `manusService.ts`, `lovableDataService.ts` (3 more LLM/data providers beyond Gemini/Groq - need a decision on which survive the rebuild; default assumption is none of these three, since the session's standard is Groq via the existing tracked integration, not a 5-provider fan-out)
+- **News**: `NewsSummarizer`, `newsService.ts`, `newsletterService.ts` + `NewsletterSignup.tsx`, `emailService.ts` / `emailContentService.ts`
+- **Data sources**: `stockDataService.ts`, `yahooFinanceService.ts` (yFinance - stays, per D's fallback pattern), `chartDataService.ts`, `dataValidationService.ts`, `brokerIntegrationService.ts` (worth checking whether this already assumes an AngelOne-shaped interface or a different broker - not yet checked)
+- **Distribution**: `telegramService.ts` (the repo audit's other flagged item - Telegram bot integration; this session's `notifications_api.py` already has a working `_send_telegram()` - E2 should reuse that rather than duplicate)
+- **Chrome**: `ErrorBoundary`, `LoadingSkeleton`, `LoadingSpinner`, `Footer`
+
+**Not started**: E2 (the actual new India-only build inside `FinSight/frontend/`) and E3 (retiring the old copies) - correctly sequenced after D4 (option-chain reconstruction) per the user's own priority order, since E's spec explicitly requires it to be "powered primarily by the Angel One provider module" - building it before D4 exists would mean building it against nothing, or against yFinance only, which isn't what was asked for.
+
 ### Workstream B (UI) - not started this session
 
 User flagged StrataX's option-chain UI as "shitty" mid-session. Read `StrataXOptionChain.tsx` (548 lines) - it's actually already reasonably well-built (ATM highlighting, tooltips, sticky columns, color-coded IV/OI/change). Assessment: the frustration is far more likely about the underlying *data* being a stale Dec-2025 CSV snapshot (see StrataX's own `/api/stratax/data-status` reporting `nse_available: false`) than the CSS - D4's real option-chain reconstruction is the actual fix, prioritized ahead of a cosmetic pass on a page whose data will change anyway once D4 lands. B1 (command palette) and the rest of B not started.
