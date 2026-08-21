@@ -462,6 +462,14 @@ def compute_screener_row(
         result["analyst_upside"] = round(
             ((result["analyst_target_mean"] / result["current_price"]) - 1) * 100, 2
         )
+        # Sanity bound, same philosophy as the PE/dividend-yield guards
+        # above - found live: some GBp (LSE pence) tickers have a currency-
+        # unit mismatch between current_price and analyst_target_mean
+        # upstream (yfinance quirk, not something this function can
+        # correct), producing nonsense like +11825% "upside" (CRH.L).
+        # Reject rather than display an obviously-wrong number.
+        if abs(result["analyst_upside"]) > 500:
+            result["analyst_upside"] = None
     else:
         result["analyst_upside"] = None
 
