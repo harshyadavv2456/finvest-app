@@ -209,6 +209,8 @@ def get_option_chain(symbol: str, expiry: Optional[str] = None) -> List[Dict[str
         })
 
     rows = _apply_oi_change(symbol, expiry, rows)
+    for row in rows:
+        row["oiBuildup"] = _classify_oi_buildup(row.get("change"), row.get("changeInOI"))
 
     _record_source("angelone", "get_option_chain")
     logger.info("Reconstructed %d-row option chain for %s %s from AngelOne", len(rows), symbol, expiry)
@@ -227,6 +229,27 @@ def get_option_chain(symbol: str, expiry: Optional[str] = None) -> List[Dict[str
 
 def _oi_snapshot_key(symbol: str, expiry: str) -> str:
     return f"angelone/oi_snapshots/{symbol}_{expiry}.json"
+
+
+def _classify_oi_buildup(price_change: Optional[float], oi_change: Optional[int]) -> Optional[str]:
+    """The standard Sensibull/trader reading of price-vs-OI direction:
+        price up   + OI up   -> Long Buildup (new longs opening)
+        price down + OI up   -> Short Buildup (new shorts opening)
+        price down + OI down -> Long Unwinding (longs closing)
+        price up   + OI down -> Short Covering (shorts closing)
+    None until changeInOI has a real value (needs a second fetch for
+    this chain+expiry to diff against - see _apply_oi_change)."""
+    if price_change is None or oi_change is None:
+        return None
+    if price_change > 0 and oi_change > 0:
+        return "Long Buildup"
+    if price_change < 0 and oi_change > 0:
+        return "Short Buildup"
+    if price_change < 0 and oi_change < 0:
+        return "Long Unwinding"
+    if price_change > 0 and oi_change < 0:
+        return "Short Covering"
+    return None
 
 
 def _apply_oi_change(symbol: str, expiry: str, rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:

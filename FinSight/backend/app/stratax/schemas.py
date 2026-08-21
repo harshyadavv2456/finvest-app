@@ -35,6 +35,10 @@ class StrataXOptionRow(BaseModel):
     gamma: Optional[float] = None
     theta: Optional[float] = None
     vega: Optional[float] = None
+    # "Long Buildup" | "Short Buildup" | "Long Unwinding" | "Short Covering"
+    # - the standard price-vs-OI-direction reading. None until a second
+    # fetch of this chain+expiry gives changeInOI something to diff against.
+    oiBuildup: Optional[str] = None
 
 
 class OptionChainResponse(BaseModel):
