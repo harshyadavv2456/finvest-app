@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useStrataXOptionChain } from '../hooks/useStrataXOptionChain';
+import { useStrataXAnalytics } from '../hooks/useStrataXAnalytics';
 import { StrataXOptionRow } from '../types/strataxTypes';
 import { api } from '../../../lib/api';
 import { Info, TrendingUp, TrendingDown, Minus, Calendar, Sparkles, Loader2 } from 'lucide-react';
@@ -24,6 +25,7 @@ export default function StrataXOptionChain() {
   const [availableSymbols, setAvailableSymbols] = useState<string[]>([]);
   const [availableExpiries, setAvailableExpiries] = useState<string[]>([]);
   const { rows, loading, error } = useStrataXOptionChain(symbol);
+  const { analytics } = useStrataXAnalytics(symbol);
   const [aiAnalysis, setAiAnalysis] = useState<string | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
 
@@ -285,6 +287,76 @@ export default function StrataXOptionChain() {
           </div>
         </div>
       </div>
+
+      {/* Sensibull-style analytics strip - Max Pain, PCR, ATM straddle,
+          support/resistance. All computed server-side from the real
+          reconstructed chain (AngelOne primary, CSV fallback). */}
+      {analytics.available && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          <div className="bg-bloomberg-panel border border-bloomberg-border rounded-lg p-3">
+            <div className="text-xs text-bloomberg-text-muted mb-1 flex items-center gap-1">
+              Max Pain
+              <Tooltip content="The strike where option writers (sellers) collectively lose the least - often acts as a magnet for price near expiry">
+                <Info size={10} className="text-bloomberg-text-muted cursor-help" />
+              </Tooltip>
+            </div>
+            <div className="text-lg font-bold text-bloomberg-text">{formatNumber(analytics.max_pain, 0)}</div>
+          </div>
+          <div className="bg-bloomberg-panel border border-bloomberg-border rounded-lg p-3">
+            <div className="text-xs text-bloomberg-text-muted mb-1 flex items-center gap-1">
+              PCR (OI)
+              <Tooltip content="Put-Call Ratio by open interest. Above 1 = more put OI than call OI (often read as bearish positioning / support building); below 1 = the reverse">
+                <Info size={10} className="text-bloomberg-text-muted cursor-help" />
+              </Tooltip>
+            </div>
+            <div className={`text-lg font-bold ${
+              analytics.pcr_oi != null ? (analytics.pcr_oi > 1 ? 'text-red-400' : 'text-green-400') : 'text-bloomberg-text'
+            }`}>
+              {analytics.pcr_oi != null ? analytics.pcr_oi.toFixed(2) : '-'}
+            </div>
+          </div>
+          <div className="bg-bloomberg-panel border border-bloomberg-border rounded-lg p-3">
+            <div className="text-xs text-bloomberg-text-muted mb-1 flex items-center gap-1">
+              ATM Straddle
+              <Tooltip content="ATM call + ATM put premium - the market's own implied move for this expiry">
+                <Info size={10} className="text-bloomberg-text-muted cursor-help" />
+              </Tooltip>
+            </div>
+            <div className="text-lg font-bold text-purple-400">{formatNumber(analytics.atm_straddle_price)}</div>
+          </div>
+          <div className="bg-bloomberg-panel border border-bloomberg-border rounded-lg p-3">
+            <div className="text-xs text-bloomberg-text-muted mb-1 flex items-center gap-1">
+              Resistance
+              <Tooltip content="Highest call OI strike - the level where the most call sellers are positioned">
+                <Info size={10} className="text-bloomberg-text-muted cursor-help" />
+              </Tooltip>
+            </div>
+            <div className="text-lg font-bold text-red-400">{formatNumber(analytics.resistance_strike, 0)}</div>
+          </div>
+          <div className="bg-bloomberg-panel border border-bloomberg-border rounded-lg p-3">
+            <div className="text-xs text-bloomberg-text-muted mb-1 flex items-center gap-1">
+              Support
+              <Tooltip content="Highest put OI strike - the level where the most put sellers are positioned">
+                <Info size={10} className="text-bloomberg-text-muted cursor-help" />
+              </Tooltip>
+            </div>
+            <div className="text-lg font-bold text-green-400">{formatNumber(analytics.support_strike, 0)}</div>
+          </div>
+          <div className="bg-bloomberg-panel border border-bloomberg-border rounded-lg p-3">
+            <div className="text-xs text-bloomberg-text-muted mb-1 flex items-center gap-1">
+              Call/Put OI
+              <Tooltip content="Total open interest across all strikes, calls vs puts">
+                <Info size={10} className="text-bloomberg-text-muted cursor-help" />
+              </Tooltip>
+            </div>
+            <div className="text-sm font-bold text-bloomberg-text">
+              <span className="text-blue-400">{formatLargeNumber(analytics.total_call_oi)}</span>
+              {' / '}
+              <span className="text-red-400">{formatLargeNumber(analytics.total_put_oi)}</span>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* AI Analysis Results */}
       {aiAnalysis && (

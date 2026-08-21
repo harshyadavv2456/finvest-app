@@ -486,6 +486,19 @@ export const api = {
     }
   },
 
+  getStrataXAnalytics: async (symbol: string): Promise<any> => {
+    try {
+      const response = await axios.get(`${API_BASE}/api/stratax/analytics`, {
+        params: { symbol },
+        timeout: 60000
+      });
+      return response.data;
+    } catch (error: any) {
+      console.error('Error fetching chain analytics:', error);
+      return { available: false };
+    }
+  },
+
   getStrataXUnderlyings: async (): Promise<string[]> => {
     try {
       const response = await axios.get<string[]>(`${API_BASE}/api/stratax/underlyings`, { timeout: 10000 });
