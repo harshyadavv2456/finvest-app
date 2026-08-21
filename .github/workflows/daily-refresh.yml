@@ -55,7 +55,7 @@ jobs:
   screener:
     runs-on: ubuntu-latest
     needs: market-data
-    timeout-minutes: 30
+    timeout-minutes: 90  # was 30 - not enough for a full ~2300-ticker rebuild from scratch (observed: still running, mid-universe, at 30min when killed)
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -118,7 +118,15 @@ jobs:
       - run: pip install -r FinSight/backend/requirements.txt pytest
       - name: 9-layer quant intelligence pipeline
         working-directory: FinSight
-        run: python quant_system/run_full_daily_intelligence.py --full-universe
+        # Run as a module (-m), not a bare script path. `quant_system/types.py`
+        # shadows Python's own stdlib `types` module the moment
+        # quant_system/ itself lands in sys.path[0] (which a bare script
+        # invocation always does, for its own directory) - broke this job
+        # with "cannot import name 'GenericAlias' from partially
+        # initialized module 'types'" the first time it actually ran
+        # end-to-end in CI. `-m` puts the CWD (FinSight/) in sys.path[0]
+        # instead, where there's no colliding types.py.
+        run: python -m quant_system.run_full_daily_intelligence --full-universe
       - name: Regression tests - gate before publishing
         working-directory: FinSight/quant_system
         run: python -m pytest tests/ -v
