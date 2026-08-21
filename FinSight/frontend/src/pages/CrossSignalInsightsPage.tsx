@@ -12,9 +12,17 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ArrowLeft, GitCompare, TrendingUp, TrendingDown, Minus,
-  Newspaper, Cpu, RefreshCw, AlertTriangle
+  Newspaper, Cpu, RefreshCw, AlertTriangle, Globe
 } from 'lucide-react';
 import { api } from '../lib/api';
+
+interface MacroContext {
+  as_of?: string;
+  us?: { available: boolean; yield_curve_2y10y_spread_pct?: number | null; yield_curve_inverted?: boolean | null; fed_funds_rate_pct?: number | null };
+  india?: { available: boolean };
+  physical_disruption?: { available: boolean; firms?: { active_fire_detections_24h?: number | null }; usgs?: { significant_earthquakes_7d?: number | null; max_magnitude_7d?: number | null } };
+  summary?: string;
+}
 
 interface DivergentSignal {
   ticker: string;
@@ -56,10 +64,21 @@ export default function CrossSignalInsightsPage() {
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<CrossSignalDetail | null>(null);
   const [loadingDetail, setLoadingDetail] = useState(false);
+  const [macro, setMacro] = useState<MacroContext | null>(null);
 
   useEffect(() => {
     fetchDivergent();
   }, [market]);
+
+  // Macro context is market-wide, not per-ticker - fetch once, reuse for
+  // every ticker's reconciliation panel. Top of the causal chain this
+  // page is meant to show: macro pressure -> quant signal -> news
+  // sentiment, one connected view instead of three separate widgets.
+  useEffect(() => {
+    api.get('/api/macro-context/current')
+      .then((res) => setMacro(res.data))
+      .catch(() => setMacro(null));
+  }, []);
 
   const fetchDivergent = async () => {
     setLoading(true);
@@ -183,6 +202,29 @@ export default function CrossSignalInsightsPage() {
                 <AgreementBadge agreement={selected.cross_signal.agreement} />
               </div>
               <p className="text-xs text-gray-400">{selected.cross_signal.note}</p>
+
+              {/* Macro layer - top of the causal chain: geopolitical/macro
+                  pressure feeding into what the quant engine and news
+                  sentiment below are reacting to. Market-wide, not
+                  ticker-specific, but shown alongside every ticker's
+                  reconciliation so the connection is visible in one place. */}
+              {macro?.summary && (
+                <div className="bg-indigo-950/40 border border-indigo-500/20 rounded-lg p-3 space-y-1.5">
+                  <div className="flex items-center gap-2 text-xs font-semibold text-indigo-300 mb-1">
+                    <Globe size={13} /> Macro Context
+                  </div>
+                  <p className="text-xs text-gray-300 leading-relaxed">{macro.summary}</p>
+                  {macro.us?.available && macro.us.yield_curve_2y10y_spread_pct != null && (
+                    <div className="flex justify-between text-xs pt-1 border-t border-indigo-500/10">
+                      <span className="text-gray-500">US 2Y/10Y spread</span>
+                      <span className={`font-mono ${macro.us.yield_curve_inverted ? 'text-rose-400' : 'text-gray-300'}`}>
+                        {macro.us.yield_curve_2y10y_spread_pct > 0 ? '+' : ''}{macro.us.yield_curve_2y10y_spread_pct.toFixed(2)}pp
+                        {macro.us.yield_curve_inverted ? ' (inverted)' : ''}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
 
               <div className="bg-gray-900/50 rounded-lg p-3 space-y-1.5">
                 <div className="flex items-center gap-2 text-xs font-semibold text-gray-400 mb-1">
