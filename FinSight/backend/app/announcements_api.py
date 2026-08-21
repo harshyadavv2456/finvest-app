@@ -11,7 +11,9 @@ Data sources:
 """
 
 import os
+import time
 import logging
+import functools
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 from datetime import datetime, timedelta
@@ -22,6 +24,39 @@ from fastapi import APIRouter, Query, HTTPException
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/announcements", tags=["announcements"])
+
+
+def _ttl_cache(seconds: int):
+    """Minimal TTL cache for the zero-argument CSV loader functions below.
+
+    Found live (2026-08-21): the Dashboard fires several of these routes
+    concurrently on every page load, and each one re-parses a CSV with
+    tens of thousands of rows from disk with plain pandas.read_csv - all
+    of it synchronous work inside `async def` handlers, so it blocks
+    FastAPI's single event loop instead of running in a thread. Under
+    concurrent load that serializes and stacks up past the frontend's
+    30s timeout (confirmed: /api/announcements/today alone took >45s).
+    The data underneath only refreshes once a day at most, so a cache
+    this short still always serves same-day data - it just stops
+    re-reading the same unchanged file for every single request.
+    """
+    def decorator(func):
+        cache = {"value": None, "at": 0.0}
+
+        @functools.wraps(func)
+        def wrapper():
+            now = time.monotonic()
+            if cache["value"] is None or (now - cache["at"]) > seconds:
+                cache["value"] = func()
+                cache["at"] = now
+            # Callers mutate columns on the returned df in place (e.g.
+            # pd.to_datetime assignment) - hand back a copy so that never
+            # corrupts what's cached, even though today's callers happen
+            # to do it idempotently.
+            v = cache["value"]
+            return v.copy() if isinstance(v, pd.DataFrame) else v
+        return wrapper
+    return decorator
 
 # Paths relative to backend directory
 BACKEND_DIR = Path(__file__).parent.parent
@@ -38,6 +73,7 @@ logger.info(f"Announcements primary dir: {DATA_ANNOUNCEMENTS_DIR}")
 logger.info(f"Announcements primary exists: {DATA_ANNOUNCEMENTS_DIR.exists()}")
 
 
+@_ttl_cache(300)
 def load_insider_trades() -> pd.DataFrame:
     """Load US insider trades from SEC data."""
     trades_file = INSIDERFLOW_DIR / "signals_output" / "insider_trades_with_flags.csv"
@@ -55,6 +91,7 @@ def load_insider_trades() -> pd.DataFrame:
         return pd.DataFrame()
 
 
+@_ttl_cache(300)
 def load_13f_holdings() -> pd.DataFrame:
     """Load 13F hedge fund holdings from CSV."""
     holdings_file = INSIDERFLOW_DIR / "signals_output" / "13f_holdings_with_flags.csv"
@@ -72,6 +109,7 @@ def load_13f_holdings() -> pd.DataFrame:
         return pd.DataFrame()
 
 
+@_ttl_cache(300)
 def load_fii_dii_outlook() -> pd.DataFrame:
     """Load FII/DII daily outlook from CSV."""
     fii_dii_dir = SMARTMONEY_DIR / "fii_dii_output"
@@ -90,6 +128,7 @@ def load_fii_dii_outlook() -> pd.DataFrame:
         return pd.DataFrame()
 
 
+@_ttl_cache(300)
 def load_indian_insider_filings() -> pd.DataFrame:
     """Load Indian insider filings from NSE data.
     
@@ -120,6 +159,7 @@ def load_indian_insider_filings() -> pd.DataFrame:
     return pd.DataFrame()
 
 
+@_ttl_cache(300)
 def load_indian_corporate_announcements() -> pd.DataFrame:
     """Load Indian corporate announcements from NSE data.
     

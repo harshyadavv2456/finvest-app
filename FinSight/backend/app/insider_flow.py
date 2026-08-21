@@ -3,6 +3,7 @@ InsiderFlow API - SEC Form 4 Insider Trading & 13F Hedge Fund Analysis
 Smart Money Flow API - FII/DII Daily Analysis
 """
 import os
+import time
 import pandas as pd
 from pathlib import Path
 from typing import Optional
@@ -10,6 +11,31 @@ from datetime import datetime, timedelta
 import logging
 
 logger = logging.getLogger(__name__)
+
+_csv_cache: dict = {}
+_CSV_CACHE_TTL_SECONDS = 300
+
+
+def _read_csv_cached(path: Path) -> pd.DataFrame:
+    """pd.read_csv with a short TTL cache, keyed by path.
+
+    Found live (2026-08-21): the Dashboard fires several InsiderFlow
+    routes concurrently on every load, each re-parsing the same
+    tens-of-thousands-row CSVs from disk synchronously inside an
+    `async def` handler - that blocks FastAPI's single event loop, and
+    concurrent requests stack up past the frontend's 30s timeout. These
+    files only change once a day at most, so a short cache is always
+    same-day-accurate while cutting repeated parses. Returns a copy so
+    callers filtering/mutating in place never corrupt the cached df.
+    """
+    key = str(path)
+    now = time.monotonic()
+    cached = _csv_cache.get(key)
+    if cached is None or (now - cached[1]) > _CSV_CACHE_TTL_SECONDS:
+        df = pd.read_csv(path)
+        _csv_cache[key] = (df, now)
+        return df.copy()
+    return cached[0].copy()
 
 # Data paths - Find the project root dynamically
 def get_project_root():
@@ -66,7 +92,7 @@ def load_insider_signals(days: int = 90) -> list[dict]:
             logger.warning(f"Insider signals file not found: {signals_file}")
             return []
             
-        df = pd.read_csv(signals_file)
+        df = _read_csv_cached(signals_file)
         logger.info(f"Loaded {len(df)} rows from insider_daily_signals.csv")
         
         df['eventDate'] = pd.to_datetime(df['eventDate'], errors='coerce')
@@ -114,7 +140,7 @@ def load_insider_trades(days: int = 30, limit: int = 100) -> list[dict]:
             logger.warning(f"Insider trades file not found: {trades_file}")
             return []
             
-        df = pd.read_csv(trades_file)
+        df = _read_csv_cached(trades_file)
         logger.info(f"Loaded {len(df)} rows from insider_trades_with_flags.csv")
         
         df['transactionDate'] = pd.to_datetime(df['transactionDate'], errors='coerce')
@@ -182,13 +208,13 @@ def load_13f_signals(days: int = 180) -> list[dict]:
             logger.warning(f"13F signals file not found: {signals_file}")
             return []
             
-        df = pd.read_csv(signals_file)
+        df = _read_csv_cached(signals_file)
         logger.info(f"Loaded {len(df)} rows from 13f_asset_signals.csv")
         
         # Load holdings for names
         cusip_to_name = {}
         if holdings_file.exists():
-            holdings_df = pd.read_csv(holdings_file)
+            holdings_df = _read_csv_cached(holdings_file)
             cusip_to_name = dict(zip(holdings_df['cusip'], holdings_df['nameOfIssuer']))
         
         df['filingDate'] = pd.to_datetime(df['filingDate'], errors='coerce')
@@ -293,7 +319,7 @@ def load_fii_dii_daily() -> list[dict]:
             logger.warning(f"FII/DII cash file not found: {cash_file}")
             return []
             
-        df = pd.read_csv(cash_file)
+        df = _read_csv_cached(cash_file)
         logger.info(f"Loaded {len(df)} rows from fii_dii_cash_history.csv")
 
         # Normalize all trade_date values to YYYY-MM-DD
@@ -345,7 +371,7 @@ def load_fii_dii_outlook() -> dict:
             logger.warning(f"FII/DII outlook file not found: {outlook_file}")
             return {}
             
-        df = pd.read_csv(outlook_file)
+        df = _read_csv_cached(outlook_file)
         logger.info(f"Loaded {len(df)} rows from fii_dii_daily_outlook.csv")
         
         if df.empty:
@@ -380,7 +406,7 @@ def load_fii_dii_signals() -> list[dict]:
             logger.warning(f"FII/DII signals file not found: {signals_file}")
             return []
             
-        df = pd.read_csv(signals_file)
+        df = _read_csv_cached(signals_file)
         logger.info(f"Loaded {len(df)} rows from fii_dii_cash_signals.csv")
         
         result = []
