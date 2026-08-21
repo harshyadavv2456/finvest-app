@@ -117,6 +117,18 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install -r FinSight/backend/requirements.txt pytest
+      - name: Hydrate ticker universe from R2
+        working-directory: FinSight/backend/scripts
+        # discover_universe() in run_full_daily_intelligence.py is a
+        # deliberately LOCKED filesystem-only scanner (no R2 fallback by
+        # design - fails hard if data/{market}/ is empty). A fresh
+        # checkout's data/ dir is always empty (gitignored), so this job
+        # hard-failed with "FATAL: No valid stocks found" on every run
+        # since the R2 migration - masked earlier by a different startup-
+        # validator bug that failed first. Fix: populate local disk from
+        # R2 here, before the locked discovery logic runs, rather than
+        # touching that logic itself.
+        run: python hydrate_universe_from_r2.py
       - name: 9-layer quant intelligence pipeline
         working-directory: FinSight
         # Run as a module (-m), not a bare script path. `quant_system/types.py`
