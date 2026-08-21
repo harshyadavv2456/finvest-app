@@ -83,8 +83,16 @@ def build_cusip_map_from_screener() -> Dict[str, str]:
     try:
         tickers = list_tickers()
         logger.info(f"Building CUSIP map from {len(tickers)} tickers...")
-        
-        for ticker_meta in tickers[:500]:  # Limit to avoid slow startup
+
+        # Capped at 100, not 500: load_fundamentals() below self-heals from
+        # R2 on any local cache miss (utils/paths.py) - on a cold process
+        # right after a deploy, that's up to N individual R2 GETs before
+        # this @lru_cache'd map is built even once. Confirmed live
+        # (2026-08-21): the first /api/insider-flow/13f request after a
+        # fresh deploy timed out entirely because of this. 100 still
+        # covers every large-cap name that actually shows up in 13F
+        # filings; COMPANY_NAME_PATTERNS below covers the rest.
+        for ticker_meta in tickers[:100]:
             ticker = ticker_meta.get("ticker")
             market = ticker_meta.get("market")
             
