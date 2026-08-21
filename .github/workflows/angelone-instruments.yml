@@ -2,8 +2,16 @@ name: Refresh AngelOne Instrument Master
 
 # Standalone workflow (not a job inside daily-refresh.yml) so this can be
 # triggered independently, without waiting on the multi-hour market-data
-# crawl - useful when verifying this specific data source, and keeps the
-# ~20min instrument-master job from being coupled to a much longer run.
+# crawl - useful when verifying this specific data source.
+#
+# Confirmed live (2026-08-21): the resumable Range-based download in
+# refresh_angelone_instruments.py works and makes steady real progress
+# (verified: 13.6MB/37MB, ~37%, after 14 attempts over ~20min) - but each
+# individual connection only survives ~1-1.3MB before Angel One's server
+# drops it, so completing the full transfer needs well over 20 minutes.
+# A run got cancelled mid-download by the job's own timeout before this
+# was raised - the download logic was fine, the timeout was just too
+# tight for how slow (not broken, just slow) this particular source is.
 #
 # No AngelOne credentials needed - the instrument master is a public,
 # unauthenticated file. Only R2 credentials required, to publish the
@@ -25,7 +33,7 @@ env:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
