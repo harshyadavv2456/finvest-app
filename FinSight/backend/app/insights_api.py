@@ -21,6 +21,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, Query
+from fastapi.concurrency import run_in_threadpool
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/insights", tags=["Insights"])
@@ -101,11 +102,7 @@ def _classify_agreement(quant_intent: str, news_sentiment: Optional[str]) -> Dic
     return {"agreement": "neutral", "note": "No strong directional overlap to flag either way."}
 
 
-@router.get("/{market}/{ticker}")
-async def get_cross_signal_insight(market: str, ticker: str):
-    """The combined view: quant conviction + recent news sentiment +
-    whether they agree. This is the actionable surface, not just two
-    numbers side by side."""
+def _get_cross_signal_insight_sync(market: str, ticker: str) -> Dict[str, Any]:
     supabase = _get_supabase()
     if supabase is None:
         return {"status": "unavailable", "reason": "Supabase not configured"}
@@ -143,15 +140,16 @@ async def get_cross_signal_insight(market: str, ticker: str):
     }
 
 
-@router.get("/divergent")
-async def list_divergent_signals(
-    market: str = Query(default="US"),
-    limit: int = Query(default=20, ge=1, le=100),
-):
-    """Actionable list view: every ticker right now where the quant call
-    and recent news sentiment disagree. This is the "worth a second look"
-    feed, not a scored ranking - divergence is inherently a flag for human
-    judgment, not something to further auto-rank."""
+@router.get("/{market}/{ticker}")
+async def get_cross_signal_insight(market: str, ticker: str):
+    """The combined view: quant conviction + recent news sentiment +
+    whether they agree. This is the actionable surface, not just two
+    numbers side by side. Runs off the event loop for consistency with
+    /divergent, even though this single-ticker path is much cheaper."""
+    return await run_in_threadpool(_get_cross_signal_insight_sync, market, ticker)
+
+
+def _list_divergent_signals_sync(market: str, limit: int) -> Dict[str, Any]:
     supabase = _get_supabase()
     if supabase is None:
         return {"status": "unavailable", "reason": "Supabase not configured"}
@@ -184,3 +182,23 @@ async def list_divergent_signals(
             break
 
     return {"status": "ok", "market": market, "divergent_count": len(divergent), "signals": divergent}
+
+
+@router.get("/divergent")
+async def list_divergent_signals(
+    market: str = Query(default="US"),
+    limit: int = Query(default=20, ge=1, le=100),
+):
+    """Actionable list view: every ticker right now where the quant call
+    and recent news sentiment disagree. This is the "worth a second look"
+    feed, not a scored ranking - divergence is inherently a flag for human
+    judgment, not something to further auto-rank.
+
+    Runs off the event loop (run_in_threadpool) - this does up to ~500
+    individual synchronous Supabase queries (one per ticker's news
+    sentiment, an N+1 pattern that's its own follow-up to fix properly
+    with a batched query), confirmed live to take 30+ seconds. Without
+    this, that blocked every other concurrent request on this
+    single-worker deployment for the full 30s - the same class of bug
+    fixed earlier this session in insider_flow.py/announcements_api.py."""
+    return await run_in_threadpool(_list_divergent_signals_sync, market, limit)
