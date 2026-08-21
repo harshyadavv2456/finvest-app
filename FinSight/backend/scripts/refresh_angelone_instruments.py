@@ -53,25 +53,53 @@ def _load_env_file():
 
 
 def _download_with_retries() -> list:
-    last_error = None
-    for attempt in range(1, MAX_ATTEMPTS + 1):
+    """Confirmed live (2026-08-21): plain restart-from-scratch retries
+    fail reliably - the connection drops mid-stream on essentially every
+    attempt, on three different networks (a dev machine, Render, and
+    GitHub Actions' own runners), always at a different random byte
+    offset. Not a client-network problem; Angel One's file server (an
+    AWS ELB) seems to cut long-lived streaming responses for this
+    specific large file.
+
+    Fix: the server supports HTTP Range requests (confirmed: a
+    `curl -r 0-1023` returns 206 Partial Content), so resume from the
+    last successfully-received byte instead of restarting from zero on
+    every retry. Each individual attempt only needs to make forward
+    progress, not complete the whole file in one unbroken connection."""
+    buf = bytearray()
+    consecutive_no_progress = 0
+
+    for attempt in range(1, MAX_ATTEMPTS * 3 + 1):  # more attempts since each one may only add a small amount
+        headers = {"Range": f"bytes={len(buf)}-"} if buf else {}
         try:
-            log.info("Download attempt %d/%d...", attempt, MAX_ATTEMPTS)
-            resp = requests.get(INSTRUMENT_MASTER_URL, timeout=180, stream=True)
-            resp.raise_for_status()
-            chunks = []
+            resp = requests.get(INSTRUMENT_MASTER_URL, headers=headers, timeout=90, stream=True)
+            if resp.status_code not in (200, 206):
+                resp.raise_for_status()
+
+            before = len(buf)
             for chunk in resp.iter_content(chunk_size=256 * 1024):
                 if chunk:
-                    chunks.append(chunk)
-            raw = b"".join(chunks)
-            data = json.loads(raw)
-            log.info("Downloaded %d instruments successfully on attempt %d", len(data), attempt)
-            return data
+                    buf.extend(chunk)
+            gained = len(buf) - before
+            log.info("Attempt %d: +%d bytes (total %d)", attempt, gained, len(buf))
+            consecutive_no_progress = 0 if gained > 0 else consecutive_no_progress + 1
+
+            try:
+                data = json.loads(bytes(buf))
+                log.info("Download complete and valid JSON: %d instruments (%d bytes, %d attempts)", len(data), len(buf), attempt)
+                return data
+            except json.JSONDecodeError:
+                pass  # not done yet, more bytes needed - loop and resume
+
         except Exception as e:  # noqa: BLE001
-            last_error = e
-            log.warning("Attempt %d failed: %s", attempt, e)
-            time.sleep(min(5 * attempt, 30))
-    raise RuntimeError(f"Failed to download instrument master after {MAX_ATTEMPTS} attempts: {last_error}")
+            log.warning("Attempt %d failed at %d bytes: %s", attempt, len(buf), e)
+            consecutive_no_progress += 1
+
+        if consecutive_no_progress >= 5:
+            raise RuntimeError(f"No progress in 5 consecutive attempts, stuck at {len(buf)} bytes")
+        time.sleep(3)
+
+    raise RuntimeError(f"Failed to complete instrument master download after {MAX_ATTEMPTS * 3} attempts, stuck at {len(buf)} bytes")
 
 
 def _filter(instruments: list) -> list:
