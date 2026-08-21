@@ -58,7 +58,26 @@ class R2Client:
             endpoint_url=_env("R2_ENDPOINT_URL"),
             aws_access_key_id=_env("R2_ACCESS_KEY_ID"),
             aws_secret_access_key=_env("R2_SECRET_ACCESS_KEY"),
-            config=Config(signature_version="s3v4", retries={"max_attempts": 3, "mode": "standard"}),
+            # THE root cause of three separate backend-wide hangs tonight,
+            # found in production logs: no connect_timeout/read_timeout
+            # here meant boto3's defaults applied - 60s connect + 60s read,
+            # x3 retries ("standard" mode retries on timeouts too) = a
+            # single slow/stuck R2 call could block a thread for 6+
+            # minutes. The self-heal path in utils/paths.py fetches up to
+            # 6 files per ticker from a ThreadPoolExecutor(max_workers=8);
+            # with the full ~2300-ticker universe and no per-call timeout,
+            # one bad R2 response was enough to stall the whole pool far
+            # past the caller's intended 45s cap (confirmed live: still
+            # running after 84s+ on a fresh restart, walking tickers
+            # alphabetically from ADANIGREEN with no end in sight).
+            # 5s/10s here means a stuck call fails fast and the caller's
+            # own timeout logic actually gets to run.
+            config=Config(
+                signature_version="s3v4",
+                retries={"max_attempts": 2, "mode": "standard"},
+                connect_timeout=5,
+                read_timeout=10,
+            ),
             region_name="auto",
         )
 

@@ -372,35 +372,47 @@ def load_screener_data_from_files() -> List[Dict[str, Any]]:
     try:
         with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
             futures = [executor.submit(process_ticker, ticker_meta) for ticker_meta in tickers]
-            
+            pending = set(futures)
+
             completed = 0
             start_time = time.time()
             timeout = 45  # Don't spend more than 45 seconds loading data
-            
-            for future in concurrent.futures.as_completed(futures):
-                # Check timeout
-                if time.time() - start_time > timeout:
-                    logger.warning(f"Data loading timeout after {timeout}s, returning {len(rows)} rows loaded so far")
-                    # Cancel remaining futures
-                    for f in futures:
+
+            # `as_completed()` blocks until the NEXT future finishes with no
+            # overall deadline of its own - if every worker thread is stuck
+            # (e.g. a slow R2 call, before the r2_client.py timeout fix
+            # this could be minutes), the timeout check below never gets a
+            # chance to run and this cap was effectively unenforced -
+            # confirmed live: still running 84s+ after the intended 45s
+            # limit, walking the full ticker universe one file at a time.
+            # concurrent.futures.wait() with its own timeout is the
+            # correct primitive - it returns even if nothing completed.
+            while pending:
+                elapsed = time.time() - start_time
+                remaining = timeout - elapsed
+                if remaining <= 0:
+                    logger.warning(f"Data loading timeout after {timeout}s, returning {len(rows)} rows loaded so far ({len(pending)} still pending, cancelling)")
+                    for f in pending:
                         f.cancel()
                     break
-                
-                try:
-                    row = future.result(timeout=1)  # 1 second timeout per ticker
-                    if row:
-                        rows.append(row)
-                    completed += 1
-                    
-                    if completed % 100 == 0:
-                        elapsed = time.time() - start_time
-                        logger.info(f"Processed {completed}/{len(tickers)} tickers (elapsed: {elapsed:.1f}s)")
-                except concurrent.futures.TimeoutError:
-                    logger.warning(f"Ticker processing timeout, skipping")
-                    completed += 1
-                except Exception as e:
-                    logger.warning(f"Error processing future: {e}")
-                    completed += 1
+
+                done, pending = concurrent.futures.wait(pending, timeout=min(remaining, 5), return_when=concurrent.futures.FIRST_COMPLETED)
+
+                for future in done:
+                    try:
+                        row = future.result(timeout=1)  # 1 second timeout per ticker
+                        if row:
+                            rows.append(row)
+                        completed += 1
+
+                        if completed % 100 == 0:
+                            logger.info(f"Processed {completed}/{len(tickers)} tickers (elapsed: {time.time() - start_time:.1f}s)")
+                    except concurrent.futures.TimeoutError:
+                        logger.warning(f"Ticker processing timeout, skipping")
+                        completed += 1
+                    except Exception as e:
+                        logger.warning(f"Error processing future: {e}")
+                        completed += 1
     except Exception as e:
         logger.error(f"Error in parallel processing, falling back to sequential: {e}")
         # Fallback to sequential processing
