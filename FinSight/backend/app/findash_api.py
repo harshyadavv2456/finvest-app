@@ -49,6 +49,38 @@ def _parse_impacted_stocks(raw: Optional[str]) -> List[str]:
     return [t.strip() for t in raw.split(",") if t.strip()]
 
 
+# --------------------------------------------------------------- Index quotes
+
+def _index_quotes_sync() -> Dict[str, Any]:
+    from app.angelone_provider import get_index_quote
+
+    def yf_fallback(index: str):
+        try:
+            import yfinance as yf
+            sym = "^NSEI" if index == "NIFTY" else "^NSEBANK"
+            hist = yf.Ticker(sym).history(period="2d")
+            if hist is None or hist.empty:
+                return None
+            last = hist.iloc[-1]
+            prev = hist.iloc[-2] if len(hist) > 1 else last
+            return {"symbol": index, "ltp": float(last["Close"]), "open": float(prev["Close"]), "close": float(prev["Close"]), "source": "yfinance"}
+        except Exception:  # noqa: BLE001
+            return None
+
+    out = {}
+    for idx in ("NIFTY", "BANKNIFTY"):
+        q = get_index_quote(idx, yfinance_fallback=yf_fallback)
+        out[idx] = q or {"symbol": idx, "ltp": None, "source": "unavailable"}
+    return {"available": any(v.get("ltp") for v in out.values()), "indices": out}
+
+
+@router.get("/index-quotes")
+async def index_quotes():
+    """Live NIFTY/BANKNIFTY, AngelOne-first with yfinance fallback -
+    the FinDash header's real-time market status line."""
+    return await run_in_threadpool(_index_quotes_sync)
+
+
 # --------------------------------------------------------------- News feed
 
 def _news_feed_sync(sentiment: str, limit: int) -> Dict[str, Any]:

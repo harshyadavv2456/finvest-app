@@ -271,6 +271,28 @@ def get_ltp(tradingsymbol: str, exchange: str = "NSE", yfinance_fallback: Option
     return with_angelone_fallback(fallback)(_angelone_ltp)(tradingsymbol, exchange)
 
 
+_INDEX_TOKENS = {"NIFTY": "99926000", "BANKNIFTY": "99926009"}  # same static tokens angelone_option_chain.py uses
+
+
+def _angelone_index_quote(client, index: str) -> Optional[Dict]:
+    token = _INDEX_TOKENS.get(index)
+    if not token:
+        return None
+    resp = client.ltpData("NSE", index, token)
+    if not resp or not resp.get("status"):
+        return None
+    d = resp.get("data", {})
+    return {"symbol": index, "ltp": d.get("ltp"), "open": d.get("open"), "close": d.get("close"), "source": "angelone"}
+
+
+def get_index_quote(index: str, yfinance_fallback: Optional[Callable] = None) -> Optional[Dict]:
+    """NIFTY/BANKNIFTY live quote - indices use the well-known static
+    tokens (see angelone_option_chain.py's INDEX_TOKENS), not the
+    normal equity instrument-master lookup get_ltp() uses."""
+    fallback = yfinance_fallback or (lambda *a, **k: None)
+    return with_angelone_fallback(fallback)(_angelone_index_quote)(index)
+
+
 def _angelone_candles(client, tradingsymbol: str, exchange: str, interval: str, from_date: str, to_date: str) -> Optional[List]:
     token = get_instrument_token(tradingsymbol, exchange)
     if not token:
