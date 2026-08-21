@@ -138,11 +138,19 @@ async def lifespan(app: FastAPI):
     logger.info("Shutting down FinSight API Server...")
 
 
+from app.utils.json_sanitize import SanitizingJSONResponse
+
 app = FastAPI(
     title="FinSight API",
     description="Premium stock screening and analysis platform",
     version="1.0.0",
     lifespan=lifespan,
+    # Global NaN/Infinity guard - see json_sanitize.py's docstring. Applies
+    # to every endpoint's response by default; individual endpoints no
+    # longer need their own sanitize_nan() call (announcements_api.py and
+    # /api/stock-snapshot's local calls are now redundant-but-harmless,
+    # left in place rather than removed to avoid touching working code).
+    default_response_class=SanitizingJSONResponse,
 )
 
 # CORS middleware - Allow all origins for public API
@@ -2437,14 +2445,23 @@ async def get_stock_snapshot(market: str, ticker: str):
         
         with open(snapshot_path, 'r') as f:
             snapshot = json.load(f)
-        
+
+        # NIFTYBEES.NS (and presumably any other ticker whose snapshot
+        # picked up a literal NaN somewhere upstream) 500'd here - Python's
+        # json.load() accepts a bareword NaN even though it's not valid
+        # JSON, but FastAPI's outbound encoder rejects it. Confirmed live
+        # 2026-08-21: "ValueError: Out of range float values are not JSON
+        # compliant: nan" in server logs for this exact endpoint.
+        from app.utils.json_sanitize import sanitize_nan
+        snapshot = sanitize_nan(snapshot)
+
         return {
             "success": True,
             "version": INTELLIGENCE_VERSION,
             "last_updated": snapshot.get('as_of_date') or snapshot.get('generated_at'),
             "data": snapshot
         }
-        
+
     except Exception as e:
         logger.error(f"Error loading stock snapshot: {e}")
         return {
