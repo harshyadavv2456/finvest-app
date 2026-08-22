@@ -77,6 +77,19 @@ class R2Client:
                 retries={"max_attempts": 2, "mode": "standard"},
                 connect_timeout=5,
                 read_timeout=10,
+                # Found live (2026-08-22): upload_data_to_r2.py's 16
+                # parallel workers were hammering boto3's default 10-
+                # connection pool, logging dozens of "Connection pool is
+                # full, discarding connection" warnings per run. A discarded
+                # connection isn't reused - each one is silently rebuilt,
+                # which is wasteful and, worse, a plausible root cause of
+                # the intermittent single-ticker upload failures seen
+                # tonight (RELIANCE.NS fetched fine locally but 404'd live
+                # after a fully "successful" upload step). Match the pool
+                # to comfortably exceed the highest worker count used
+                # anywhere against this client (screener_snapshot.py and
+                # upload_data_to_r2.py both use 16).
+                max_pool_connections=32,
             ),
             region_name="auto",
         )
