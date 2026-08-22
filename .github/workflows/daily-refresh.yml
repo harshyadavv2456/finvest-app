@@ -215,8 +215,19 @@ jobs:
         # instead, where there's no colliding types.py.
         run: python -m quant_system.run_full_daily_intelligence --full-universe
       - name: Regression tests - gate before publishing
-        working-directory: FinSight/quant_system
-        run: python -m pytest tests/ -v
+        working-directory: FinSight
+        # Same types.py-shadowing bug as the main pipeline invocation
+        # above, found live in this run: running pytest with CWD=
+        # quant_system/ puts that directory in sys.path[0], so
+        # quant_system/types.py shadows the stdlib types module -
+        # "ImportError: cannot import name 'MappingProxyType' from
+        # partially initialized module 'types'". Same fix: run from
+        # FinSight/ (one level up) so quant_system/ is never CWD itself.
+        # This step failing wasn't a real regression - the 9-layer
+        # pipeline step right above it succeeded and produced real
+        # output (1463 files) for the first time tonight; this gate
+        # just couldn't even import to check it.
+        run: python -m pytest quant_system/tests/ -v
       - name: Sync intelligence to Supabase
         working-directory: FinSight/backend/scripts
         run: python sync_intelligence_to_supabase.py
