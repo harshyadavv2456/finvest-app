@@ -587,7 +587,14 @@ IMPORTANT:
 - Write as if you're preparing a professional equity research report."""
         
         # Call Groq API with retry logic
-        max_retries = 3
+        # Bounded down from max_retries=3 / timeout=90.0 (worst case ~273s of
+        # this single request blocking the entire server - see the
+        # threadpool offload in main.py's get_ai_insights for why that
+        # alone isn't enough. 90s was already generous for a real Groq
+        # completion; this keeps that headroom while capping the disaster
+        # case to something the health check can survive even if this
+        # request weren't offloaded at all.
+        max_retries = 2
         retry_delay = 1  # seconds
         last_error = None
         
@@ -609,7 +616,7 @@ IMPORTANT:
                     ],
                     temperature=0.3,
                     max_tokens=4000,
-                    timeout=90.0,  # Increased timeout for reliability
+                    timeout=25.0,  # was 90.0 - see max_retries comment above
                 )
                 # Phase 4 hardening (IMPLEMENTATION_NOTES.md): track usage
                 # so a bug here can't silently burn through Groq's limits.

@@ -1516,13 +1516,19 @@ async def get_ticker_quarterly(ticker: str):
     Date keys are in format "YYYY-MM-DD 00:00:00" (yfinance format).
     """
     try:
-        metadata = load_metadata(ticker)
-        market = metadata.get("market")
-        fundamentals = load_fundamentals(ticker, market)
-        
+        # Offloaded to a thread - can hit utils/paths.py's R2 self-heal
+        # fallback, which is a blocking network call; see get_ai_insights's
+        # comment for why that must not block this process's single event
+        # loop thread.
+        def _load():
+            metadata = load_metadata(ticker)
+            market = metadata.get("market")
+            return metadata, load_fundamentals(ticker, market)
+        metadata, fundamentals = await run_in_threadpool(_load)
+
         if not fundamentals:
             raise HTTPException(status_code=404, detail=f"No fundamentals found for {ticker}")
-        
+
         income_stmt = fundamentals.get("income_statement", {})
         balance_sheet = fundamentals.get("balance_sheet", {})
         cashflow = fundamentals.get("cashflow_statement", {})
@@ -1742,54 +1748,61 @@ async def get_ticker_news(ticker: str):
     """
     try:
         from app.news_utils import organize_news_by_relevance
-        
-        metadata = load_metadata(ticker)
-        market = metadata.get("market")
-        
-        # Get sector/industry from screener or fundamentals
-        sector = None
-        industry = None
-        try:
-            screener_df = get_screener_df()
-            if not screener_df.empty:
-                ticker_row = screener_df[screener_df["ticker"] == ticker]
-                if not ticker_row.empty:
-                    ticker_row_dict = ticker_row.iloc[0].to_dict()
-                    industry = ticker_row_dict.get("industry")
-                    sector = ticker_row_dict.get("sector")
-                    import pandas as pd
-                    if pd.isna(industry) if hasattr(pd, 'isna') else (industry != industry if isinstance(industry, float) else False):
-                        industry = None
-                    if pd.isna(sector) if hasattr(pd, 'isna') else (sector != sector if isinstance(sector, float) else False):
-                        sector = None
-                    if industry:
-                        industry = str(industry).strip()
-                    if sector:
-                        sector = str(sector).strip()
-        except Exception as e:
-            logger.debug(f"Could not get sector/industry from screener: {e}")
-        
-        # Fallback to fundamentals
-        if not industry or not sector:
+
+        # Offloaded to a thread - load_metadata/load_fundamentals/load_news
+        # can each hit utils/paths.py's R2 self-heal fallback, a blocking
+        # network call; see get_ai_insights's comment for why that must not
+        # block this process's single event loop thread.
+        def _load_and_organize():
+            metadata = load_metadata(ticker)
+            market = metadata.get("market")
+
+            # Get sector/industry from screener or fundamentals
+            sector = None
+            industry = None
             try:
-                fundamentals = load_fundamentals(ticker, market)
-                if fundamentals:
-                    info = fundamentals.get("info", {})
-                    if not industry:
-                        industry = (info.get("industry") or info.get("industryDisp") or 
-                                  info.get("industryKey") or info.get("industryClassification"))
-                    if not sector:
-                        sector = (info.get("sector") or info.get("sectorDisp") or 
-                                info.get("sectorKey") or info.get("sectorClassification"))
-            except Exception:
-                pass
-        
-        # Load all news for this ticker
-        news_list = load_news(ticker, market)
-        
-        # Organize by relevance and add sentiment
-        organized = organize_news_by_relevance(news_list, ticker, sector, industry)
-        
+                screener_df = get_screener_df()
+                if not screener_df.empty:
+                    ticker_row = screener_df[screener_df["ticker"] == ticker]
+                    if not ticker_row.empty:
+                        ticker_row_dict = ticker_row.iloc[0].to_dict()
+                        industry = ticker_row_dict.get("industry")
+                        sector = ticker_row_dict.get("sector")
+                        import pandas as pd
+                        if pd.isna(industry) if hasattr(pd, 'isna') else (industry != industry if isinstance(industry, float) else False):
+                            industry = None
+                        if pd.isna(sector) if hasattr(pd, 'isna') else (sector != sector if isinstance(sector, float) else False):
+                            sector = None
+                        if industry:
+                            industry = str(industry).strip()
+                        if sector:
+                            sector = str(sector).strip()
+            except Exception as e:
+                logger.debug(f"Could not get sector/industry from screener: {e}")
+
+            # Fallback to fundamentals
+            if not industry or not sector:
+                try:
+                    fundamentals = load_fundamentals(ticker, market)
+                    if fundamentals:
+                        info = fundamentals.get("info", {})
+                        if not industry:
+                            industry = (info.get("industry") or info.get("industryDisp") or
+                                      info.get("industryKey") or info.get("industryClassification"))
+                        if not sector:
+                            sector = (info.get("sector") or info.get("sectorDisp") or
+                                    info.get("sectorKey") or info.get("sectorClassification"))
+                except Exception:
+                    pass
+
+            # Load all news for this ticker
+            news_list = load_news(ticker, market)
+
+            # Organize by relevance and add sentiment
+            return organize_news_by_relevance(news_list, ticker, sector, industry), sector, industry
+
+        organized, sector, industry = await run_in_threadpool(_load_and_organize)
+
         # Get sector/peer news
         sector_peer_news = []
         try:
@@ -2025,48 +2038,60 @@ async def get_ai_insights(ticker: str, request: Optional[AIInsightsRequest] = No
                 key_metrics=[],
             )
         
-        metadata = load_metadata(ticker)
-        market = metadata.get("market")
-        
-        # Load data - use sequential for reliability (pandas/pyarrow thread safety)
-        # Parallel loading can cause issues with pandas DataFrames
-        daily_df = load_daily(ticker, market)
-        tech_df = load_technicals(ticker, market)
-        fundamentals = load_fundamentals(ticker, market)
-        news = load_news(ticker, market)
-        
-        # Get screener row - ensure it's a dict, not a Pydantic model
-        screener_row_dict = compute_screener_row(
-            ticker=ticker,
-            daily_df=daily_df,
-            tech_df=tech_df,
-            fundamentals=fundamentals,
-            metadata=metadata,
-        )
-        # Ensure screener_row is a plain dict (not Pydantic model)
-        if hasattr(screener_row_dict, 'dict'):
-            screener_row = screener_row_dict.dict()
-        elif hasattr(screener_row_dict, '__dict__'):
-            screener_row = screener_row_dict.__dict__
-        else:
-            screener_row = screener_row_dict
-        
-        # Ensure screener_row is a proper dict and handle any special types
-        if not isinstance(screener_row, dict):
-            screener_row = dict(screener_row) if screener_row else {}
-        
-        # Convert any pandas Series or special types to plain Python types
-        import pandas as pd
-        screener_row_clean = {}
-        for key, value in screener_row.items():
-            if pd.isna(value) if hasattr(pd, 'isna') else (value != value if isinstance(value, float) else False):
-                screener_row_clean[key] = None
-            elif hasattr(value, 'item'):  # numpy scalar
-                screener_row_clean[key] = value.item()
+        # Root-caused live (2026-08-22): this whole block - metadata/daily/
+        # technicals/fundamentals/news loads (each can hit the sequential-
+        # across-8-markets R2 self-heal in utils/paths.py) plus the Groq LLM
+        # call below - ran synchronously inside this `async def` handler on
+        # a single uvicorn worker, so a slow AI-insights request could
+        # freeze every other request on the entire server, including the
+        # health check. Offloaded to a thread so the single event loop
+        # thread stays free for other requests while this runs.
+        def _load_ai_insight_inputs():
+            metadata = load_metadata(ticker)
+            market = metadata.get("market")
+
+            # Load data - use sequential for reliability (pandas/pyarrow thread safety)
+            # Parallel loading can cause issues with pandas DataFrames
+            daily_df = load_daily(ticker, market)
+            tech_df = load_technicals(ticker, market)
+            fundamentals = load_fundamentals(ticker, market)
+            news = load_news(ticker, market)
+
+            # Get screener row - ensure it's a dict, not a Pydantic model
+            screener_row_dict = compute_screener_row(
+                ticker=ticker,
+                daily_df=daily_df,
+                tech_df=tech_df,
+                fundamentals=fundamentals,
+                metadata=metadata,
+            )
+            # Ensure screener_row is a plain dict (not Pydantic model)
+            if hasattr(screener_row_dict, 'dict'):
+                screener_row = screener_row_dict.dict()
+            elif hasattr(screener_row_dict, '__dict__'):
+                screener_row = screener_row_dict.__dict__
             else:
-                screener_row_clean[key] = value
-        screener_row = screener_row_clean
-        
+                screener_row = screener_row_dict
+
+            # Ensure screener_row is a proper dict and handle any special types
+            if not isinstance(screener_row, dict):
+                screener_row = dict(screener_row) if screener_row else {}
+
+            # Convert any pandas Series or special types to plain Python types
+            import pandas as pd
+            screener_row_clean = {}
+            for key, value in screener_row.items():
+                if pd.isna(value) if hasattr(pd, 'isna') else (value != value if isinstance(value, float) else False):
+                    screener_row_clean[key] = None
+                elif hasattr(value, 'item'):  # numpy scalar
+                    screener_row_clean[key] = value.item()
+                else:
+                    screener_row_clean[key] = value
+            screener_row = screener_row_clean
+            return daily_df, tech_df, fundamentals, news, screener_row
+
+        daily_df, tech_df, fundamentals, news, screener_row = await run_in_threadpool(_load_ai_insight_inputs)
+
         # Load peers for comparison
         peers_data = None
         try:
@@ -2082,7 +2107,8 @@ async def get_ai_insights(ticker: str, request: Optional[AIInsightsRequest] = No
         # Use analyst-grade function
         from app.ai_analysis import generate_analyst_insights
         try:
-            insights = generate_analyst_insights(
+            insights = await run_in_threadpool(
+                generate_analyst_insights,
                 ticker=ticker,
                 screener_row=screener_row,
                 daily_df=daily_df,
