@@ -1678,13 +1678,26 @@ class FullUniverseIntelligenceGenerator:
             )
             
             # Price context
-            last_price = float(prices_df['close'].iloc[-1])
-            price_date = str(prices_df['date'].iloc[-1].date() if hasattr(prices_df['date'].iloc[-1], 'date') 
-                           else prices_df['date'].iloc[-1])
-            
-            price_change_1d = float(prices_df['close'].pct_change(1).iloc[-1]) if len(prices_df) > 1 else None
-            price_change_5d = float(prices_df['close'].pct_change(5).iloc[-1]) if len(prices_df) > 5 else None
-            price_change_20d = float(prices_df['close'].pct_change(20).iloc[-1]) if len(prices_df) > 20 else None
+            # Root-caused live (2026-08-22): the daily-refresh 'intelligence' job
+            # was failing test_no_nan_or_inf_in_numeric_fields with 438 NaN
+            # last_price fields, mostly IN tickers. Same NaN-tail-row bug already
+            # fixed tonight in stock_dashboard_api.py/screener_engine.py, just not
+            # this file too: .iloc[-1] on the raw 'close' column returns NaN if the
+            # most recent row is incomplete (in-progress session, or a pipeline
+            # write landing mid-update). dropna() once, use consistently, and skip
+            # (return None, same as this function's other insufficient-data exits)
+            # rather than ever emit a NaN price into the published intelligence JSON.
+            clean_prices_df = prices_df.dropna(subset=['close'])
+            if clean_prices_df.empty:
+                logger.warning(f"{ticker}: no valid (non-NaN) close price available - skipping")
+                return None
+            last_price = float(clean_prices_df['close'].iloc[-1])
+            price_date = str(clean_prices_df['date'].iloc[-1].date() if hasattr(clean_prices_df['date'].iloc[-1], 'date')
+                           else clean_prices_df['date'].iloc[-1])
+
+            price_change_1d = float(clean_prices_df['close'].pct_change(1).iloc[-1]) if len(clean_prices_df) > 1 else None
+            price_change_5d = float(clean_prices_df['close'].pct_change(5).iloc[-1]) if len(clean_prices_df) > 5 else None
+            price_change_20d = float(clean_prices_df['close'].pct_change(20).iloc[-1]) if len(clean_prices_df) > 20 else None
             
             data_quality = 'good' if len(prices_df) > 500 else 'moderate' if len(prices_df) > 200 else 'limited'
             
