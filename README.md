@@ -4,7 +4,16 @@ A financial intelligence platform combining a quantitative decision engine, real
 
 **Live at:** [finvest.fintaxlife.com](https://finvest.fintaxlife.com)
 
-## What's in here
+## What this does for you
+
+- **Screen ~2,300 stocks across 8 markets** (US, India, UK, Hong Kong, China, Japan, Australia, Singapore) by 40+ filters — valuation, quality, momentum, volatility, technicals — instead of checking each market separately.
+- **Open any stock and see the full picture in one place**: price chart with technical overlays, fundamentals, quarterly results, peer comparison, recent news, and a computed verdict (intrinsic value vs. market price, market regime, conviction score) — no tab-hopping between a charting site, a fundamentals site, and a news site.
+- **Ask for AI-generated analysis** on any ticker — a bull case, bear case, key risks, and what to watch, grounded in that stock's actual current data rather than a generic chatbot answer.
+- **See what insiders and institutions are actually doing** — SEC Form 4 insider trades and 13F hedge fund positions, refreshed daily, explained in plain English (the Hedge Fund Explorer's "what this means" banner), not just raw filing tables.
+- **Track India-specific flows most platforms skip**: daily FII/DII (foreign/domestic institutional investor) flows and BSE/NSE corporate announcements.
+- **Everything refreshes automatically, daily** — you're not looking at stale data; the whole pipeline (prices, fundamentals, news, insider filings, institutional flows, the quant signal engine) re-runs every day without anyone manually triggering it.
+
+## What's in here (architecture, for contributors)
 
 - **Quant intelligence engine** (`FinSight/quant_system/`) — a 9-layer pipeline (regime detection, signal efficacy, probability modeling, backtesting, decision engine, LLM interpretation, portfolio risk) producing daily position-intent recommendations across US and Indian equity markets.
 - **News intelligence** — a continuous news pipeline (sentiment/impact scoring across Reuters, Moneycontrol, Economic Times, CNBC, and others) synced into the same data layer as the quant engine.
