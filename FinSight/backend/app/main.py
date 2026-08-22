@@ -2057,14 +2057,35 @@ async def get_ai_insights(ticker: str, request: Optional[AIInsightsRequest] = No
             fundamentals = load_fundamentals(ticker, market)
             news = load_news(ticker, market)
 
-            # Get screener row - ensure it's a dict, not a Pydantic model
-            screener_row_dict = compute_screener_row(
-                ticker=ticker,
-                daily_df=daily_df,
-                tech_df=tech_df,
-                fundamentals=fundamentals,
-                metadata=metadata,
-            )
+            # Get screener row. Prefer the nightly-precomputed row from the
+            # cached screener snapshot (a cheap in-memory lookup) over
+            # calling compute_screener_row() fresh - that function computes
+            # ~70 metrics from raw dataframes on every single call, real CPU
+            # work that on Render's free-tier 0.1 CPU instance was enough by
+            # itself to stall the whole single-worker process for other
+            # requests, even with this whole block already offloaded to a
+            # thread (found live 2026-08-22: threading only fixes I/O-wait,
+            # not GIL-bound CPU work under real CPU throttling). Only falls
+            # back to the expensive fresh computation for a ticker the
+            # nightly snapshot doesn't have yet.
+            screener_row_dict = None
+            try:
+                cached_df = get_screener_df()
+                if not cached_df.empty:
+                    cached_row = cached_df[cached_df["ticker"] == ticker]
+                    if not cached_row.empty:
+                        screener_row_dict = cached_row.iloc[0].to_dict()
+            except Exception as e:
+                logger.debug(f"Cached screener lookup failed for {ticker}, falling back: {e}")
+
+            if screener_row_dict is None:
+                screener_row_dict = compute_screener_row(
+                    ticker=ticker,
+                    daily_df=daily_df,
+                    tech_df=tech_df,
+                    fundamentals=fundamentals,
+                    metadata=metadata,
+                )
             # Ensure screener_row is a plain dict (not Pydantic model)
             if hasattr(screener_row_dict, 'dict'):
                 screener_row = screener_row_dict.dict()
