@@ -1996,21 +1996,66 @@ async def get_sector_news(ticker: str, limit: Optional[int] = Query(20)):
         }
 
 
+# /ai-insights is the one endpoint that does real CPU work (compute a
+# screener row, build a large prompt, parse a Groq response) on Render's
+# free-tier 0.1-CPU instance - found live (2026-08-22) that a single call
+# still degrades every OTHER concurrent request on this single-worker
+# process (News/Quarterly hung/503'd while one AI-insights call ran, even
+# after that call was itself offloaded to a thread - CPU throttling isn't
+# fixable by threading, only by not letting two calls compete for the CPU
+# at once, or by not doing the work at all when we already have a fresh
+# answer). Two mitigations, both explicitly chosen by the user over a paid
+# plan upgrade or a separate worker service:
+#   1. Only one /ai-insights call may be in flight at a time process-wide;
+#      a second concurrent request is rejected immediately (not queued)
+#      with a clear "busy" response instead of competing for the CPU.
+#   2. Each ticker's result is cached for 15 minutes so repeat requests
+#      (a user reopening the same stock, multiple users on the same
+#      popular ticker) skip the Groq call and the CPU work entirely.
+_AI_INSIGHTS_BUSY = False
+_AI_INSIGHTS_CACHE: dict = {}  # ticker -> (timestamp, AIInsightsResponse)
+_AI_INSIGHTS_CACHE_TTL = 900  # 15 minutes
+
+
 @app.post("/api/ticker/{ticker}/ai-insights", response_model=AIInsightsResponse)
 @app.get("/api/ticker/{ticker}/ai-insights", response_model=AIInsightsResponse)
 async def get_ai_insights(ticker: str, request: Optional[AIInsightsRequest] = None):
     """
     Generate AI insights for a ticker using Groq LLM.
-    
+
     Requires GROQ_API_KEY to be set in environment or .env file.
     If not configured, returns an error message in the response.
-    
+
     Uses:
     - Latest screener metrics (valuation, returns, quality)
     - Recent daily prices and technical indicators
     - Recent news headlines (from news.json)
     - Optional strategy context from request
+
+    Rate-limited to one in-flight call process-wide and cached 15 minutes
+    per ticker - see the module-level comment above _AI_INSIGHTS_BUSY.
     """
+    global _AI_INSIGHTS_BUSY
+
+    cache_entry = _AI_INSIGHTS_CACHE.get(ticker)
+    if cache_entry and (time.time() - cache_entry[0]) < _AI_INSIGHTS_CACHE_TTL:
+        return cache_entry[1]
+
+    if _AI_INSIGHTS_BUSY:
+        return AIInsightsResponse(
+            summary="AI analysis is busy processing another request right now. Please try again in a moment.",
+            bull_case="",
+            bear_case="",
+            key_points=[],
+            risk_factors=[],
+            metrics_to_watch=[],
+            time_horizon="N/A",
+            risk_profile="N/A",
+            data_warnings=["AI analysis busy - only one request can run at a time on this server. Try again shortly."],
+            key_metrics=[],
+        )
+
+    _AI_INSIGHTS_BUSY = True
     try:
         # Check if Groq is configured - with fallback to hardcoded key
         api_key = settings.GROQ_API_KEY
@@ -2141,7 +2186,9 @@ async def get_ai_insights(ticker: str, request: Optional[AIInsightsRequest] = No
             )
             
             # Validate response matches schema
-            return AIInsightsResponse(**insights)
+            result = AIInsightsResponse(**insights)
+            _AI_INSIGHTS_CACHE[ticker] = (time.time(), result)  # only cache real successes
+            return result
         except Exception as ai_error:
             logger.error(f"Error in generate_analyst_insights for {ticker}: {ai_error}", exc_info=True)
             # Return structured error instead of crashing
@@ -2174,6 +2221,8 @@ async def get_ai_insights(ticker: str, request: Optional[AIInsightsRequest] = No
             data_warnings=[f"Error: {str(e)}"],
             key_metrics=[],
         )
+    finally:
+        _AI_INSIGHTS_BUSY = False
 
 
 # ============================================================================
