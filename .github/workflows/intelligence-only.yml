@@ -19,6 +19,26 @@ name: Intelligence Only (manual test run)
 on:
   workflow_dispatch: {}
 
+env:
+  # daily-refresh.yml injects these at workflow level too - missed on the
+  # first version of this file, which made "Hydrate ticker universe from
+  # R2" silently no-op (hydrate_universe_from_r2.py treats missing R2
+  # creds as "local dev, not a failure" by design) and left FinSight/data/
+  # empty, failing pipeline startup validation before last_price was even
+  # reached. Not a pipeline bug - this file's own oversight, fixed here.
+  R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+  R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+  R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+  R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+  R2_ENDPOINT_URL: ${{ secrets.R2_ENDPOINT_URL }}
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+  FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+  GROQ_API_KEYS: ${{ secrets.GROQ_API_KEYS }}
+  FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+  FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
+  DATA_GOV_IN_API_KEY: ${{ secrets.DATA_GOV_IN_API_KEY }}
+
 jobs:
   intelligence:
     runs-on: ubuntu-latest
