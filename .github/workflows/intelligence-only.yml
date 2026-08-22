@@ -1,0 +1,51 @@
+name: Intelligence Only (manual test run)
+
+# Standalone copy of daily-refresh.yml's `intelligence` job, with the
+# `needs: [market-data, insider-flow, fii-dii]` dependency removed, so it
+# can be triggered on demand and finish in minutes instead of waiting on
+# market-data's multi-hour run first. Exists purely to verify a fix to the
+# intelligence pipeline (e.g. the last_price NaN fix, 2026-08-22) quickly,
+# without burning ~3 hours re-running the whole daily-refresh pipeline just
+# to reach this one job. "Hydrate ticker universe from R2" pulls whatever
+# ticker data is currently in R2 (from the most recent successful
+# market-data run, not necessarily one from this same workflow run), so
+# this is a real, valid test of the pipeline logic itself - not a mock.
+#
+# Not part of the daily schedule - workflow_dispatch only. If this keeps
+# proving useful beyond one-off verification, worth reconsidering whether
+# it should stay a separate file or get folded back into daily-refresh.yml
+# with the dependency made conditional instead.
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  intelligence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r FinSight/backend/requirements.txt pytest
+      - name: Hydrate ticker universe from R2
+        working-directory: FinSight/backend/scripts
+        run: python hydrate_universe_from_r2.py
+      - name: 9-layer quant intelligence pipeline
+        working-directory: FinSight
+        run: python -m quant_system.run_full_daily_intelligence --full-universe
+      - name: Regression tests - gate before publishing
+        working-directory: FinSight
+        run: python -m pytest quant_system/tests/ -v
+      - name: Sync intelligence to Supabase
+        working-directory: FinSight/backend/scripts
+        run: python sync_intelligence_to_supabase.py
+      - name: Upload intelligence output artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: intelligence-output-test
+          path: FinSight/public/intelligence/
+          retention-days: 1
+          if-no-files-found: warn
