@@ -51,8 +51,21 @@ def _env(name: str) -> str:
 class R2Client:
     """Thin wrapper around boto3's S3-compatible client, pointed at R2."""
 
+    # Safety stop, 1GB below the actual 10GB free-tier cap - see the module
+    # docstring: going over 10GB auto-charges the card on file with no
+    # warning gate. Checked once per process (lazily, on first write) rather
+    # than before every single file - a full bucket listing scan costs real
+    # R2 list operations and latency, and this only needs to catch "already
+    # over budget for this whole run", not gate every individual write.
+    # Live-checked 2026-08-22: bucket was at 0.875GB (8.75% of the cap) -
+    # comfortable headroom, this is a safety net for future growth, not a
+    # response to an active problem.
+    SAFETY_LIMIT_BYTES = int(9.0 * 1024 ** 3)
+
     def __init__(self):
         self.bucket = _env("R2_BUCKET_NAME")
+        self._budget_checked = False
+        self._over_budget = False
         self._s3 = boto3.client(
             "s3",
             endpoint_url=_env("R2_ENDPOINT_URL"),
@@ -96,19 +109,57 @@ class R2Client:
 
     # ---------------------------------------------------------------- writes
 
-    def put_bytes(self, key: str, data: bytes, content_type: str = "application/octet-stream") -> None:
-        """Overwrite the object at `key` with `data`. No versioning, no history."""
+    def _budget_ok(self) -> bool:
+        """True if this process may keep writing to R2. Checks the real
+        bucket size once (cached for the rest of this process's life) and
+        refuses further writes if we're at/over SAFETY_LIMIT_BYTES, so a
+        runaway upload run cuts itself off before the free tier's 10GB cap
+        starts auto-charging - never silently pays to keep going."""
+        if self._budget_checked:
+            return not self._over_budget
+        self._budget_checked = True
+        try:
+            size = self.approx_bucket_size_bytes()
+        except Exception as e:  # noqa: BLE001 - a failed check must not itself block writes
+            logger.warning("R2 budget check failed (%s) - allowing writes to proceed rather than blocking on a check failure", e)
+            self._over_budget = False
+            return True
+        self._over_budget = size >= self.SAFETY_LIMIT_BYTES
+        if self._over_budget:
+            logger.error(
+                "R2 SAFETY CUTOFF: bucket at %.2fGB, at/over the %.1fGB safety limit "
+                "(free tier caps at 10GB and auto-charges with no warning past it). "
+                "Refusing all further R2 writes for the rest of this run. Delete old/"
+                "unused data, or raise R2Client.SAFETY_LIMIT_BYTES deliberately if this "
+                "growth is expected and you've accepted the cost.",
+                size / (1024 ** 3), self.SAFETY_LIMIT_BYTES / (1024 ** 3),
+            )
+        else:
+            logger.info("R2 budget check: %.2fGB / %.1fGB safety limit (10GB actual cap) - OK",
+                        size / (1024 ** 3), self.SAFETY_LIMIT_BYTES / (1024 ** 3))
+        return not self._over_budget
+
+    def put_bytes(self, key: str, data: bytes, content_type: str = "application/octet-stream") -> bool:
+        """Overwrite the object at `key` with `data`. No versioning, no history.
+        Returns False without writing if the safety cutoff has tripped."""
+        if not self._budget_ok():
+            return False
         self._s3.put_object(Bucket=self.bucket, Key=key, Body=data, ContentType=content_type)
         logger.debug("R2 put_object: %s (%d bytes)", key, len(data))
+        return True
 
-    def put_json(self, key: str, obj: dict) -> None:
-        self.put_bytes(key, json.dumps(obj, default=str).encode("utf-8"), content_type="application/json")
+    def put_json(self, key: str, obj: dict) -> bool:
+        return self.put_bytes(key, json.dumps(obj, default=str).encode("utf-8"), content_type="application/json")
 
-    def put_file(self, key: str, local_path: Path) -> None:
-        """Upload a local file's current contents, overwriting the R2 key."""
+    def put_file(self, key: str, local_path: Path) -> bool:
+        """Upload a local file's current contents, overwriting the R2 key.
+        Returns False without writing if the safety cutoff has tripped."""
+        if not self._budget_ok():
+            return False
         with open(local_path, "rb") as f:
             self._s3.upload_fileobj(f, self.bucket, key)
         logger.debug("R2 put_file: %s <- %s", key, local_path)
+        return True
 
     # ----------------------------------------------------------------- reads
 
