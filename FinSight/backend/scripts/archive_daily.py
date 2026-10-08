@@ -339,6 +339,11 @@ def main():
     days = sorted({k.split("/")[2] for k in a.existing if k.startswith(f"{ROOT}/intelligence/")})
     summary["verdict_days_total"] = len(days)
     summary["verdict_days_range"] = [days[0], days[-1]] if days else None
+    if days:
+        d0, d1 = dt.date.fromisoformat(days[0]), dt.date.fromisoformat(days[-1])
+        have = set(days)
+        summary["verdict_days_missing"] = [(d0 + dt.timedelta(i)).isoformat() for i in range((d1 - d0).days + 1)
+                                           if (d0 + dt.timedelta(i)).isoformat() not in have]
     # append to audit log (read-modify-write of a small file)
     prev = a.c.get_bytes(f"{ROOT}/_state/runs.jsonl") or b""
     if not args.dry_run:
