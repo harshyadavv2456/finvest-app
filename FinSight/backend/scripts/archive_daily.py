@@ -260,6 +260,8 @@ def archive_rolling(a, run_date, tickers):
             if new.empty:
                 continue
             new = new.copy()
+            if "ticker" in new.columns:
+                new = new.drop(columns=["ticker"])
             new.insert(0, "ticker", t)
             by_market[m].append(new)
             wm[key] = str(ts.max())
