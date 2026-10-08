@@ -1,0 +1,48 @@
+name: Daily Archive (append-only)
+
+# Copies everything daily-refresh.yml overwrites (every stock's verdict,
+# screener/alpha/announcements, 1-minute bars, news, fundamentals, macro)
+# into R2 under archive/ - never overwritten, never deleted.
+# See FinSight/backend/scripts/archive_daily.py for the layout.
+
+on:
+  # Exact timing: fires the moment the daily refresh finishes (whatever time
+  # GitHub actually starts it - observed 10:15-11:30 IST start, ~13:00-14:30 finish).
+  workflow_run:
+    workflows: ["Daily Data Refresh"]
+    types: [completed]
+  # Safety net: 16:30 IST, in case the refresh never fires or the trigger is missed.
+  schedule:
+    - cron: "0 11 * * *"
+  workflow_dispatch:
+    inputs:
+      backfill:
+        description: "Also recover past days from Supabase intelligence_history"
+        type: boolean
+        default: false
+
+concurrency:
+  group: daily-archive
+  cancel-in-progress: false
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+      R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+      R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      R2_ENDPOINT_URL: ${{ secrets.R2_ENDPOINT_URL }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install "boto3>=1.34.0" "pandas==2.2.3" "pyarrow>=18.0.0" "supabase>=2.7.0"
+      - name: Archive today's outputs
+        working-directory: FinSight/backend/scripts
+        run: python archive_daily.py ${{ (github.event_name == 'workflow_dispatch' && inputs.backfill) && '--backfill' || '' }}
