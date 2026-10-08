@@ -342,10 +342,24 @@ def main():
     if not args.dry_run:
         a.c.put_bytes(f"{ROOT}/_state/runs.jsonl", prev + (json.dumps(summary) + "\n").encode(), "application/json")
     log.info("SUMMARY %s", json.dumps(summary))
+    _gh("notice", "SUMMARY " + json.dumps(summary)[:3500])
     if not summary["verdicts"]:
+        _gh("error", "No verdicts archived - bundles/static_bundle.zip missing or had no stock files")
         return 1
     return 0
 
 
+def _gh(level, msg):
+    # GitHub annotation (visible in the run UI and via the checks API)
+    if os.environ.get("GITHUB_ACTIONS"):
+        print(f"::{level}::" + str(msg).replace("%", "%25").replace("\r", "").replace("\n", "%0A"), flush=True)
+
+
 if __name__ == "__main__":
-    sys.exit(main())
+    import traceback
+    try:
+        rc = main()
+    except Exception:
+        _gh("error", traceback.format_exc()[-3000:])
+        raise
+    sys.exit(rc)
