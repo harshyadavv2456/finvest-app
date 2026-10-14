@@ -1,12 +1,14 @@
-name: News Stream (5 min)
+name: News Stream (5 min loop)
 
 # Polls ~30 public finance RSS/Atom feeds every 5 minutes and appends only NEW items to R2 under
 # news_stream/{date}/{HHMMSS}.jsonl.gz with first_seen_utc timestamps (see FinSight/backend/scripts/news_stream.py).
 # Consumed by the NeuroTrom-finvest model for news -> market-reaction features.
-# GitHub's scheduler can start runs a few minutes late under load; first_seen_utc records the real detection time.
+# GitHub's cron is unreliable for short intervals (measured: median gap ~5 HOURS between scheduled runs). So each job runs a long loop that
+# polls every 5 minutes internally (345 min, under the 6h limit). The hourly trigger keeps one run queued behind the active one (concurrency
+# group, no cancel), so a new loop starts the moment the previous ends. first_seen_utc records the real detection time.
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "7 * * * *"
   workflow_dispatch: {}
 
 concurrency:
@@ -16,7 +18,7 @@ concurrency:
 jobs:
   stream:
     runs-on: ubuntu-latest
-    timeout-minutes: 4
+    timeout-minutes: 355
     env:
       R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
       R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
@@ -33,4 +35,4 @@ jobs:
           cache: pip
           cache-dependency-path: FinSight/backend/scripts/news_stream.py
       - run: pip install "boto3>=1.34" "feedparser>=6.0" "requests>=2.31"
-      - run: python FinSight/backend/scripts/news_stream.py
+      - run: python FinSight/backend/scripts/news_stream.py --loop 345

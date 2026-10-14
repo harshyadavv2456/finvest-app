@@ -129,5 +129,24 @@ def main(dry=False):
     s3.put_object(Bucket=bucket, Key=STATE_KEY, Body=gzip.compress(json.dumps(seen).encode()))
 
 
+def loop(minutes, every=300):
+    """Poll every `every` seconds for `minutes` minutes (one long GitHub job). Cadence no longer depends on GitHub's unreliable cron."""
+    end = time.time() + minutes * 60; n = 0
+    while time.time() < end:
+        t0 = time.time()
+        try:
+            main(False)
+        except SystemExit as e:
+            print("::warning::cycle skipped:", e)
+        except Exception as e:
+            print("::warning::cycle failed:", str(e)[:150])
+        n += 1
+        time.sleep(max(1, every - (time.time() - t0)))
+    print(f"loop finished after {n} cycles")
+
+
 if __name__ == "__main__":
-    main(dry="--dry-run" in sys.argv)
+    if "--loop" in sys.argv:
+        loop(float(sys.argv[sys.argv.index("--loop") + 1]) if len(sys.argv) > sys.argv.index("--loop") + 1 else 345)
+    else:
+        main(dry="--dry-run" in sys.argv)
