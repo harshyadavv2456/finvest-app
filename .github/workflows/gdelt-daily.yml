@@ -1,0 +1,35 @@
+name: GDELT Daily (geopolitics aggregates)
+
+# Aggregates GDELT 1.0 daily event files (conflict/cooperation/tone by country) into one small parquet in R2 (macro/gdelt_daily.parquet).
+# Backfills from 2016 in resumable chunks, then adds each new day. Raw files are streamed and discarded.
+on:
+  schedule:
+    - cron: "20 4 * * *"
+  workflow_dispatch:
+    inputs:
+      max_days:
+        description: "max missing days to fetch this run"
+        default: "1200"
+
+jobs:
+  gdelt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    concurrency:
+      group: gdelt
+      cancel-in-progress: false
+    env:
+      R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+      R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      R2_ENDPOINT_URL: ${{ secrets.R2_ENDPOINT_URL }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: FinSight/backend/scripts/gdelt_daily.py
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas pyarrow boto3 requests
+      - run: python FinSight/backend/scripts/gdelt_daily.py --max-days ${{ inputs.max_days || '1200' }}
