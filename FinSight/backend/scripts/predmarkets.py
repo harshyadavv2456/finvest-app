@@ -30,17 +30,18 @@ def get(url, **kw):
 def polymarket():
     rows, today = [], datetime.now(timezone.utc).date()
     ms = []
-    for off in range(0, TOP, 100):
-        j = get(f"{GAMMA}/markets", params=dict(limit=100, offset=off, active="true", closed="false", order="volume", ascending="false"))
-        if not j: break
-        ms += j
+    for closed in ("false", "true"):                       # live markets plus resolved high-volume ones (long history for backfill)
+        for off in range(0, TOP, 100):
+            j = get(f"{GAMMA}/markets", params=dict(limit=100, offset=off, closed=closed, order="volumeNum", ascending="false"))
+            if not j: break
+            ms += j
     print("polymarket markets", len(ms))
     for m in ms:
         try:
             toks = json.loads(m["clobTokenIds"]) if isinstance(m.get("clobTokenIds"), str) else m.get("clobTokenIds")
             q, vol, mid = m.get("question"), float(m.get("volume") or 0), "pm" + str(m["id"])
             p = json.loads(m["outcomePrices"]) if isinstance(m.get("outcomePrices"), str) else m.get("outcomePrices")
-            if p: rows.append(dict(date=pd.Timestamp(today), source="polymarket", market_id=mid, question=q, prob=float(p[0]), volume=vol))
+            if p and not m.get("closed"): rows.append(dict(date=pd.Timestamp(today), source="polymarket", market_id=mid, question=q, prob=float(p[0]), volume=vol))
             if toks:
                 h = get(f"{CLOB}/prices-history", params=dict(market=toks[0], interval="max", fidelity=1440))
                 for pt in (h or {}).get("history", []):
@@ -56,6 +57,7 @@ def kalshi():
         j = get(f"{KALSHI}/markets", params=dict(limit=1000, status="open", **({"cursor": cur} if cur else {})))
         if not j: break
         for m in j.get("markets", []):
+            if float(m.get("volume") or 0) < 20000 or "MVE" in m["ticker"] or "CROSSCATEGORY" in m["ticker"]: continue          # skip thin and multi-leg parlay markets
             p = m.get("last_price_dollars") if m.get("last_price_dollars") is not None else (m.get("last_price") or 0) / 100
             try: rows.append(dict(date=today, source="kalshi", market_id=m["ticker"], question=m.get("title"), prob=float(p), volume=float(m.get("volume") or 0)))
             except Exception: pass
