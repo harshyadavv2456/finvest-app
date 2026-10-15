@@ -1,0 +1,980 @@
+date,ticker,market,name,usd_cap_bn,turnover_usd_m,source
+2026-10-16,SPCX,US,Space Exploration Technologies ,1959.08,13991.5,yahoo-screener
+2026-10-16,BRK-A,US,Berkshire Hathaway Inc.,1126.71,143.7,yahoo-screener
+2026-10-16,SKHY,US,SK hynix Inc.,1064.95,3650.4,yahoo-screener
+2026-10-16,688825.SS,CN,CXMT CORPORATION,442.29,2602.9,yahoo-screener
+2026-10-16,600941.SS,CN,CHINA MOBILE LTD,328.96,158.6,yahoo-screener
+2026-10-16,HSBC,US,"HSBC Holdings, plc.",323.33,136.8,yahoo-screener
+2026-10-16,SHEL,US,Shell PLC,294.54,673.6,yahoo-screener
+2026-10-16,NVS,US,Novartis AG,285.83,296.4,yahoo-screener
+2026-10-16,BABA,US,Alibaba Group Holding Limited,276.46,1125.7,yahoo-screener
+2026-10-16,RY,US,Royal Bank Of Canada,272.29,239.6,yahoo-screener
+2026-10-16,3750.HK,HK,CATL,264.51,141.2,yahoo-screener
+2026-10-16,SAP,US,SAP  SE,259.7,570.3,yahoo-screener
+2026-10-16,AZN,US,AstraZeneca PLC,258.5,552.8,yahoo-screener
+2026-10-16,600938.SS,CN,CNOOC LIMITED,247.08,260.4,yahoo-screener
+2026-10-16,MUFG,US,"Mitsubishi UFJ Financial Group,",246.05,65.0,yahoo-screener
+2026-10-16,TM,US,Toyota Motor Corporation,226.07,67.3,yahoo-screener
+2026-10-16,MRVL,US,"Marvell Technology, Inc.",216.8,5367.8,yahoo-screener
+2026-10-16,BHP,US,BHP Group Limited,210.69,216.2,yahoo-screener
+2026-10-16,BHP.L,UK,BHP GROUP LIMITED ORD NPV (DI),210.06,37.4,yahoo-screener
+2026-10-16,SNDK,US,Sandisk Corporation,201.59,17382.8,yahoo-screener
+2026-10-16,BNC.L,UK,BANCO SANTANDER S.A. ORD EUR0.5,195.77,35.2,yahoo-screener
+2026-10-16,TTE,US,TotalEnergies SE,195.11,157.8,yahoo-screener
+2026-10-16,SAN,US,"Banco Santander, S.A. Sponsored",194.6,168.0,yahoo-screener
+2026-10-16,SCCO,US,Southern Copper Corporation,170.3,219.8,yahoo-screener
+2026-10-16,PBR,US,Petroleo Brasileiro S.A. Petrob,163.04,518.6,yahoo-screener
+2026-10-16,BUD,US,Anheuser-Busch Inbev SA Sponsor,160.05,169.5,yahoo-screener
+2026-10-16,6857.T,JP,ADVANTEST CORP,156.83,2257.7,yahoo-screener
+2026-10-16,SMFG,US,Sumitomo Mitsui Financial Group,155.3,36.6,yahoo-screener
+2026-10-16,PBR-A,US,Petroleo Brasileiro S.A. Petrob,154.8,178.5,yahoo-screener
+2026-10-16,9983.T,JP,FAST RETAILING CO LTD,148.31,540.4,yahoo-screener
+2026-10-16,IBKR,US,"Interactive Brokers Group, Inc.",146.58,355.2,yahoo-screener
+2026-10-16,UBS,US,UBS Group AG Registered,146.29,90.5,yahoo-screener
+2026-10-16,SONY,US,Sony Group Corporation,144.15,108.2,yahoo-screener
+2026-10-16,BBVA,US,Banco Bilbao Vizcaya Argentaria,142.72,39.5,yahoo-screener
+2026-10-16,UL,US,Unilever PLC,139.23,240.6,yahoo-screener
+2026-10-16,688981.SS,CN,SEMICONDUCTOR MANUFACTURING INT,133.66,729.1,yahoo-screener
+2026-10-16,WDC,US,Western Digital Corporation,133.43,2789.8,yahoo-screener
+2026-10-16,BP,US,BP p.l.c.,124.76,428.8,yahoo-screener
+2026-10-16,BTI,US,British American Tobacco  Indus,124.72,265.6,yahoo-screener
+2026-10-16,MO,US,"Altria Group, Inc.",123.29,635.5,yahoo-screener
+2026-10-16,MDT,US,Medtronic plc.,122.09,1426.2,yahoo-screener
+2026-10-16,HDB,US,HDFC Bank Limited,120.93,231.6,yahoo-screener
+2026-10-16,PDD,US,PDD Holdings Inc.,117.32,521.0,yahoo-screener
+2026-10-16,3308.HK,HK,ZJ INNOLIGHT,116.86,201.0,yahoo-screener
+2026-10-16,BMO,US,Bank Of Montreal,115.42,124.4,yahoo-screener
+2026-10-16,300308.SZ,CN,ZHONGJI INNOLIGHT,114.86,3139.5,yahoo-screener
+2026-10-16,BNS,US,Bank Nova Scotia Halifax Pfd 3,111.06,192.2,yahoo-screener
+2026-10-16,SPOT,US,Spotify Technology S.A.,109.65,896.2,yahoo-screener
+2026-10-16,601328.SS,CN,BANK OF COMMUNICATIONS CO LTD,107.51,226.5,yahoo-screener
+2026-10-16,CNQ,US,Canadian Natural Resources Limi,107.09,327.5,yahoo-screener
+2026-10-16,EQNR,US,Equinor ASA,106.39,160.2,yahoo-screener
+2026-10-16,2899.HK,HK,ZIJIN MINING,105.92,191.6,yahoo-screener
+2026-10-16,IBN,US,ICICI Bank Limited,105.68,153.4,yahoo-screener
+2026-10-16,ITUB,US,Itau Unibanco Banco Holding SA,104.71,245.8,yahoo-screener
+2026-10-16,ENB,US,Enbridge Inc,104.38,232.2,yahoo-screener
+2026-10-16,CM,US,Canadian Imperial Bank of Comme,101.92,131.9,yahoo-screener
+2026-10-16,GSK,US,GSK plc,98.21,204.7,yahoo-screener
+2026-10-16,PWR,US,"Quanta Services, Inc.",96.55,654.0,yahoo-screener
+2026-10-16,SNY,US,Sanofi,96.54,118.8,yahoo-screener
+2026-10-16,BNY,US,The Bank of New York Mellon Cor,96.41,477.1,yahoo-screener
+2026-10-16,AEM,US,Agnico Eagle Mines Limited,94.97,484.7,yahoo-screener
+2026-10-16,ING,US,"ING Group, N.V.",94.52,71.3,yahoo-screener
+2026-10-16,MRNA,US,"Moderna, Inc.",94.42,4411.8,yahoo-screener
+2026-10-16,MELI,US,"MercadoLibre, Inc.",94.14,932.3,yahoo-screener
+2026-10-16,601728.SS,CN,CHINA TELECOM CORPORATION,93.69,119.6,yahoo-screener
+2026-10-16,ASX,US,"ASE Technology Holding Co., Ltd",92.11,308.3,yahoo-screener
+2026-10-16,0300.HK,HK,MIDEA GROUP,91.05,61.3,yahoo-screener
+2026-10-16,SU,US,Suncor Energy  Inc.,89.31,315.3,yahoo-screener
+2026-10-16,MRSH,US,Marsh,89.02,473.5,yahoo-screener
+2026-10-16,MNST,US,Monster Beverage Corporation,88.82,470.9,yahoo-screener
+2026-10-16,1658.HK,HK,PSBC,84.78,27.9,yahoo-screener
+2026-10-16,688256.SS,CN,CAMBRICON TECHNOLOGIES CORPORAT,84.33,1539.7,yahoo-screener
+2026-10-16,E,US,ENI S.p.A.,82.25,20.7,yahoo-screener
+2026-10-16,BN,US,Brookfield Corporation,82.17,170.6,yahoo-screener
+2026-10-16,NTES,US,"NetEase, Inc.",81.39,94.0,yahoo-screener
+2026-10-16,NGG,US,"National Grid Transco, PLC Nati",79.5,66.3,yahoo-screener
+2026-10-16,LITE,US,Lumentum Holdings Inc.,78.77,4122.0,yahoo-screener
+2026-10-16,LYG,US,Lloyds Banking Group Plc,78.41,80.5,yahoo-screener
+2026-10-16,EPD,US,Enterprise Products Partners L.,76.81,112.5,yahoo-screener
+2026-10-16,CP,US,Canadian Pacific Kansas City Li,76.4,207.7,yahoo-screener
+2026-10-16,BCS,US,Barclays PLC,76.02,103.3,yahoo-screener
+2026-10-16,MSI,US,"Motorola Solutions, Inc.",75.53,420.4,yahoo-screener
+2026-10-16,BAM,US,Brookfield Asset Management Inc,73.44,127.1,yahoo-screener
+2026-10-16,9434.T,JP,SOFTBANK CORP.,73.44,121.4,yahoo-screener
+2026-10-16,CNI,US,Canadian National Railway Compa,72.94,161.8,yahoo-screener
+2026-10-16,MFC,US,Manulife Financial Corporation,72.56,90.6,yahoo-screener
+2026-10-16,NU,US,Nu Holdings Ltd.,71.16,1186.5,yahoo-screener
+2026-10-16,603259.SS,CN,WUXI APPTEC CO LTD,70.08,1192.8,yahoo-screener
+2026-10-16,RACE,US,Ferrari N.V.,69.85,171.4,yahoo-screener
+2026-10-16,BE,US,Bloom Energy Corporation,69.6,3705.8,yahoo-screener
+2026-10-16,NWG,US,NatWest Group plc,69.17,61.6,yahoo-screener
+2026-10-16,ET,US,Energy Transfer LP,68.45,174.9,yahoo-screener
+2026-10-16,688041.SS,CN,HYGON INFORMATION TECHNOLOGY CO,67.34,632.0,yahoo-screener
+2026-10-16,CVNA,US,Carvana Co.,67.2,531.9,yahoo-screener
+2026-10-16,AMX,US,"America Movil, S.A.B. de C.V.",66.98,62.0,yahoo-screener
+2026-10-16,B,US,Barrick Mining Corporation,66.74,380.9,yahoo-screener
+2026-10-16,RELX,US,RELX PLC PLC,66.73,88.0,yahoo-screener
+2026-10-16,IMO,US,Imperial Oil Limited,64.44,71.2,yahoo-screener
+2026-10-16,300502.SZ,CN,EOPTOLINK,63.79,2038.9,yahoo-screener
+2026-10-16,TDG,US,Transdigm Group Incorporated,62.7,445.1,yahoo-screener
+2026-10-16,GWW,US,"W.W. Grainger, Inc.",62.7,354.9,yahoo-screener
+2026-10-16,TAK,US,Takeda Pharmaceutical Company L,62.13,58.4,yahoo-screener
+2026-10-16,MPWR,US,"Monolithic Power Systems, Inc.",61.39,930.0,yahoo-screener
+2026-10-16,2888.HK,HK,STANCHART,61.12,27.1,yahoo-screener
+2026-10-16,TRGP,US,"Targa Resources, Inc.",60.59,332.5,yahoo-screener
+2026-10-16,WPM,US,Wheaton Precious Metals Corp,60.48,261.4,yahoo-screener
+2026-10-16,SE,US,Sea Limited,59.72,418.9,yahoo-screener
+2026-10-16,CVE,US,Cenovus Energy Inc,58.96,224.2,yahoo-screener
+2026-10-16,6752.T,JP,PANASONIC HOLDINGS CORP,58.54,217.8,yahoo-screener
+2026-10-16,NTRA,US,"Natera, Inc.",58.35,584.5,yahoo-screener
+2026-10-16,MPLX,US,MPLX LP,57.91,79.8,yahoo-screener
+2026-10-16,LNG,US,"Cheniere Energy, Inc.",57.65,501.4,yahoo-screener
+2026-10-16,PSA,US,Public Storage,55.18,289.8,yahoo-screener
+2026-10-16,GRMN,US,Garmin Ltd.,55.01,261.3,yahoo-screener
+2026-10-16,CRH,US,CRH PLC,54.77,397.2,yahoo-screener
+2026-10-16,688235.SS,CN,BEIGENE LTD,54.38,167.7,yahoo-screener
+2026-10-16,NOK,US,Nokia Corporation Sponsored,53.58,791.3,yahoo-screener
+2026-10-16,ARGX,US,argenx SE,53.22,273.0,yahoo-screener
+2026-10-16,UMC,US,United Microelectronics Corpora,52.47,264.8,yahoo-screener
+2026-10-16,ALAB,US,"Astera Labs, Inc.",52.39,1274.1,yahoo-screener
+2026-10-16,DEO,US,Diageo plc,52.26,104.2,yahoo-screener
+2026-10-16,FIX,US,"Comfort Systems USA, Inc.",52.13,596.9,yahoo-screener
+2026-10-16,HONA,US,Honeywell Aerospace Inc.,51.7,608.9,yahoo-screener
+2026-10-16,NBIS,US,Nebius Group N.V.,51.22,3849.8,yahoo-screener
+2026-10-16,603993.SS,CN,CMOC GROUP LIMITED,51.13,486.2,yahoo-screener
+2026-10-16,VEEV,US,Veeva Systems Inc.,50.68,521.9,yahoo-screener
+2026-10-16,CIEN,US,Ciena Corporation,50.56,900.1,yahoo-screener
+2026-10-16,ABEV,US,Ambev S.A.,50.26,89.2,yahoo-screener
+2026-10-16,COHR,US,Coherent Corp.,49.35,1664.3,yahoo-screener
+2026-10-16,MDLN,US,Medline Inc.,49.2,279.2,yahoo-screener
+2026-10-16,INFY,US,Infosys Limited,49.13,237.1,yahoo-screener
+2026-10-16,VYLR,US,Vylor Inc.,48.94,638.4,yahoo-screener
+2026-10-16,2259.HK,HK,ZIJIN GOLD INTL,48.94,140.9,yahoo-screener
+2026-10-16,WAB,US,Westinghouse Air Brake Technolo,48.61,263.5,yahoo-screener
+2026-10-16,CCEP,US,Coca-Cola Europacific Partners ,48.24,200.1,yahoo-screener
+2026-10-16,XYZ,US,"Block, Inc.",47.96,355.0,yahoo-screener
+2026-10-16,MT,US,Arcelor Mittal NY Registry Shar,47.82,88.5,yahoo-screener
+2026-10-16,VMRK,US,Vivmark Residential,47.34,313.8,yahoo-screener
+2026-10-16,TRI,US,Thomson Reuters Corp,46.74,192.2,yahoo-screener
+2026-10-16,FNV,US,Franco-Nevada Corporation,46.46,187.7,yahoo-screener
+2026-10-16,AU,US,AngloGold Ashanti PLC,46.31,237.1,yahoo-screener
+2026-10-16,6030.HK,HK,CITIC SEC,46.31,32.4,yahoo-screener
+2026-10-16,688347.SS,CN,HUA HONG GRACE SEMICONDUCTOR LT,45.33,523.9,yahoo-screener
+2026-10-16,BBD,US,Banco Bradesco Sa,45.04,137.4,yahoo-screener
+2026-10-16,LHX,US,"L3Harris Technologies, Inc.",44.78,386.3,yahoo-screener
+2026-10-16,2475.HK,HK,LUXSHARE ICT,44.68,20.9,yahoo-screener
+2026-10-16,2328.HK,HK,PICC P&C,44.64,50.2,yahoo-screener
+2026-10-16,P,US,"Everpure, Inc.",44.45,627.2,yahoo-screener
+2026-10-16,FERG,US,Ferguson Enterprises Inc.,44.25,527.5,yahoo-screener
+2026-10-16,HMC,US,"Honda Motor Company, Ltd.",44.2,33.9,yahoo-screener
+2026-10-16,HLN.L,UK,HALEON PLC ORD GBP0.01,43.76,129.3,yahoo-screener
+2026-10-16,HLN,US,Haleon plc,43.71,144.0,yahoo-screener
+2026-10-16,SLF,US,Sun Life Financial Inc.,43.68,58.4,yahoo-screener
+2026-10-16,WAT,US,Waters Corporation,43.61,357.5,yahoo-screener
+2026-10-16,8015.T,JP,TOYOTA TSUSHO CORP,43.47,116.0,yahoo-screener
+2026-10-16,HEI,US,Heico Corporation,43.13,144.7,yahoo-screener
+2026-10-16,688012.SS,CN,ADVANCED MICRO-FABRICATION EQUI,42.62,919.5,yahoo-screener
+2026-10-16,ONC,US,BeOne Medicines Ltd.,42.56,143.8,yahoo-screener
+2026-10-16,NTAP,US,"NetApp, Inc.",42.17,535.2,yahoo-screener
+2026-10-16,STM,US,STMicroelectronics N.V.,41.72,439.3,yahoo-screener
+2026-10-16,WCN,US,"Waste Connections, Inc.",41.64,212.8,yahoo-screener
+2026-10-16,600183.SS,CN,SHENGYI TECHNOLOGY CO LTD,41.61,1188.5,yahoo-screener
+2026-10-16,KB,US,KB Financial Group Inc,41.39,22.9,yahoo-screener
+2026-10-16,FMX,US,Fomento Economico Mexicano S.A.,41.22,53.1,yahoo-screener
+2026-10-16,8750.T,JP,DAIICHI LIFE GROUP INC,41.14,108.0,yahoo-screener
+2026-10-16,6178.T,JP,JAPAN POST HLDGS CO LTD,40.92,78.2,yahoo-screener
+2026-10-16,601869.SS,CN,YANGTZE OPTICAL FIBRE AND CABLE,40.92,678.1,yahoo-screener
+2026-10-16,601225.SS,CN,SHAANXI COAL INDUSTRY,40.72,167.1,yahoo-screener
+2026-10-16,6160.HK,HK,BEONE MEDICINES,40.63,105.3,yahoo-screener
+2026-10-16,1276.HK,HK,HENGRUI PHARMA,40.6,29.6,yahoo-screener
+2026-10-16,RVMD,US,"Revolution Medicines, Inc.",40.57,370.4,yahoo-screener
+2026-10-16,LYV,US,"Live Nation Entertainment, Inc.",40.19,333.3,yahoo-screener
+2026-10-16,600150.SS,CN,CHINA CSSC HOLDINGS LIMITED,39.88,524.0,yahoo-screener
+2026-10-16,CLS,US,"Celestica, Inc.",39.76,803.0,yahoo-screener
+2026-10-16,IX,US,ORIX Corporation,39.3,11.4,yahoo-screener
+2026-10-16,TTWO,US,"Take-Two Interactive Software, ",39.15,508.5,yahoo-screener
+2026-10-16,CRWV,US,"CoreWeave, Inc.",38.44,2066.8,yahoo-screener
+2026-10-16,ARES,US,Ares Management Corporation,37.83,249.3,yahoo-screener
+2026-10-16,VIK,US,Viking Holdings Ltd,37.51,298.8,yahoo-screener
+2026-10-16,UI,US,Ubiquiti Inc.,37.41,82.3,yahoo-screener
+2026-10-16,601816.SS,CN,BEIJING-SHANGHAI HIGH SPEED RAI,37.22,115.2,yahoo-screener
+2026-10-16,JD,US,"JD.com, Inc.",36.99,203.7,yahoo-screener
+2026-10-16,CHT,US,"Chunghwa Telecom Co., Ltd.",36.97,10.1,yahoo-screener
+2026-10-16,VOD,US,Vodafone Group Plc,36.72,59.6,yahoo-screener
+2026-10-16,SKYD,US,Skydance Corporation,36.61,144.5,yahoo-screener
+2026-10-16,RBLX,US,Roblox Corporation,36.53,641.4,yahoo-screener
+2026-10-16,6146.T,JP,DISCO CORPORATION,36.49,577.1,yahoo-screener
+2026-10-16,OKTA,US,"Okta, Inc.",36.45,720.2,yahoo-screener
+2026-10-16,300394.SZ,CN,TFC,36.41,1472.2,yahoo-screener
+2026-10-16,FLEX,US,Flex Ltd.,36.39,360.2,yahoo-screener
+2026-10-16,EC,US,Ecopetrol S.A.,36.39,30.9,yahoo-screener
+2026-10-16,CCJ,US,Cameco Corporation,36.25,266.0,yahoo-screener
+2026-10-16,HIG,US,"The Hartford Insurance Group, I",35.97,216.1,yahoo-screener
+2026-10-16,BSP,US,Bending Spoons S.p.A.,35.43,146.6,yahoo-screener
+2026-10-16,RKLB,US,Rocket Lab Corporation,35.33,1070.1,yahoo-screener
+2026-10-16,FER,US,Ferrovial N.V.,35.17,79.1,yahoo-screener
+2026-10-16,MLM,US,"Martin Marietta Materials, Inc.",34.89,346.0,yahoo-screener
+2026-10-16,ERIC,US,Ericsson,34.76,106.6,yahoo-screener
+2026-10-16,ESLT,US,Elbit Systems Ltd.,34.75,61.3,yahoo-screener
+2026-10-16,STLD,US,"Steel Dynamics, Inc.",34.51,262.0,yahoo-screener
+2026-10-16,RPRX,US,Royalty Pharma plc,34.45,176.0,yahoo-screener
+2026-10-16,QSR,US,Restaurant Brands International,33.95,203.7,yahoo-screener
+2026-10-16,HSY,US,The Hershey Company,33.89,238.6,yahoo-screener
+2026-10-16,CBRS,US,Cerebras Systems Inc.,33.77,1059.0,yahoo-screener
+2026-10-16,SHG,US,Shinhan Financial Group Co Ltd,33.59,13.2,yahoo-screener
+2026-10-16,600919.SS,CN,BANK OF JIANGSU,33.57,174.0,yahoo-screener
+2026-10-16,CRDO,US,Credo Technology Group Holding ,33.55,1287.8,yahoo-screener
+2026-10-16,002463.SZ,CN,HDGF,33.42,922.3,yahoo-screener
+2026-10-16,TKO,US,"TKO Group Holdings, Inc.",33.32,187.7,yahoo-screener
+2026-10-16,NTR,US,Nutrien Ltd.,33.2,177.6,yahoo-screener
+2026-10-16,GFI,US,Gold Fields Limited,33.04,136.4,yahoo-screener
+2026-10-16,4062.T,JP,IBIDEN CO LTD,32.95,908.0,yahoo-screener
+2026-10-16,EQT,US,EQT Corporation,32.81,367.9,yahoo-screener
+2026-10-16,2601.HK,HK,CPIC,32.73,29.4,yahoo-screener
+2026-10-16,VMC,US,Vulcan Materials Company (Holdi,32.71,274.0,yahoo-screener
+2026-10-16,2611.HK,HK,GTHT,32.55,19.6,yahoo-screener
+2026-10-16,HEI-A,US,Heico Corporation,32.33,65.2,yahoo-screener
+2026-10-16,EME,US,"EMCOR Group, Inc.",32.31,293.2,yahoo-screener
+2026-10-16,TECK,US,Teck Resources Ltd,32.25,194.3,yahoo-screener
+2026-10-16,ALC,US,Alcon Inc.,32.18,120.6,yahoo-screener
+2026-10-16,8308.T,JP,RESONA HOLDINGS,32.11,144.8,yahoo-screener
+2026-10-16,2513.HK,HK,Z.AI,31.9,425.7,yahoo-screener
+2026-10-16,6809.HK,HK,MONTAGE TECH,31.42,100.9,yahoo-screener
+2026-10-16,RKT,US,"Rocket Companies, Inc.",31.35,350.7,yahoo-screener
+2026-10-16,SUNB,US,"Sunbelt Rentals Holdings, Inc.",31.35,351.4,yahoo-screener
+2026-10-16,ALNY,US,"Alnylam Pharmaceuticals, Inc.",31.32,403.5,yahoo-screener
+2026-10-16,VG,US,"Venture Global, Inc.",31.25,175.8,yahoo-screener
+2026-10-16,HBAN,US,Huntington Bancshares Incorpora,31.01,406.3,yahoo-screener
+2026-10-16,BAP,US,Credicorp Ltd.,30.85,118.0,yahoo-screener
+2026-10-16,RDDT,US,"Reddit, Inc.",30.66,943.2,yahoo-screener
+2026-10-16,SUNB.L,UK,"SUNBELT RENTALS HOLDINGS, INC. ",30.52,122.0,yahoo-screener
+2026-10-16,600309.SS,CN,WANHUA CHEMICAL GROUP CO LTD,30.39,324.4,yahoo-screener
+2026-10-16,NTRS,US,Northern Trust Corporation,30.27,178.4,yahoo-screener
+2026-10-16,IR,US,Ingersoll Rand Inc.,30.21,336.4,yahoo-screener
+2026-10-16,CQP,US,"Cheniere Energy Partners, LP",30.13,7.3,yahoo-screener
+2026-10-16,3986.HK,HK,GIGADEVICE,30.05,149.4,yahoo-screener
+2026-10-16,603288.SS,CN,FOSHAN HAITIAN FLAVOURING AND F,30.03,84.6,yahoo-screener
+2026-10-16,688008.SS,CN,MONTAGE TECHNOLOGY CO LTD,29.74,1068.2,yahoo-screener
+2026-10-16,WSM,US,"Williams-Sonoma, Inc.",29.68,271.7,yahoo-screener
+2026-10-16,601898.SS,CN,CHINA COAL ENERGY COMPANY,29.65,103.2,yahoo-screener
+2026-10-16,PUK,US,Prudential Public Limited Compa,29.55,26.8,yahoo-screener
+2026-10-16,BIP,US,Brookfield Infrastructure Partn,29.51,33.6,yahoo-screener
+2026-10-16,MDB,US,"MongoDB, Inc.",29.48,790.8,yahoo-screener
+2026-10-16,603986.SS,CN,GIGA DEVICE SEMICONDUCTOR INC,29.27,1854.0,yahoo-screener
+2026-10-16,6971.T,JP,KYOCERA CORP,29.21,116.4,yahoo-screener
+2026-10-16,1339.HK,HK,PICC GROUP,29.08,21.7,yahoo-screener
+2026-10-16,8309.T,JP,SUMITOMO MITSUI TRUST GP INC,28.98,99.7,yahoo-screener
+2026-10-16,601985.SS,CN,CHINA NATIONAL NUCLEAR POWER CO,28.93,133.2,yahoo-screener
+2026-10-16,002379.SZ,CN,HONGQIAO HOLDINGS,28.92,117.0,yahoo-screener
+2026-10-16,600025.SS,CN,HUANENG LANCANG RIVER HYDROPOWE,28.91,47.8,yahoo-screener
+2026-10-16,TS,US,Tenaris S.A.,28.9,73.5,yahoo-screener
+2026-10-16,WTW,US,Willis Towers Watson Public Lim,28.82,165.5,yahoo-screener
+2026-10-16,688808.SS,CN,SEMIGHT INSTRUMENTS CO LTD,28.76,328.1,yahoo-screener
+2026-10-16,TDY,US,Teledyne Technologies Incorpora,28.74,194.2,yahoo-screener
+2026-10-16,ZM,US,"Zoom Communications, Inc.",28.74,303.6,yahoo-screener
+2026-10-16,603268.SS,CN,GUANGDONG SONGFA CERAMICS CO LT,28.38,195.4,yahoo-screener
+2026-10-16,600188.SS,CN,YANKUANG ENERGY GROUP COMPANY L,28.38,144.2,yahoo-screener
+2026-10-16,KGC,US,Kinross Gold Corporation,28.29,189.1,yahoo-screener
+2026-10-16,688072.SS,CN,PIOTECH INC,28.17,600.3,yahoo-screener
+2026-10-16,BIDU,US,"Baidu, Inc.",28.11,212.6,yahoo-screener
+2026-10-16,PBA,US,Pembina Pipeline Corp.,28.03,48.0,yahoo-screener
+2026-10-16,FTS,US,Fortis Inc.,27.93,43.7,yahoo-screener
+2026-10-16,601766.SS,CN,CRRC CORPORATION LIMITED,27.62,150.4,yahoo-screener
+2026-10-16,601668.SS,CN,CHINA CONSTRUCTION ENGINEERING ,27.55,155.1,yahoo-screener
+2026-10-16,WRB,US,W.R. Berkley Corporation,27.46,184.8,yahoo-screener
+2026-10-16,SN,US,"SharkNinja, Inc.",27.41,334.1,yahoo-screener
+2026-10-16,300476.SZ,CN,VGT,27.32,940.2,yahoo-screener
+2026-10-16,GFS,US,GlobalFoundries Inc.,27.18,215.3,yahoo-screener
+2026-10-16,NMR,US,Nomura Holdings Inc,27.12,7.0,yahoo-screener
+2026-10-16,2338.HK,HK,WEICHAI POWER,27.11,55.9,yahoo-screener
+2026-10-16,601818.SS,CN,CHINA EVERBRIGHT BANK CO LTD,27.11,90.5,yahoo-screener
+2026-10-16,600406.SS,CN,NARI TECHNOLOGY CO LTD,27.0,162.5,yahoo-screener
+2026-10-16,RYAAY,US,Ryanair Holdings plc,26.98,75.0,yahoo-screener
+2026-10-16,8604.T,JP,NOMURA HOLDINGS INC.,26.73,91.1,yahoo-screener
+2026-10-16,CPAY,US,"Corpay, Inc.",26.67,203.3,yahoo-screener
+2026-10-16,CPNG,US,"Coupang, Inc.",26.59,256.8,yahoo-screener
+2026-10-16,600887.SS,CN,INNER MONGOLIA YILI INDS. GP CO,26.57,248.2,yahoo-screener
+2026-10-16,LH,US,Labcorp Holdings Inc.,26.36,239.6,yahoo-screener
+2026-10-16,688820.SS,CN,SJ SEMICONDUCTOR CORPORATION,26.28,188.0,yahoo-screener
+2026-10-16,VICI,US,VICI Properties Inc.,25.83,228.1,yahoo-screener
+2026-10-16,LPLA,US,LPL Financial Holdings Inc.,25.79,235.3,yahoo-screener
+2026-10-16,ATI,US,ATI Inc.,25.78,309.1,yahoo-screener
+2026-10-16,2714.HK,HK,MUYUAN,25.35,12.3,yahoo-screener
+2026-10-16,ECHO,US,EchoStar Corporation,25.26,345.7,yahoo-screener
+2026-10-16,TCOM,US,Trip.com Group Limited,25.14,129.9,yahoo-screener
+2026-10-16,7269.T,JP,SUZUKI MOTOR CORP,25.14,93.9,yahoo-screener
+2026-10-16,Q,US,"Qnity Electronics, Inc.",25.02,203.8,yahoo-screener
+2026-10-16,IOT,US,Samsara Inc.,24.94,253.2,yahoo-screener
+2026-10-16,PHG,US,Koninklijke Philips N.V. NY Reg,24.91,26.7,yahoo-screener
+2026-10-16,CASY,US,"Caseys General Stores, Inc.",24.9,326.2,yahoo-screener
+2026-10-16,9961.HK,HK,TRIP.COM-S,24.81,110.0,yahoo-screener
+2026-10-16,600930.SS,CN,HUADIAN NEW ENERGY GROUP,24.63,83.7,yahoo-screener
+2026-10-16,VLTO,US,Veralto Corp,24.61,168.2,yahoo-screener
+2026-10-16,ROIV,US,Roivant Sciences Ltd.,24.59,241.3,yahoo-screener
+2026-10-16,HUBB,US,Hubbell Inc,24.55,242.3,yahoo-screener
+2026-10-16,9992.HK,HK,POP MART,24.51,156.6,yahoo-screener
+2026-10-16,688836.SS,CN,YUSHU TECHNOLOGY CO LTD,24.49,273.3,yahoo-screener
+2026-10-16,RBRK,US,"Rubrik, Inc.",24.42,371.7,yahoo-screener
+2026-10-16,601336.SS,CN,NEW CHINA LIFE INSURANCE CO LTD,24.42,137.7,yahoo-screener
+2026-10-16,600031.SS,CN,SANY HEAVY INDUSTRY CO,24.39,191.1,yahoo-screener
+2026-10-16,KOF,US,Coca Cola Femsa S.A.B. de C.V.,24.3,15.2,yahoo-screener
+2026-10-16,IHG,US,Intercontinental Hotels Group,24.27,33.9,yahoo-screener
+2026-10-16,3692.HK,HK,HANSOH PHARMA,24.24,41.6,yahoo-screener
+2026-10-16,TW,US,Tradeweb Markets Inc.,24.2,152.2,yahoo-screener
+2026-10-16,600989.SS,CN,NINGXIA BAOFENG ENERGY GROUP CO,24.14,242.3,yahoo-screener
+2026-10-16,601688.SS,CN,HUATAI SECURITIES CO LTD,24.11,149.1,yahoo-screener
+2026-10-16,688802.SS,CN,METAX INTEGRATED CIRCUITS SHANG,24.1,134.4,yahoo-screener
+2026-10-16,SYF,US,Synchrony Financial,24.09,239.6,yahoo-screener
+2026-10-16,TPL,US,Texas Pacific Land Corporation,23.9,124.3,yahoo-screener
+2026-10-16,6690.HK,HK,HAIER SMARTHOME,23.88,28.9,yahoo-screener
+2026-10-16,6951.HK,HK,CCTC,23.83,19.9,yahoo-screener
+2026-10-16,TPR,US,"Tapestry, Inc.",23.76,358.1,yahoo-screener
+2026-10-16,TSEM,US,Tower Semiconductor Ltd.,23.71,390.7,yahoo-screener
+2026-10-16,FCNCA,US,"First Citizens BancShares, Inc.",23.68,135.3,yahoo-screener
+2026-10-16,NVT,US,nVent Electric plc,23.59,321.5,yahoo-screener
+2026-10-16,601872.SS,CN,CHINA MERCHANTS ENERGY SHIPPING,23.33,364.4,yahoo-screener
+2026-10-16,601600.SS,CN,ALUMINUM CORP OF CHINA(CHALCO),23.28,261.5,yahoo-screener
+2026-10-16,RF,US,Regions Financial Corporation,23.27,247.5,yahoo-screener
+2026-10-16,GMAB,US,Genmab A/S,23.26,106.3,yahoo-screener
+2026-10-16,UTHR,US,United Therapeutics Corporation,23.23,376.1,yahoo-screener
+2026-10-16,ARXS,US,"Arxis, Inc.",23.18,48.5,yahoo-screener
+2026-10-16,CIB,US,Grupo Cibest S.A.,23.06,30.6,yahoo-screener
+2026-10-16,601995.SS,CN,CHINA INTL CAPITAL CORPORATION ,23.03,97.0,yahoo-screener
+2026-10-16,600016.SS,CN,CHINA MINSHENG BANKING CORP,22.97,134.8,yahoo-screener
+2026-10-16,AER,US,AerCap Holdings N.V.,22.94,157.4,yahoo-screener
+2026-10-16,1347.HK,HK,HUA HONG GRACE,22.79,290.2,yahoo-screener
+2026-10-16,FWONK,US,Liberty Media Corporation - Ser,22.77,193.3,yahoo-screener
+2026-10-16,BNTX,US,BioNTech SE,22.66,108.6,yahoo-screener
+2026-10-16,MKL,US,Markel Group Inc.,22.61,122.4,yahoo-screener
+2026-10-16,688795.SS,CN,MOORE THREADS TECH CO LTD,22.57,152.9,yahoo-screener
+2026-10-16,ENTG,US,"Entegris, Inc.",22.44,343.1,yahoo-screener
+2026-10-16,SIG.AX,AU,SIGMAHEALT FPO [SIG],22.37,33.2,yahoo-screener
+2026-10-16,GH,US,"Guardant Health, Inc.",22.26,326.0,yahoo-screener
+2026-10-16,6869.HK,HK,YOFC,22.24,388.7,yahoo-screener
+2026-10-16,DINO,US,HF Sinclair Corporation,22.17,339.7,yahoo-screener
+2026-10-16,THC,US,Tenet Healthcare Corporation,22.15,247.2,yahoo-screener
+2026-10-16,XPO,US,"XPO, Inc.",22.11,194.0,yahoo-screener
+2026-10-16,CRCL,US,"Circle Internet Group, Inc.",22.08,1141.6,yahoo-screener
+2026-10-16,SBS,US,Companhia de saneamento Basico ,22.01,57.7,yahoo-screener
+2026-10-16,USFD,US,US Foods Holding Corp.,21.95,226.8,yahoo-screener
+2026-10-16,STE,US,STERIS plc (Ireland),21.87,151.6,yahoo-screener
+2026-10-16,001248.SZ,CN,CR NEW ENERGY,21.86,130.9,yahoo-screener
+2026-10-16,601009.SS,CN,BANK OF NANJING CO. LTD.,21.79,92.9,yahoo-screener
+2026-10-16,600999.SS,CN,CHINA MERCHANTS SECURITIES CO L,21.71,142.3,yahoo-screener
+2026-10-16,INSM,US,Insmed Incorporated,21.67,256.7,yahoo-screener
+2026-10-16,SW,US,Smurfit WestRock plc,21.63,186.9,yahoo-screener
+2026-10-16,PHM,US,"PulteGroup, Inc.",21.52,186.6,yahoo-screener
+2026-10-16,300604.SZ,CN,CCTECH,21.3,695.1,yahoo-screener
+2026-10-16,600660.SS,CN,FUYAO GLASS INDUSTRY GROUP CO. ,21.27,93.0,yahoo-screener
+2026-10-16,600809.SS,CN,SHANXI XINGHUACUN FENWINE FACTO,21.17,137.6,yahoo-screener
+2026-10-16,6818.HK,HK,CEB BANK,21.16,5.4,yahoo-screener
+2026-10-16,1816.HK,HK,CGN POWER,21.14,18.2,yahoo-screener
+2026-10-16,EXE,US,Expand Energy Corporation,21.02,288.8,yahoo-screener
+2026-10-16,BSBR,US,Banco Santander Brasil SA,20.93,22.3,yahoo-screener
+2026-10-16,FWONA,US,Liberty Media Corporation - Ser,20.89,14.2,yahoo-screener
+2026-10-16,RS,US,"Reliance, Inc.",20.76,128.7,yahoo-screener
+2026-10-16,MTSI,US,MACOM Technology Solutions Hold,20.73,378.1,yahoo-screener
+2026-10-16,601229.SS,CN,BANK OF SHANGHAI CO LTD,20.63,86.1,yahoo-screener
+2026-10-16,9766.T,JP,KONAMI GROUP CORPORATION,20.59,84.2,yahoo-screener
+2026-10-16,BG,US,Bunge Limited,20.56,172.6,yahoo-screener
+2026-10-16,7936.T,JP,ASICS CORP,20.54,148.8,yahoo-screener
+2026-10-16,600176.SS,CN,CHINA JUSHI CO LTD,20.54,1198.6,yahoo-screener
+2026-10-16,600050.SS,CN,CHINA UNITED NETWORK COMMUNICAT,20.51,91.7,yahoo-screener
+2026-10-16,AMRZ,US,Amrize Ltd,20.41,140.4,yahoo-screener
+2026-10-16,SNX,US,TD SYNNEX Corporation,20.35,200.4,yahoo-screener
+2026-10-16,4307.T,JP,NOMURA RESEARCH INSTITUTE,20.28,95.9,yahoo-screener
+2026-10-16,600362.SS,CN,JIANGXI COPPER CO,20.13,334.1,yahoo-screener
+2026-10-16,YPF,US,YPF Sociedad Anonima,20.04,58.1,yahoo-screener
+2026-10-16,VALT.L,UK,VALTERRA PLATINUM LIMITED ORD Z,20.04,7.3,yahoo-screener
+2026-10-16,688498.SS,CN,YUANJIE SEMICONDUCTOR TECHNOLOG,19.85,726.1,yahoo-screener
+2026-10-16,2476.HK,HK,VGT,19.79,84.1,yahoo-screener
+2026-10-16,PR,US,Permian Resources Corporation,19.77,223.8,yahoo-screener
+2026-10-16,SSNC,US,"SS&C Technologies Holdings, Inc",19.76,137.5,yahoo-screener
+2026-10-16,BCH,US,Banco De Chile,19.75,12.4,yahoo-screener
+2026-10-16,RGLD,US,"Royal Gold, Inc.",19.74,157.5,yahoo-screener
+2026-10-16,8267.T,JP,AEON CO LTD,19.73,80.6,yahoo-screener
+2026-10-16,WWD,US,"Woodward, Inc.",19.68,221.1,yahoo-screener
+2026-10-16,VIV,US,Telefonica Brasil S.A.,19.59,18.6,yahoo-screener
+2026-10-16,BEKE,US,KE Holdings Inc,19.58,78.5,yahoo-screener
+2026-10-16,3288.HK,HK,HAITIAN FLAV,19.54,7.5,yahoo-screener
+2026-10-16,1801.HK,HK,INNOVENT BIO,19.5,134.2,yahoo-screener
+2026-10-16,601881.SS,CN,CHINA GALAXY SECURITIES CO,19.5,47.9,yahoo-screener
+2026-10-16,SBAC,US,SBA Communications Corporation,19.49,181.5,yahoo-screener
+2026-10-16,600019.SS,CN,BAOSHAN IRON & STEEL CO,19.44,88.3,yahoo-screener
+2026-10-16,600886.SS,CN,SDIC POWER HOLDINGS CO LTD,19.33,81.6,yahoo-screener
+2026-10-16,CNH,US,CNH Industrial N.V.,19.22,221.3,yahoo-screener
+2026-10-16,688082.SS,CN,ACM RESEARCH (SHANGHAI) INC,19.22,239.2,yahoo-screener
+2026-10-16,001399.SZ,CN,HKC,19.11,98.8,yahoo-screener
+2026-10-16,U,US,Unity Software Inc.,19.07,455.9,yahoo-screener
+2026-10-16,2423.HK,HK,BEKE-W,19.06,57.4,yahoo-screener
+2026-10-16,600018.SS,CN,SHANGHAI INTERNATIONAL PORT(GRO,19.03,43.2,yahoo-screener
+2026-10-16,TSN,US,"Tyson Foods, Inc.",19.01,180.9,yahoo-screener
+2026-10-16,600111.SS,CN,CHINA NTHN RARE EARTH (GP) HI-T,18.99,256.4,yahoo-screener
+2026-10-16,NTNX,US,"Nutanix, Inc.",18.93,183.2,yahoo-screener
+2026-10-16,CRS,US,Carpenter Technology Corporatio,18.86,280.0,yahoo-screener
+2026-10-16,600760.SS,CN,AVIC SHENYANG AIRCRAFT CO LTD,18.86,107.8,yahoo-screener
+2026-10-16,BCE,US,"BCE, Inc.",18.82,82.2,yahoo-screener
+2026-10-16,6031.HK,HK,SANY HEAVY IND,18.71,9.0,yahoo-screener
+2026-10-16,PS,US,Pershing Square Inc.,18.67,17.3,yahoo-screener
+2026-10-16,6886.HK,HK,HTSC,18.67,14.9,yahoo-screener
+2026-10-16,TOST,US,"Toast, Inc.",18.62,290.4,yahoo-screener
+2026-10-16,1988.HK,HK,MINSHENG BANK,18.61,10.5,yahoo-screener
+2026-10-16,CW,US,Curtiss-Wright Corporation,18.52,188.6,yahoo-screener
+2026-10-16,DT,US,"Dynatrace, Inc.",18.5,419.9,yahoo-screener
+2026-10-16,WIT,US,Wipro Limited,18.5,15.3,yahoo-screener
+2026-10-16,3606.HK,HK,FUYAO GLASS,18.46,20.6,yahoo-screener
+2026-10-16,6936.HK,HK,SF HOLDING,18.44,4.7,yahoo-screener
+2026-10-16,600104.SS,CN,SAIC MOTOR CORPORATION LIMITED,18.44,82.2,yahoo-screener
+2026-10-16,001289.SZ,CN,CHINA LONGYUAN,18.41,11.2,yahoo-screener
+2026-10-16,8830.T,JP,SUMITOMO REALTY & DEVELOPMENT C,18.36,57.7,yahoo-screener
+2026-10-16,NDSN,US,Nordson Corporation,18.31,120.8,yahoo-screener
+2026-10-16,LEN-B,US,Lennar Corporation,18.3,8.1,yahoo-screener
+2026-10-16,OVV,US,Ovintiv Inc. (DE),18.29,223.4,yahoo-screener
+2026-10-16,WES,US,"Western Midstream Partners, LP",18.24,37.6,yahoo-screener
+2026-10-16,600926.SS,CN,BANK OF HANGZHOU CO LTD,18.17,97.5,yahoo-screener
+2026-10-16,PAAS,US,Pan American Silver Corp.,18.15,176.5,yahoo-screener
+2026-10-16,301666.SZ,CN,DapuStor,18.15,121.4,yahoo-screener
+2026-10-16,688120.SS,CN,HWATSING TECHNOLOGY CO LTD,18.07,415.1,yahoo-screener
+2026-10-16,ITT,US,ITT Inc.,18.06,167.2,yahoo-screener
+2026-10-16,4004.T,JP,RESONAC HOLDINGS CORPORATION,18.03,237.2,yahoo-screener
+2026-10-16,KSPI,US,Joint Stock Company Kaspi.kz - ,18.02,53.0,yahoo-screener
+2026-10-16,688361.SS,CN,SKYVERSE TECHNOLOGY CO LTD,18.0,503.4,yahoo-screener
+2026-10-16,1972.HK,HK,SWIREPROPERTIES,17.92,7.8,yahoo-screener
+2026-10-16,601633.SS,CN,GREAT WALL MOTOR COMPANY LIMITE,17.78,31.7,yahoo-screener
+2026-10-16,600011.SS,CN,HUANENG POWER INTERNATIONAL INC,17.78,109.4,yahoo-screener
+2026-10-16,MGA,US,"Magna International, Inc.",17.77,78.5,yahoo-screener
+2026-10-16,PAA,US,"Plains All American Pipeline, L",17.74,63.5,yahoo-screener
+2026-10-16,9973.HK,HK,CHERY AUTO,17.73,9.7,yahoo-screener
+2026-10-16,601169.SS,CN,BANK OF BEIJING CO. LTD.,17.73,135.8,yahoo-screener
+2026-10-16,5016.T,JP,JX ADVANCED METALS CORPORATION,17.65,377.9,yahoo-screener
+2026-10-16,MEDP,US,"Medpace Holdings, Inc.",17.55,169.2,yahoo-screener
+2026-10-16,600547.SS,CN,SHANDONG GOLD MINING CO LTD,17.51,343.5,yahoo-screener
+2026-10-16,1898.HK,HK,CHINA COAL,17.49,20.5,yahoo-screener
+2026-10-16,APG,US,APi Group Corporation,17.43,123.5,yahoo-screener
+2026-10-16,AS,US,"Amer Sports, Inc.",17.42,193.1,yahoo-screener
+2026-10-16,TSCO,US,Tractor Supply Company,17.39,357.4,yahoo-screener
+2026-10-16,FTAI,US,FTAI Aviation Ltd.,17.31,256.4,yahoo-screener
+2026-10-16,EWBC,US,"East West Bancorp, Inc.",17.3,96.9,yahoo-screener
+2026-10-16,ASTS,US,"AST SpaceMobile, Inc.",17.3,600.6,yahoo-screener
+2026-10-16,301377.SZ,CN,DTECH,17.29,148.9,yahoo-screener
+2026-10-16,SQM,US,Sociedad Quimica y Minera S.A.,17.27,57.7,yahoo-screener
+2026-10-16,RVTY,US,"Revvity, Inc.",17.26,280.9,yahoo-screener
+2026-10-16,RCI,US,"Rogers Communication, Inc.",17.25,42.6,yahoo-screener
+2026-10-16,RGA,US,"Reinsurance Group of America, I",17.24,97.3,yahoo-screener
+2026-10-16,001280.SZ,CN,CNUC,17.13,52.6,yahoo-screener
+2026-10-16,600026.SS,CN,COSCO SHIPPING ENGY TPT CO LTD,17.12,221.7,yahoo-screener
+2026-10-16,601111.SS,CN,AIR CHINA LTD,17.12,52.6,yahoo-screener
+2026-10-16,WF,US,Woori Financial Group Inc.,17.0,6.6,yahoo-screener
+2026-10-16,WCC,US,"WESCO International, Inc.",16.89,200.5,yahoo-screener
+2026-10-16,CLH,US,"Clean Harbors, Inc.",16.88,138.4,yahoo-screener
+2026-10-16,BURL,US,"Burlington Stores, Inc.",16.82,346.7,yahoo-screener
+2026-10-16,HSAI,US,Hesai Group,16.8,18.7,yahoo-screener
+2026-10-16,1336.HK,HK,NCI,16.8,37.7,yahoo-screener
+2026-10-16,600487.SS,CN,HENGTONG OPTIC-ELECTRIC CO.LTD,16.77,1311.9,yahoo-screener
+2026-10-16,301308.SZ,CN,LONGSYS,16.76,521.0,yahoo-screener
+2026-10-16,TLN,US,Talen Energy Corporation,16.73,321.5,yahoo-screener
+2026-10-16,000166.SZ,CN,SWHY,16.73,43.8,yahoo-screener
+2026-10-16,1776.HK,HK,GF SEC,16.72,11.2,yahoo-screener
+2026-10-16,PKX,US,POSCO Holdings Inc.,16.7,13.3,yahoo-screener
+2026-10-16,FICO,US,Fair Isaac Corporation,16.63,498.9,yahoo-screener
+2026-10-16,1308.HK,HK,SITC,16.63,32.0,yahoo-screener
+2026-10-16,J,US,Jacobs Solutions Inc.,16.62,119.6,yahoo-screener
+2026-10-16,HST,US,"Host Hotels & Resorts, Inc.",16.57,208.3,yahoo-screener
+2026-10-16,FDXF,US,"FedEx Freight Holding Company, ",16.52,154.6,yahoo-screener
+2026-10-16,002281.SZ,CN,ACCELINK,16.45,748.2,yahoo-screener
+2026-10-16,2600.HK,HK,CHALCO,16.42,34.9,yahoo-screener
+2026-10-16,STLA,US,Stellantis N.V.,16.39,103.3,yahoo-screener
+2026-10-16,TMCV.NS,IN,TATA MOTORS LIMITED,16.38,32.8,yahoo-screener
+2026-10-16,000408.SZ,CN,ZANGGE MINING,16.26,131.6,yahoo-screener
+2026-10-16,7735.T,JP,SCREEN HOLDINGS CO LTD,16.23,230.2,yahoo-screener
+2026-10-16,RBA,US,"RB Global, Inc.",16.14,154.4,yahoo-screener
+2026-10-16,7453.T,JP,RYOHIN KEIKAKU CO,16.13,91.5,yahoo-screener
+2026-10-16,688111.SS,CN,BEIJING KINGSOFT OFFICE SOFTWAR,16.13,293.6,yahoo-screener
+2026-10-16,WMG,US,Warner Music Group Corp.,16.05,63.6,yahoo-screener
+2026-10-16,600346.SS,CN,HENGLI PETROCHEMICAL CO LTD,16.03,79.7,yahoo-screener
+2026-10-16,601100.SS,CN,JIANGSU HENGLI HYDRAULIC CO LTD,15.93,84.6,yahoo-screener
+2026-10-16,H,US,Hyatt Hotels Corporation,15.92,134.2,yahoo-screener
+2026-10-16,CDE,US,"Coeur Mining, Inc.",15.84,554.0,yahoo-screener
+2026-10-16,INVH,US,Invitation Homes Inc.,15.83,123.6,yahoo-screener
+2026-10-16,601390.SS,CN,CHINA RAILWAY GROUP LIMITED,15.8,60.2,yahoo-screener
+2026-10-16,RBC,US,RBC Bearings Incorporated,15.76,137.4,yahoo-screener
+2026-10-16,GFL,US,GFL Environmental Inc. Subordin,15.72,115.4,yahoo-screener
+2026-10-16,EXEL,US,"Exelixis, Inc.",15.57,148.5,yahoo-screener
+2026-10-16,LDOS,US,"Leidos Holdings, Inc.",15.56,168.8,yahoo-screener
+2026-10-16,601868.SS,CN,CHINA ENERGY ENGINEERING CORP L,15.54,84.2,yahoo-screener
+2026-10-16,GIB,US,CGI Inc.,15.5,32.8,yahoo-screener
+2026-10-16,BSAC,US,Banco Santander - Chile,15.46,10.5,yahoo-screener
+2026-10-16,MKSI,US,MKS Inc.,15.45,310.1,yahoo-screener
+2026-10-16,MTZ,US,"MasTec, Inc.",15.39,295.2,yahoo-screener
+2026-10-16,FUTU,US,Futu Holdings Limited,15.39,137.2,yahoo-screener
+2026-10-16,600584.SS,CN,JCET GROUP CO LTD,15.38,997.7,yahoo-screener
+2026-10-16,1888.HK,HK,KB LAMINATES,15.37,453.7,yahoo-screener
+2026-10-16,CRBG,US,Corebridge Financial Inc.,15.35,152.7,yahoo-screener
+2026-10-16,600489.SS,CN,ZHONGJIN GOLD CO,15.35,275.1,yahoo-screener
+2026-10-16,6618.HK,HK,JD HEALTH,15.34,39.0,yahoo-screener
+2026-10-16,W,US,Wayfair Inc.,15.33,314.7,yahoo-screener
+2026-10-16,PFGC,US,Performance Food Group Company,15.28,152.6,yahoo-screener
+2026-10-16,XP,US,XP Inc.,15.24,218.6,yahoo-screener
+2026-10-16,6099.HK,HK,CMSC,15.22,8.3,yahoo-screener
+2026-10-16,LSCC,US,Lattice Semiconductor Corporati,15.21,185.3,yahoo-screener
+2026-10-16,600893.SS,CN,AECC AVIATION POWER CO LTD,15.21,172.6,yahoo-screener
+2026-10-16,8601.T,JP,DAIWA SECURITIES GROUP,15.16,55.6,yahoo-screener
+2026-10-16,4684.T,JP,OBIC CO LTD,15.1,63.1,yahoo-screener
+2026-10-16,6988.T,JP,NITTO DENKO CORP,15.09,71.2,yahoo-screener
+2026-10-16,601888.SS,CN,CHINA TOURISM GROUP DUTY FREE C,15.08,182.0,yahoo-screener
+2026-10-16,YUMC,US,"Yum China Holdings, Inc.",15.07,68.2,yahoo-screener
+2026-10-16,LOGI,US,Logitech International S.A. - R,15.06,91.1,yahoo-screener
+2026-10-16,000657.SZ,CN,CHINA  TUNGSTEN  HIG,15.05,464.0,yahoo-screener
+2026-10-16,LAMR,US,Lamar Advertising Company,15.04,85.7,yahoo-screener
+2026-10-16,JHX,US,James Hardie Industries plc.,15.04,238.7,yahoo-screener
+2026-10-16,SITM,US,SiTime Corporation,15.03,226.6,yahoo-screener
+2026-10-16,300857.SZ,CN,SHARETRONIC DATA,15.03,611.7,yahoo-screener
+2026-10-16,ULS,US,UL Solutions Inc.,15.02,69.3,yahoo-screener
+2026-10-16,5801.T,JP,FURUKAWA ELECTRIC CO,15.02,542.6,yahoo-screener
+2026-10-16,2057.HK,HK,ZTO EXPRESS-W,14.99,32.8,yahoo-screener
+2026-10-16,ZTO,US,ZTO Express (Cayman) Inc.,14.97,46.5,yahoo-screener
+2026-10-16,SOLV,US,Solventum Corporation,14.96,92.7,yahoo-screener
+2026-10-16,PHYS,US,"""Sprott Physical Gold Trust""",14.95,128.7,yahoo-screener
+2026-10-16,ASND,US,Ascendis Pharma A/S,14.91,154.2,yahoo-screener
+2026-10-16,SGI,US,Somnigroup International Inc.,14.91,201.1,yahoo-screener
+2026-10-16,600015.SS,CN,HUAXIA BANK CO,14.91,79.4,yahoo-screener
+2026-10-16,TYL,US,"Tyler Technologies, Inc.",14.89,302.0,yahoo-screener
+2026-10-16,600905.SS,CN,CHINA THREE GORGES RENEWABLES,14.87,42.9,yahoo-screener
+2026-10-16,5838.T,JP,RAKUTEN BANK LTD,14.84,40.6,yahoo-screener
+2026-10-16,4091.T,JP,NIPPON SANSO HOLDINGS CORPORATI,14.83,20.2,yahoo-screener
+2026-10-16,601006.SS,CN,DAQIN RAILWAY CO LTD,14.81,88.8,yahoo-screener
+2026-10-16,9987.HK,HK,YUM CHINA,14.8,33.0,yahoo-screener
+2026-10-16,VAML.NS,IN,VEDANTA ALUMINIUM METAL L,14.77,32.1,yahoo-screener
+2026-10-16,ICICIAMC.NS,IN,ICICI PRUDENTIAL AMC LTD,14.76,13.4,yahoo-screener
+2026-10-16,601800.SS,CN,CHINA COMMUNICATIONS CONSTRUCTI,14.75,28.9,yahoo-screener
+2026-10-16,WPC,US,W. P. Carey Inc. REIT,14.68,90.7,yahoo-screener
+2026-10-16,SUI,US,"Sun Communities, Inc.",14.65,191.1,yahoo-screener
+2026-10-16,603019.SS,CN,DAWNING INFORMATION INDUSTRY CO,14.65,403.9,yahoo-screener
+2026-10-16,UNM,US,Unum Group,14.63,152.7,yahoo-screener
+2026-10-16,EG,US,"Everest Group, Ltd.",14.62,138.1,yahoo-screener
+2026-10-16,EQH,US,"Equitable Holdings, Inc.",14.59,150.4,yahoo-screener
+2026-10-16,OHI,US,"Omega Healthcare Investors, Inc",14.54,88.6,yahoo-screener
+2026-10-16,CX,US,"Cemex, S.A.B. de C.V. Sponsored",14.52,66.3,yahoo-screener
+2026-10-16,ARMK,US,Aramark,14.51,129.8,yahoo-screener
+2026-10-16,688702.SS,CN,SUZHOU CENTEC COMMUNICATIONS CO,14.5,310.2,yahoo-screener
+2026-10-16,603228.SS,CN,SHENZHEN KINWONG ELECTRONIC CO ,14.5,611.3,yahoo-screener
+2026-10-16,HTHT,US,H World Group Limited,14.49,70.0,yahoo-screener
+2026-10-16,EMA,US,Emera Incorporated,14.46,27.4,yahoo-screener
+2026-10-16,GWRE,US,"Guidewire Software, Inc.",14.41,233.3,yahoo-screener
+2026-10-16,601727.SS,CN,SHANGHAI ELECTRIC HOLDING GROUP,14.4,57.2,yahoo-screener
+2026-10-16,1171.HK,HK,YANKUANG ENERGY,14.39,40.0,yahoo-screener
+2026-10-16,600795.SS,CN,GD POWER DEVELOPMENT CO,14.32,101.2,yahoo-screener
+2026-10-16,JLL,US,Jones Lang LaSalle Incorporated,14.3,115.8,yahoo-screener
+2026-10-16,RNR,US,RenaissanceRe Holdings Ltd.,14.3,110.1,yahoo-screener
+2026-10-16,603296.SS,CN,HUAQIN TECHNOLOGY CO LTD,14.29,222.0,yahoo-screener
+2026-10-16,688506.SS,CN,SICHUAN BIOKIN PHARMACEUTICAL C,14.27,65.9,yahoo-screener
+2026-10-16,PNFP,US,"Pinnacle Financial Partners, In",14.26,104.2,yahoo-screener
+2026-10-16,TATACAP.NS,IN,TATA CAPITAL LIMITED,14.26,5.4,yahoo-screener
+2026-10-16,TRMB,US,Trimble Inc.,14.22,176.2,yahoo-screener
+2026-10-16,LTM,US,LATAM Airlines Group S.A.,14.2,36.8,yahoo-screener
+2026-10-16,TRU,US,TransUnion,14.2,177.8,yahoo-screener
+2026-10-16,LECO,US,"Lincoln Electric Holdings, Inc.",14.18,110.3,yahoo-screener
+2026-10-16,8697.T,JP,JAPAN EXCHANGE GROUP,14.17,50.7,yahoo-screener
+2026-10-16,GME,US,GameStop Corporation,14.14,233.2,yahoo-screener
+2026-10-16,CHKP,US,Check Point Software Technologi,14.1,153.4,yahoo-screener
+2026-10-16,TME,US,Tencent Music Entertainment Gro,14.1,72.5,yahoo-screener
+2026-10-16,BMNR,US,"BitMine Immersion Technologies,",14.09,885.0,yahoo-screener
+2026-10-16,1179.HK,HK,HWORLD-S,14.02,8.1,yahoo-screener
+2026-10-16,301165.SZ,CN,RJWL,13.94,276.2,yahoo-screener
+2026-10-16,600010.SS,CN,INNER MONGOLIA BAOTOU STEEL UNI,13.93,106.4,yahoo-screener
+2026-10-16,IONQ,US,"IonQ, Inc.",13.92,748.2,yahoo-screener
+2026-10-16,JAZZ,US,Jazz Pharmaceuticals plc,13.92,187.3,yahoo-screener
+2026-10-16,NBIX,US,"Neurocrine Biosciences, Inc.",13.92,179.1,yahoo-screener
+2026-10-16,PAG,US,"Penske Automotive Group, Inc.",13.92,92.7,yahoo-screener
+2026-10-16,NLY,US,Annaly Capital Management Inc.,13.89,175.2,yahoo-screener
+2026-10-16,DKS,US,Dick's Sporting Goods Inc,13.88,444.1,yahoo-screener
+2026-10-16,600585.SS,CN,ANHUI CONCH CEMENT,13.87,66.7,yahoo-screener
+2026-10-16,601991.SS,CN,DATANG INTERNATIONAL POWER GENE,13.86,260.5,yahoo-screener
+2026-10-16,MAA,US,Mid-America Apartment Communiti,13.83,124.0,yahoo-screener
+2026-10-16,7532.T,JP,PAN PACIFIC INTL HLDGS CORP,13.83,71.1,yahoo-screener
+2026-10-16,FN,US,Fabrinet,13.8,345.7,yahoo-screener
+2026-10-16,HALO,US,"Halozyme Therapeutics, Inc.",13.79,269.9,yahoo-screener
+2026-10-16,TIGO,US,Millicom International Cellular,13.76,91.0,yahoo-screener
+2026-10-16,AAF.L,UK,AIRTEL AFRICA PLC ORD USD0.50,13.74,13.9,yahoo-screener
+2026-10-16,603501.SS,CN,OMNIVISION INTEGRATED CIRCUITS ,13.74,198.1,yahoo-screener
+2026-10-16,KEP,US,Korea Electric Power Corporatio,13.73,10.3,yahoo-screener
+2026-10-16,0316.HK,HK,OOIL,13.7,23.9,yahoo-screener
+2026-10-16,603256.SS,CN,GRACE FABRIC TECHNOLOGY CO LTD,13.7,317.7,yahoo-screener
+2026-10-16,SUN,US,Sunoco LP,13.67,38.8,yahoo-screener
+2026-10-16,002353.SZ,CN,JEREH GROUP,13.66,251.8,yahoo-screener
+2026-10-16,STRL,US,"Sterling Infrastructure, Inc.",13.65,288.8,yahoo-screener
+2026-10-16,002028.SZ,CN,SIEYUAN,13.64,201.1,yahoo-screener
+2026-10-16,JBS,US,JBS N.V.,13.62,71.2,yahoo-screener
+2026-10-16,COKE,US,"Coca-Cola Consolidated, Inc.",13.62,99.5,yahoo-screener
+2026-10-16,1698.HK,HK,TME-SW,13.62,7.5,yahoo-screener
+2026-10-16,605117.SS,CN,NINGBO DEYE TECHNOLOGY CO LTD,13.6,148.1,yahoo-screener
+2026-10-16,GDDY,US,GoDaddy Inc.,13.59,231.9,yahoo-screener
+2026-10-16,ARCC,US,Ares Capital Corporation,13.58,83.4,yahoo-screener
+2026-10-16,601698.SS,CN,CHINA SATELLITE COMMUNICATIONS ,13.56,71.0,yahoo-screener
+2026-10-16,3659.T,JP,NEXON CO LTD,13.53,59.4,yahoo-screener
+2026-10-16,CACI,US,"CACI International, Inc.",13.51,166.4,yahoo-screener
+2026-10-16,ICLR,US,ICON plc,13.51,147.4,yahoo-screener
+2026-10-16,600522.SS,CN,JIANGSU ZHONG TIAN TECH,13.47,858.3,yahoo-screener
+2026-10-16,SMTC,US,Semtech Corporation,13.46,435.5,yahoo-screener
+2026-10-16,DOC,US,"Healthpeak Properties, Inc.",13.44,104.4,yahoo-screener
+2026-10-16,301200.SZ,CN,HAN'S CNC,13.43,89.2,yahoo-screener
+2026-10-16,MLI,US,"Mueller Industries, Inc.",13.4,88.0,yahoo-screener
+2026-10-16,AGI,US,Alamos Gold Inc.,13.39,129.5,yahoo-screener
+2026-10-16,BF-A,US,Brown Forman Inc,13.37,4.2,yahoo-screener
+2026-10-16,6990.HK,HK,SKB BIO,13.35,36.9,yahoo-screener
+2026-10-16,000958.SZ,CN,SPIC IFH,13.33,11.0,yahoo-screener
+2026-10-16,CSL,US,Carlisle Companies Incorporated,13.32,178.0,yahoo-screener
+2026-10-16,300442.SZ,CN,RANGE TECHNOLOGY,13.25,216.5,yahoo-screener
+2026-10-16,GGG,US,Graco Inc.,13.24,152.0,yahoo-screener
+2026-10-16,MANH,US,"Manhattan Associates, Inc.",13.23,174.9,yahoo-screener
+2026-10-16,688271.SS,CN,SHANGHAI UNITED IMAGING HEALTHC,13.23,80.6,yahoo-screener
+2026-10-16,FLUT,US,Flutter Entertainment plc,13.22,230.3,yahoo-screener
+2026-10-16,LTM.NS,IN,LTM LIMITED,13.21,18.7,yahoo-screener
+2026-10-16,6594.T,JP,NIDEC CORPORATION,13.21,95.5,yahoo-screener
+2026-10-16,TU,US,Telus Corporation,13.18,62.2,yahoo-screener
+2026-10-16,EDV.L,UK,ENDEAVOUR MINING PLC ORD USD0.0,13.18,39.5,yahoo-screener
+2026-10-16,CG,US,The Carlyle Group Inc.,13.12,132.8,yahoo-screener
+2026-10-16,BBIO,US,"BridgeBio Pharma, Inc.",13.12,161.1,yahoo-screener
+2026-10-16,0625.HK,HK,SHEIN-W,13.07,21.2,yahoo-screener
+2026-10-16,BJ,US,"BJ's Wholesale Club Holdings, I",13.04,186.5,yahoo-screener
+2026-10-16,EQX,US,Equinox Gold Corp.,12.97,150.9,yahoo-screener
+2026-10-16,000807.SZ,CN,YNALCO,12.97,271.3,yahoo-screener
+2026-10-16,688783.SS,CN,XI'AN ESWIN MATERIAL TECHNOLOGY,12.95,88.5,yahoo-screener
+2026-10-16,GROWW.NS,IN,BILLIONBRAINS GARAGE VN L,12.94,72.8,yahoo-screener
+2026-10-16,TXT,US,Textron Inc.,12.92,133.7,yahoo-screener
+2026-10-16,DOCN,US,"DigitalOcean Holdings, Inc.",12.87,303.8,yahoo-screener
+2026-10-16,6504.T,JP,FUJI ELECTRIC CO. LTD.,12.87,73.4,yahoo-screener
+2026-10-16,PINS,US,"Pinterest, Inc.",12.86,284.7,yahoo-screener
+2026-10-16,6383.T,JP,DAIFUKU CO LTD,12.84,64.4,yahoo-screener
+2026-10-16,EMBJ,US,Embraer S.A.,12.83,95.1,yahoo-screener
+2026-10-16,TEM,US,"Tempus AI, Inc.",12.83,489.8,yahoo-screener
+2026-10-16,NXT,US,Nextpower Inc.,12.82,200.1,yahoo-screener
+2026-10-16,600089.SS,CN,TBEA CO LTD,12.81,199.2,yahoo-screener
+2026-10-16,CNA,US,CNA Financial Corporation,12.8,22.9,yahoo-screener
+2026-10-16,001232.SZ,CN,JLC,12.8,174.2,yahoo-screener
+2026-10-16,1138.HK,HK,COSCO SHIP ENGY,12.79,45.7,yahoo-screener
+2026-10-16,RPM,US,RPM International Inc.,12.76,132.3,yahoo-screener
+2026-10-16,600674.SS,CN,SICHUAN CHUANTOU ENERGY CO LTD,12.74,82.9,yahoo-screener
+2026-10-16,AMH,US,American Homes 4 Rent,12.7,79.3,yahoo-screener
+2026-10-16,600029.SS,CN,CHINA SOUTHERN AIRLINES COMPANY,12.7,40.4,yahoo-screener
+2026-10-16,002128.SZ,CN,DIAN TOU ENERGY,12.69,54.2,yahoo-screener
+2026-10-16,PEN,US,"Penumbra, Inc.",12.65,110.8,yahoo-screener
+2026-10-16,SEIC,US,SEI Investments Company,12.63,80.9,yahoo-screener
+2026-10-16,SKM,US,"SK Telecom Co., Ltd.",12.6,59.5,yahoo-screener
+2026-10-16,TLK,US,"PT Telekomunikasi Indonesia, Tb",12.6,9.8,yahoo-screener
+2026-10-16,EHC,US,Encompass Health Corporation,12.6,114.7,yahoo-screener
+2026-10-16,BWXT,US,"BWX Technologies, Inc.",12.57,149.7,yahoo-screener
+2026-10-16,688146.SS,CN,PERIC SPECIAL GASES CO LTD,12.57,382.7,yahoo-screener
+2026-10-16,688183.SS,CN,SHENGYI ELECTRONICS CO LTD,12.56,258.6,yahoo-screener
+2026-10-16,301526.SZ,CN,CPIC,12.55,548.7,yahoo-screener
+2026-10-16,605499.SS,CN,EASTROC BEVERAGE GROUP CO LTD,12.5,109.5,yahoo-screener
+2026-10-16,ERIE,US,Erie Indemnity Company,12.48,62.4,yahoo-screener
+2026-10-16,1913.HK,HK,PRADA,12.46,7.5,yahoo-screener
+2026-10-16,600673.SS,CN,GUANGDONG HEC TECHNOLOGY HOLDIN,12.46,139.3,yahoo-screener
+2026-10-16,601825.SS,CN,SHANGHAI RURAL COMMERCIAL BK CO,12.45,33.7,yahoo-screener
+2026-10-16,601186.SS,CN,CHINA RAILWAY CONSTRUCTION CORP,12.42,37.0,yahoo-screener
+2026-10-16,LII,US,"Lennox International, Inc.",12.39,186.5,yahoo-screener
+2026-10-16,INIO,US,INNIO N.V.,12.38,78.9,yahoo-screener
+2026-10-16,LGEINDIA.NS,IN,LG ELECTRONICS INDIA LTD,12.37,12.1,yahoo-screener
+2026-10-16,CCK,US,"Crown Holdings, Inc.",12.36,109.3,yahoo-screener
+2026-10-16,WSO,US,"Watsco, Inc.",12.36,155.3,yahoo-screener
+2026-10-16,BTSG,US,"BrightSpring Health Services, I",12.34,193.5,yahoo-screener
+2026-10-16,TOL,US,"Toll Brothers, Inc.",12.34,130.2,yahoo-screener
+2026-10-16,000617.SZ,CN,CNPCCCL,12.34,88.4,yahoo-screener
+2026-10-16,MKC,US,"McCormick & Company, Incorporat",12.3,151.3,yahoo-screener
+2026-10-16,FIVE,US,"Five Below, Inc.",12.29,248.4,yahoo-screener
+2026-10-16,GRAB,US,Grab Holdings Limited,12.27,171.8,yahoo-screener
+2026-10-16,SMMT,US,Summit Therapeutics Inc.,12.26,91.9,yahoo-screener
+2026-10-16,CORT,US,Corcept Therapeutics Incorporat,12.26,142.1,yahoo-screener
+2026-10-16,AIT,US,Applied Industrial Technologies,12.26,91.9,yahoo-screener
+2026-10-16,300757.SZ,CN,ROBO,12.26,458.0,yahoo-screener
+2026-10-16,FIG,US,"Figma, Inc.",12.25,380.0,yahoo-screener
+2026-10-16,AEG,US,Aegon Ltd. New York Registry Sh,12.24,41.6,yahoo-screener
+2026-10-16,HUBS,US,"HubSpot, Inc.",12.23,421.2,yahoo-screener
+2026-10-16,8473.T,JP,SBI HOLDINGS INC,12.22,74.9,yahoo-screener
+2026-10-16,601012.SS,CN,LONGI GREEN ENERGY TECHNOLOGY C,12.2,138.8,yahoo-screener
+2026-10-16,SNN,US,"Smith & Nephew SNATS, Inc.",12.17,46.2,yahoo-screener
+2026-10-16,601916.SS,CN,CHINA ZHESHANG BANK CO. LTD,12.15,64.8,yahoo-screener
+2026-10-16,601838.SS,CN,BANK OF CHENGDU CO LTD,12.14,57.9,yahoo-screener
+2026-10-16,7186.T,JP,YOKOHAMA FINANCIAL GROUP INC,12.13,43.2,yahoo-screener
+2026-10-16,600160.SS,CN,ZHEJIANG JUHUA CO LTD.,12.13,145.9,yahoo-screener
+2026-10-16,DTM,US,"DT Midstream, Inc.",12.12,110.1,yahoo-screener
+2026-10-16,AFG,US,"American Financial Group, Inc.",12.08,54.0,yahoo-screener
+2026-10-16,ELS,US,"Equity Lifestyle Properties, In",12.08,96.7,yahoo-screener
+2026-10-16,002600.SZ,CN,LY ITECH,12.04,148.1,yahoo-screener
+2026-10-16,PAC,US,Grupo Aeroportuario Del Pacific,12.03,29.4,yahoo-screener
+2026-10-16,2268.HK,HK,WUXI XDC,12.03,71.5,yahoo-screener
+2026-10-16,3908.HK,HK,CICC,12.03,37.1,yahoo-screener
+2026-10-16,603893.SS,CN,FUZHOU ROCKCHIP ELECTRONICS CO ,12.02,475.9,yahoo-screener
+2026-10-16,IREN,US,IREN LIMITED,11.98,1337.7,yahoo-screener
+2026-10-16,SDLF.L,UK,STANDARD LIFE PLC ORD 10P,11.92,29.7,yahoo-screener
+2026-10-16,6361.T,JP,EBARA CORP,11.92,89.2,yahoo-screener
+2026-10-16,8593.T,JP,MITSUBISHI HC CAPITAL INC,11.92,36.9,yahoo-screener
+2026-10-16,CR,US,Crane Company,11.89,85.6,yahoo-screener
+2026-10-16,9697.T,JP,CAPCOM CO LTD,11.88,92.3,yahoo-screener
+2026-10-16,7550.T,JP,ZENSHO HOLDINGS CO LTD,11.86,45.4,yahoo-screener
+2026-10-16,WTS,US,"Watts Water Technologies, Inc.",11.85,70.1,yahoo-screener
+2026-10-16,7012.T,JP,KAWASAKI HEAVY INDUSTRIES,11.85,151.2,yahoo-screener
+2026-10-16,000301.SZ,CN,EASTERN SHENGHONG,11.85,53.2,yahoo-screener
+2026-10-16,002156.SZ,CN,TFME,11.85,826.2,yahoo-screener
+2026-10-16,601127.SS,CN,SERES GROUP CO LTD,11.85,184.4,yahoo-screener
+2026-10-16,6823.HK,HK,HKT-SS,11.81,13.5,yahoo-screener
+2026-10-16,601077.SS,CN,CHONGQING RURAL COMMERCIAL BANK,11.8,69.8,yahoo-screener
+2026-10-16,DECK,US,Deckers Outdoor Corporation,11.79,248.5,yahoo-screener
+2026-10-16,1997.HK,HK,WHARF REIC,11.79,18.8,yahoo-screener
+2026-10-16,MAIR,US,Madison Air Solutions Corporati,11.78,65.4,yahoo-screener
+2026-10-16,ONON,US,On Holding AG,11.76,325.0,yahoo-screener
+2026-10-16,ELAN,US,Elanco Animal Health Incorporat,11.76,145.5,yahoo-screener
+2026-10-16,0763.HK,HK,ZTE,11.76,28.8,yahoo-screener
+2026-10-16,PSLV,US,"""Sprott Physical Silver Trust""",11.75,134.0,yahoo-screener
+2026-10-16,5019.T,JP,IDEMITSU KOSAN CO.LTD,11.75,45.3,yahoo-screener
+2026-10-16,WSE,US,Wise Group plc,11.73,17.8,yahoo-screener
+2026-10-16,600039.SS,CN,SICHUAN ROAD&BRIDGE GROUP CO LT,11.72,26.1,yahoo-screener
+2026-10-16,LENSKART.NS,IN,LENSKART SOLUTIONS LTD,11.71,60.3,yahoo-screener
+2026-10-16,FRO,US,Frontline Plc,11.7,157.9,yahoo-screener
+2026-10-16,GLPI,US,"Gaming and Leisure Properties, ",11.7,125.7,yahoo-screener
+2026-10-16,RGEN,US,Repligen Corporation,11.69,222.9,yahoo-screener
+2026-10-16,6613.HK,HK,LENS,11.69,21.9,yahoo-screener
+2026-10-16,FROG,US,JFrog Ltd.,11.66,186.7,yahoo-screener
+2026-10-16,9843.T,JP,NITORI HOLDINGS CO LTD,11.66,76.1,yahoo-screener
+2026-10-16,688002.SS,CN,RAYTRON TECHNOLOGY CO LTD,11.66,291.4,yahoo-screener
+2026-10-16,601669.SS,CN,POWER CONSTRUCTION CORP OF CHIN,11.66,62.1,yahoo-screener
+2026-10-16,WISE.L,UK,WISE GROUP PLC CLS A ORD USD0.0,11.63,19.1,yahoo-screener
+2026-10-16,QXO,US,"QXO, Inc.",11.6,217.2,yahoo-screener
+2026-10-16,601168.SS,CN,WESTERN MINING CO. LTD.,11.58,295.4,yahoo-screener
+2026-10-16,MOG-A,US,Moog Inc.,11.56,102.3,yahoo-screener
+2026-10-16,AHR,US,"American Healthcare REIT, Inc.",11.56,155.8,yahoo-screener
+2026-10-16,7181.T,JP,JAPAN POST INSURANCE CO LTD,11.53,25.8,yahoo-screener
+2026-10-16,FRHC,US,Freedom Holding Corp.,11.51,18.8,yahoo-screener
+2026-10-16,ALLY,US,Ally Financial Inc.,11.48,130.7,yahoo-screener
+2026-10-16,LULU,US,lululemon athletica inc.,11.48,472.3,yahoo-screener
+2026-10-16,000988.SZ,CN,HGTECH,11.46,580.8,yahoo-screener
+2026-10-16,600236.SS,CN,GUANGXI GUIGUAN ELECTRIC POWER ,11.45,33.5,yahoo-screener
+2026-10-16,6525.T,JP,KOKUSAI ELECTRIC CORPORATION,11.39,400.7,yahoo-screener
+2026-10-16,ONTO,US,Onto Innovation Inc.,11.38,231.7,yahoo-screener
+2026-10-16,CHYM,US,"Chime Financial, Inc.",11.34,224.3,yahoo-screener
+2026-10-16,SAIL,US,"SailPoint, Inc.",11.28,83.2,yahoo-screener
+2026-10-16,1209.HK,HK,CHINA RES MIXC,11.28,23.7,yahoo-screener
+2026-10-16,1880.HK,HK,CTG DUTY-FREE,11.24,4.8,yahoo-screener
+2026-10-16,UHAL,US,U-Haul Holding Company,11.23,8.8,yahoo-screener
+2026-10-16,TXRH,US,"Texas Roadhouse, Inc.",11.22,173.7,yahoo-screener
+2026-10-16,ARW,US,"Arrow Electronics, Inc.",11.21,122.3,yahoo-screener
+2026-10-16,600875.SS,CN,DONGFANG ELECTRIC CORPORATION L,11.21,133.4,yahoo-screener
+2026-10-16,LI,US,Li Auto Inc.,11.2,36.3,yahoo-screener
+2026-10-16,2050.HK,HK,SANHUA,11.19,17.1,yahoo-screener
+2026-10-16,600958.SS,CN,ORIENT SECURITIES COMPANY LIMIT,11.19,62.9,yahoo-screener
+2026-10-16,TX,US,Ternium S.A. Ternium S.A.,11.17,31.8,yahoo-screener
+2026-10-16,3808.HK,HK,SINOTRUK,11.17,34.7,yahoo-screener
+2026-10-16,MICC.L,UK,THE MAGNUM ICE CREAM COMPANY N.,11.16,6.5,yahoo-screener
+2026-10-16,MICC,US,The Magnum Ice Cream Company N.,11.14,15.3,yahoo-screener
+2026-10-16,IESC,US,"IES Holdings, Inc.",11.13,83.5,yahoo-screener
+2026-10-16,SBIFUNDS.NS,IN,SBI FUNDS MANAGEMENT LTD,11.13,19.7,yahoo-screener
+2026-10-16,NYT,US,New York Times Company (The),11.12,172.1,yahoo-screener
+2026-10-16,TMPV.NS,IN,TATA MOTORS PASS VEH LTD,11.12,28.3,yahoo-screener
+2026-10-16,HRL,US,Hormel Foods Corporation,11.11,97.6,yahoo-screener
+2026-10-16,ENRIN.NS,IN,SIEMENS ENERGY INDIA LTD,11.08,17.2,yahoo-screener
+2026-10-16,2015.HK,HK,LI AUTO-W,11.07,52.8,yahoo-screener
+2026-10-16,301217.SZ,CN,TGCF,11.06,477.3,yahoo-screener
+2026-10-16,600988.SS,CN,CHIFENG JILONG GOLD MINING GROU,11.04,365.3,yahoo-screener
+2026-10-16,6066.HK,HK,CSC,11.03,7.9,yahoo-screener
+2026-10-16,SCI,US,Service Corporation Internation,11.02,80.1,yahoo-screener
+2026-10-16,8331.T,JP,CHIBA BANK,11.02,43.6,yahoo-screener
+2026-10-16,688525.SS,CN,BIWIN STORAGE TECHNOLOGY CO LTD,10.98,583.3,yahoo-screener
+2026-10-16,1519.HK,HK,J&T EXPRESS-W,10.97,42.2,yahoo-screener
+2026-10-16,AMKR,US,"Amkor Technology, Inc.",10.94,203.6,yahoo-screener
+2026-10-16,BSY,US,"Bentley Systems, Incorporated",10.94,93.0,yahoo-screener
+2026-10-16,600436.SS,CN,ZHANGZHOU PIENTZEHUANG PHARMACE,10.9,94.1,yahoo-screener
+2026-10-16,8113.T,JP,UNICHARM CORP,10.89,31.8,yahoo-screener
+2026-10-16,AVTR,US,"Avantor, Inc.",10.88,149.0,yahoo-screener
+2026-10-16,BMRN,US,BioMarin Pharmaceutical Inc.,10.85,117.7,yahoo-screener
+2026-10-16,600023.SS,CN,ZHEJIANG ZHENENG ELECTRIC POWER,10.84,37.4,yahoo-screener
+2026-10-16,FHN,US,First Horizon Corporation,10.83,122.8,yahoo-screener
+2026-10-16,AUR,US,"Aurora Innovation, Inc.",10.82,155.4,yahoo-screener
+2026-10-16,PSON.L,UK,PEARSON PLC ORD 25P,10.8,31.8,yahoo-screener
+2026-10-16,1377.HK,HK,DTECH,10.78,4.4,yahoo-screener
+2026-10-16,HBM,US,Hudbay Minerals Inc.,10.76,108.9,yahoo-screener
+2026-10-16,000630.SZ,CN,TLYS,10.76,198.2,yahoo-screener
+2026-10-16,GSAT,US,"Globalstar, Inc.",10.75,64.0,yahoo-screener
+2026-10-16,RDY,US,Dr. Reddy's Laboratories Ltd,10.75,37.2,yahoo-screener
+2026-10-16,LLOYDSME.NS,IN,LLOYDS METALS N ENERGY L,10.74,9.2,yahoo-screener
+2026-10-16,300759.SZ,CN,PHARMARON,10.72,390.7,yahoo-screener
+2026-10-16,600482.SS,CN,CHINA SHIPBUILDING INDUSTRY GRO,10.7,95.2,yahoo-screener
+2026-10-16,TTMI,US,"TTM Technologies, Inc.",10.68,256.1,yahoo-screener
+2026-10-16,AA,US,Alcoa Corporation,10.67,186.5,yahoo-screener
+2026-10-16,002080.SZ,CN,SINOMATECH,10.66,354.6,yahoo-screener
+2026-10-16,HMY,US,Harmony Gold Mining Company Lim,10.65,60.5,yahoo-screener
+2026-10-16,600600.SS,CN,TSINGTAO BREWERY CO,10.65,40.2,yahoo-screener
+2026-10-16,FNF,US,"Fidelity National Financial, In",10.64,85.7,yahoo-screener
+2026-10-16,GVT&D.NS,IN,GE VERNOVA T&D INDIA LTD,10.64,36.7,yahoo-screener
+2026-10-16,MDGL,US,"Madrigal Pharmaceuticals, Inc.",10.62,135.4,yahoo-screener
+2026-10-16,KNX,US,Knight-Swift Transportation Hol,10.62,232.5,yahoo-screener
+2026-10-16,9926.HK,HK,AKESO,10.62,127.9,yahoo-screener
+2026-10-16,IBRX,US,"ImmunityBio, Inc.",10.6,108.1,yahoo-screener
+2026-10-16,1787.HK,HK,SD GOLD,10.58,53.7,yahoo-screener
+2026-10-16,601018.SS,CN,NINGBO ZHOUSHAN PORT CO LTD,10.56,31.8,yahoo-screener
+2026-10-16,001965.SZ,CN,CMET,10.53,23.6,yahoo-screener
+2026-10-16,NVMI,US,Nova Ltd.,10.48,167.2,yahoo-screener
+2026-10-16,RTO,US,Rentokil Initial plc,10.48,36.4,yahoo-screener
+2026-10-16,DDS,US,"Dillard's, Inc.",10.47,110.5,yahoo-screener
+2026-10-16,2099.HK,HK,CHINAGOLDINTL,10.47,65.0,yahoo-screener
+2026-10-16,603195.SS,CN,GONEO GROUP CO LTD,10.47,21.9,yahoo-screener
+2026-10-16,EGP,US,"EastGroup Properties, Inc.",10.46,94.7,yahoo-screener
+2026-10-16,AGNC,US,AGNC Investment Corp.,10.46,246.1,yahoo-screener
+2026-10-16,HL,US,Hecla Mining Company,10.45,591.8,yahoo-screener
+2026-10-16,RRX,US,Regal Rexnord Corporation,10.39,189.1,yahoo-screener
+2026-10-16,5831.T,JP,SHIZUOKA FINANCIAL GROUP INC.,10.38,37.5,yahoo-screener
+2026-10-16,SF,US,Stifel Financial Corporation,10.37,81.6,yahoo-screener
+2026-10-16,FPS,US,"Forgent Power Solutions, Inc.",10.33,273.4,yahoo-screener
+2026-10-16,OSCR,US,"Oscar Health, Inc.",10.33,177.5,yahoo-screener
+2026-10-16,600115.SS,CN,CHINA EASTERN AIRLINES CORP,10.33,71.3,yahoo-screener
+2026-10-16,PBF,US,PBF Energy Inc.,10.31,289.9,yahoo-screener
+2026-10-16,SUZ,US,Suzano S.A.,10.28,24.8,yahoo-screener
+2026-10-16,ESTC,US,Elastic N.V.,10.21,218.0,yahoo-screener
+2026-10-16,DCI,US,"Donaldson Company, Inc.",10.17,58.1,yahoo-screener
+2026-10-16,9435.T,JP,HIKARI TSUSHIN INC,10.17,21.2,yahoo-screener
+2026-10-16,ELPC,US,Companhia Paranaense de Energia,10.16,7.1,yahoo-screener
+2026-10-16,VICR,US,Vicor Corporation,10.14,195.6,yahoo-screener
+2026-10-16,IAG,US,Iamgold Corporation,10.14,94.4,yahoo-screener
+2026-10-16,SANM,US,Sanmina Corporation,10.12,128.2,yahoo-screener
+2026-10-16,AEIS,US,"Advanced Energy Industries, Inc",10.1,147.5,yahoo-screener
+2026-10-16,RMBS,US,"Rambus, Inc.",10.07,219.5,yahoo-screener
+2026-10-16,GMRAIRPORT.NS,IN,GMR AIRPORTS LIMITED,10.05,13.7,yahoo-screener
+2026-10-16,688469.SS,CN,UNITED NOVA TECH CO LTD,10.04,159.3,yahoo-screener
+2026-10-16,001309.SZ,CN,TECHWINSEMI,10.02,686.3,yahoo-screener
+2026-10-16,6963.T,JP,ROHM CO LTD,9.92,97.3,yahoo-screener
+2026-10-16,4768.T,JP,OTSUKA CORPORATION,9.89,37.6,yahoo-screener
+2026-10-16,7309.T,JP,SHIMANO INC,9.77,35.8,yahoo-screener
+2026-10-16,8136.T,JP,SANRIO CO LTD,9.75,166.9,yahoo-screener
+2026-10-16,7259.T,JP,AISIN CORPORATION,9.43,32.9,yahoo-screener
+2026-10-16,2587.T,JP,SUNTORY BEVERAGE & FOOD LIMITED,9.36,31.7,yahoo-screener
+2026-10-16,7167.T,JP,MEBUKI FINANCIAL GROUP INC,9.3,28.9,yahoo-screener
+2026-10-16,IMI.L,UK,IMI PLC ORD 28 4/7P,9.2,31.1,yahoo-screener
+2026-10-16,7202.T,JP,ISUZU MOTORS,9.14,37.3,yahoo-screener
+2026-10-16,MAZDOCK.NS,IN,MAZAGON DOCK SHIPBUIL LTD,8.93,15.9,yahoo-screener
+2026-10-16,MANIPALHOS.NS,IN,MANIPAL HEALTH ENTERPRI L,8.88,17.5,yahoo-screener
+2026-10-16,9147.T,JP,NIPPON EXPRESS HLDGS INC,8.76,40.8,yahoo-screener
+2026-10-16,PSH.L,UK,PERSHING SQUARE HOLDINGS LTD OR,8.73,7.7,yahoo-screener
+2026-10-16,BHARTIHEXA.NS,IN,BHARTI HEXACOM LIMITED,8.68,2.8,yahoo-screener
+2026-10-16,FCIT.L,UK,F&C INVESTMENT TRUST PLC ORD 6.,8.55,10.2,yahoo-screener
+2026-10-16,8354.T,JP,FUKUOKA FINANCIAL GROUP INC.,8.55,33.7,yahoo-screener
+2026-10-16,9021.T,JP,WEST JAPAN RAILWAY CO,8.54,42.5,yahoo-screener
+2026-10-16,6586.T,JP,MAKITA CORP,8.37,28.2,yahoo-screener
+2026-10-16,7911.T,JP,TOPPAN HOLDINGS INC,8.33,46.5,yahoo-screener
+2026-10-16,8303.T,JP,SBI SHINSEI BANK LTD,8.3,32.4,yahoo-screener
+2026-10-16,6479.T,JP,MINEBEA MITSUMI INC,8.26,58.7,yahoo-screener
+2026-10-16,6976.T,JP,TAIYO YUDEN CO LTD,8.26,1619.9,yahoo-screener
+2026-10-16,9602.T,JP,TOHO CO LTD,8.22,39.1,yahoo-screener
+2026-10-16,5706.T,JP,MITSUI KINZOKU CO LTD,8.18,228.0,yahoo-screener
+2026-10-16,TLC.AX,AU,LOTTERY FPO [TLC],8.12,28.6,yahoo-screener
+2026-10-16,3563.T,JP,FOOD & LIFE COMPANIES LTD,8.09,86.0,yahoo-screener
+2026-10-16,6532.T,JP,BAYCURRENT INC,8.08,72.2,yahoo-screener
+2026-10-16,3003.T,JP,HULIC CO LTD,8.07,24.3,yahoo-screener
+2026-10-16,NTPCGREEN.NS,IN,NTPC GREEN ENERGY LIMITED,8.04,4.4,yahoo-screener
+2026-10-16,8439.T,JP,TOKYO CENTURY CORPORATION,7.99,11.5,yahoo-screener
+2026-10-16,4716.T,JP,ORACLE CORP JAPAN,7.96,17.5,yahoo-screener
+2026-10-16,9201.T,JP,JAPAN AIRLINES CO LTD,7.94,43.0,yahoo-screener
+2026-10-16,AIA.AX,AU,AUCK AIRPT FPO NZX [AIA],7.86,2.8,yahoo-screener
+2026-10-16,7701.T,JP,SHIMADZU CORP,7.82,28.0,yahoo-screener
+2026-10-16,HSX.L,UK,HISCOX LTD ORD 6.5P (DI),7.77,37.5,yahoo-screener
+2026-10-16,9202.T,JP,ANA HOLDINGS INC,7.69,42.2,yahoo-screener
+2026-10-16,CDA.AX,AU,CODAN FPO [CDA],7.66,29.3,yahoo-screener
+2026-10-16,4151.T,JP,KYOWA KIRIN CO LTD,7.62,22.0,yahoo-screener
+2026-10-16,7912.T,JP,DAI NIPPON PRINTING CO,7.51,26.8,yahoo-screener
+2026-10-16,GAW.L,UK,GAMES WORKSHOP GROUP PLC ORD 5P,7.5,23.1,yahoo-screener
+2026-10-16,5844.T,JP,KYOTO FINANCIAL GROUP INC,7.43,24.9,yahoo-screener
+2026-10-16,6448.T,JP,BROTHER INDUSTRIES,7.26,31.9,yahoo-screener
+2026-10-16,IFT.AX,AU,INFRATIL FPO NZX [IFT],7.26,2.2,yahoo-screener
+2026-10-16,3064.T,JP,MONOTARO CO.LTD,7.23,31.3,yahoo-screener
+2026-10-16,BGEO.L,UK,LION FINANCE GROUP PLC ORD 1P,7.21,12.5,yahoo-screener
+2026-10-16,ORI.AX,AU,ORICA FPO [ORI],7.2,19.8,yahoo-screener
+2026-10-16,CCC.L,UK,COMPUTACENTER PLC ORD 7 5/9P,7.19,23.3,yahoo-screener
+2026-10-16,REH.AX,AU,REECE FPO [REH],7.19,6.3,yahoo-screener
+2026-10-16,8359.T,JP,HACHIJUNI NAGANO BK LTD,7.18,22.7,yahoo-screener
+2026-10-16,LAND.L,UK,LAND SECURITIES GROUP PLC ORD 1,7.17,31.1,yahoo-screener
+2026-10-16,ALD.AX,AU,AMPOL FPO [ALD],7.13,39.6,yahoo-screener
+2026-10-16,2768.T,JP,SOJITZ CORPORATION,7.02,40.8,yahoo-screener
+2026-10-16,6506.T,JP,YASKAWA ELECTRIC CORP,7.01,130.8,yahoo-screener
+2026-10-16,5101.T,JP,YOKOHAMA RUBBER CO,7.01,45.8,yahoo-screener
+2026-10-16,6869.T,JP,SYSMEX CORP,7.01,33.0,yahoo-screener
+2026-10-16,LTF.NS,IN,L&T FINANCE LIMITED,6.91,14.3,yahoo-screener
+2026-10-16,6841.T,JP,YOKOGAWA ELECTRIC CORP,6.91,32.7,yahoo-screener
+2026-10-16,ICG.L,UK,ICG PLC ORD 26 1/4P,6.89,28.3,yahoo-screener
+2026-10-16,ALQ.AX,AU,ALS FPO [ALQ],6.87,19.2,yahoo-screener
+2026-10-16,5411.T,JP,JFE HOLDINGS INC,6.79,69.9,yahoo-screener
+2026-10-16,ALW.L,UK,ALLIANCE WITAN PLC ORD 2.5P,6.7,16.8,yahoo-screener
+2026-10-16,9684.T,JP,SQUARE ENIX HOLDINGS CO.LTD.,6.69,24.7,yahoo-screener
+2026-10-16,CRDA.L,UK,CRODA INTERNATIONAL PLC ORD 10.,6.64,22.8,yahoo-screener
+2026-10-16,9042.T,JP,HANKYU HANSHIN HOLDINGS INC,6.61,29.6,yahoo-screener
+2026-10-16,8334.T,JP,GUNMA BANK,6.59,20.7,yahoo-screener
+2026-10-16,6724.T,JP,SEIKO EPSON CORP,6.59,33.1,yahoo-screener
+2026-10-16,1878.T,JP,DAITO TRUST CONSTRUCTION CO,6.56,33.4,yahoo-screener
+2026-10-16,2702.T,JP,MCDONALD'S HOLDINGS COMPANY(JAP,6.56,30.2,yahoo-screener
+2026-10-16,3092.T,JP,ZOZO INC,6.55,22.6,yahoo-screener
+2026-10-16,1944.T,JP,KINDEN CORPORATION,6.51,30.7,yahoo-screener
+2026-10-16,SFR.AX,AU,SANDFIRE FPO [SFR],6.47,25.1,yahoo-screener
+2026-10-16,ITH.L,UK,ITHACA ENERGY PLC ORD 1P,6.39,7.6,yahoo-screener
+2026-10-16,1942.T,JP,KANDENKO CO LTD,6.39,34.6,yahoo-screener
+2026-10-16,9962.T,JP,MISUMI GROUP INC,6.39,36.6,yahoo-screener
+2026-10-16,SEPL.L,UK,SEPLAT ENERGY PLC ORD NGN0.50 (,6.34,18.1,yahoo-screener
+2026-10-16,8729.T,JP,SONY FINANCIAL GROUP INC,6.32,54.9,yahoo-screener
+2026-10-16,5830.T,JP,IYOGIN HOLDINGS INC,6.26,24.3,yahoo-screener
+2026-10-16,2875.T,JP,TOYO SUISAN KAISHA,6.25,30.2,yahoo-screener
+2026-10-16,3391.T,JP,TSURUHA HOLDINGS INC,6.24,22.1,yahoo-screener
+2026-10-16,6856.T,JP,HORIBA LTD,6.23,35.2,yahoo-screener
+2026-10-16,7752.T,JP,RICOH CO,6.22,28.5,yahoo-screener
+2026-10-16,4186.T,JP,TOKYO OHKA KOGYO CO,6.17,45.5,yahoo-screener
+2026-10-16,ATHERENERG.NS,IN,ATHER ENERGY LIMITED,6.14,70.0,yahoo-screener
+2026-10-16,INDOMIM.NS,IN,INDO-MIM LIMITED,6.07,55.3,yahoo-screener
+2026-10-16,7201.T,JP,NISSAN MOTOR CO,6.04,65.5,yahoo-screener
+2026-10-16,BAB.L,UK,BABCOCK INTERNATIONAL GROUP PLC,6.02,22.3,yahoo-screener
+2026-10-16,CTEC.L,UK,CONVATEC GROUP PLC ORD 10P,6.01,25.1,yahoo-screener
+2026-10-16,3436.T,JP,SUMCO CORPORATION,5.87,228.7,yahoo-screener
+2026-10-16,9024.T,JP,SEIBU HOLDINGS INC,5.76,38.1,yahoo-screener
+2026-10-16,8377.T,JP,HOKUHOKU FINANCIAL GROUP INC,5.73,24.1,yahoo-screener
+2026-10-16,HBR.L,UK,HARBOUR ENERGY PLC ORD 0.002P,5.7,21.3,yahoo-screener
+2026-10-16,AFI.AX,AU,AUS.FOUND. FPO [AFI],5.69,3.0,yahoo-screener
+2026-10-16,ABDN.L,UK,ABERDEEN GROUP PLC ORD 13 61/63,5.67,13.4,yahoo-screener
+2026-10-16,3626.T,JP,TISI INC,5.67,24.9,yahoo-screener
+2026-10-16,9143.T,JP,SG HOLDINGS CO LTD,5.65,13.7,yahoo-screener
+2026-10-16,9401.T,JP,TBS HOLDINGS INC,5.63,12.1,yahoo-screener
+2026-10-16,BTRW.L,UK,BARRATT REDROW PLC ORD 10P,5.62,29.0,yahoo-screener
+2026-10-16,BBOX.L,UK,TRITAX BIG BOX REIT PLC ORD 1P,5.61,17.1,yahoo-screener
+2026-10-16,2897.T,JP,NISSIN FOODS HOLDINGS CO. LTD.,5.49,25.5,yahoo-screener
+2026-10-16,JBH.AX,AU,JB HI-FI FPO [JBH],5.4,28.7,yahoo-screener
+2026-10-16,YAL.AX,AU,YANCOAL FPO [YAL],5.38,11.6,yahoo-screener
+2026-10-16,9023.T,JP,TOKYO METRO CO LTD,5.34,16.8,yahoo-screener
+2026-10-16,ROR.L,UK,ROTORK PLC ORD 0.5P,5.33,46.9,yahoo-screener
+2026-10-16,3288.T,JP,OPEN HOUSE GROUP CO LTD,5.33,14.8,yahoo-screener
+2026-10-16,CPPLUS.NS,IN,ADITYA INFOTECH LIMITED,5.3,12.0,yahoo-screener
+2026-10-16,8341.T,JP,77TH BANK,5.27,17.0,yahoo-screener
+2026-10-16,RSW.L,UK,RENISHAW PLC ORD 20P,5.24,8.3,yahoo-screener
+2026-10-16,BPT.L,UK,BRIDGEPOINT GROUP PLC ORD GBP0.,5.24,9.5,yahoo-screener
+2026-10-16,AEGISLOG.NS,IN,AEGIS LOGISTICS LIMITED,5.21,17.1,yahoo-screener
+2026-10-16,8050.T,JP,SEIKO GROUP CORPORATION,5.21,32.1,yahoo-screener
+2026-10-16,4732.T,JP,USS CO LTD,5.14,14.2,yahoo-screener
+2026-10-16,BBY.L,UK,BALFOUR BEATTY PLC ORD 50P,5.12,14.9,yahoo-screener
+2026-10-16,3132.T,JP,MACNICA HOLDINGS INC,5.08,32.0,yahoo-screener
+2026-10-16,INVP.L,UK,INVESTEC PLC ORD GBP0.0002,5.0,24.8,yahoo-screener
+2026-10-16,ANTHEM.NS,IN,ANTHEM BIOSCIENCES LTD,4.99,7.2,yahoo-screener
+2026-10-16,CUPID.NS,IN,CUPID LIMITED,4.99,100.2,yahoo-screener
+2026-10-16,EB5.SI,SG,First Resources,4.93,8.6,yahoo-screener
+2026-10-16,PIRAMALFIN.NS,IN,PIRAMAL FINANCE LIMITED,4.91,7.3,yahoo-screener
+2026-10-16,AIIL.NS,IN,AUTHUM INVEST & INFRA LTD,4.84,2.9,yahoo-screener
+2026-10-16,DNL.AX,AU,DYNO NOBEL FPO [DNL],4.75,12.9,yahoo-screener
+2026-10-16,VMM.NS,IN,VISHAL MEGA MART LIMITED,4.74,12.9,yahoo-screener
+2026-10-16,ARG.AX,AU,ARGO FPO [ARG],4.74,2.2,yahoo-screener
+2026-10-16,HDBFS.NS,IN,HDB FINANCIAL SERVICES L,4.7,3.5,yahoo-screener
+2026-10-16,RMS.AX,AU,RAMELIUS FPO [RMS],4.64,21.0,yahoo-screener
+2026-10-16,SDF.AX,AU,STEADFAST FPO [SDF],4.46,32.5,yahoo-screener
+2026-10-16,ANN.AX,AU,ANSELL FPO [ANN],4.45,17.1,yahoo-screener
+2026-10-16,GGP.AX,AU,GREATLAND FPO [GGP],4.4,10.9,yahoo-screener
+2026-10-16,CMM.AX,AU,CAPMETALS FPO [CMM],4.37,19.5,yahoo-screener
+2026-10-16,BDL.NS,IN,BHARAT DYNAMICS LIMITED,4.34,14.5,yahoo-screener
+2026-10-16,WHC.AX,AU,WHITEHAVEN FPO [WHC],4.2,22.0,yahoo-screener
+2026-10-16,PTCIL.NS,IN,PTC INDUSTRIES LIMITED,4.18,8.8,yahoo-screener
+2026-10-16,PWL.NS,IN,PHYSICSWALLAH LIMITED,4.17,17.9,yahoo-screener
+2026-10-16,VAU.AX,AU,VLTMINLTD FPO [VAU],4.12,22.0,yahoo-screener
+2026-10-16,AMP.AX,AU,AMP FPO [AMP],4.01,20.8,yahoo-screener
+2026-10-16,HEXT.NS,IN,HEXAWARE TECHNOLOGIES LTD,3.69,6.3,yahoo-screener
+2026-10-16,EMCURE.NS,IN,EMCURE PHARMACEUTICALS L,3.66,3.1,yahoo-screener
+2026-10-16,RRL.AX,AU,REGIS FPO [RRL],3.6,16.5,yahoo-screener
+2026-10-16,HVN.AX,AU,HARVEY FPO [HVN],3.53,7.2,yahoo-screener
+2026-10-16,HSCL.NS,IN,HIMADRI SPECIALITY CHEM L,3.52,42.2,yahoo-screener
+2026-10-16,APE.AX,AU,EAGERS FPO [APE],3.5,7.0,yahoo-screener
+2026-10-16,ITCHOTELS.NS,IN,ITC HOTELS LIMITED,3.48,3.3,yahoo-screener
+2026-10-16,A2M.AX,AU,A2 MILK FPO NZ [A2M],3.44,9.6,yahoo-screener
+2026-10-16,SYRMA.NS,IN,SYRMA SGS TECHNOLOGY LTD,3.42,32.0,yahoo-screener
+2026-10-16,NHC.AX,AU,NEW HOPE FPO [NHC],3.33,10.1,yahoo-screener
+2026-10-16,VNT.AX,AU,VENTIA FPO [VNT],3.31,8.8,yahoo-screener
+2026-10-16,OV8.SI,SG,Sheng Siong,3.31,6.4,yahoo-screener
+2026-10-16,AEGISVOPAK.NS,IN,AEGIS VOPAK TERMINALS LTD,3.29,4.3,yahoo-screener
+2026-10-16,KIRLOSENG.NS,IN,KIRLOSKAR OIL ENG LTD,3.16,11.4,yahoo-screener
+2026-10-16,DHOOTTRANS.NS,IN,DHOOT TRANSMISSION LTD,3.16,63.3,yahoo-screener
+2026-10-16,WGX.AX,AU,WESTGOLD FPO [WGX],3.16,12.8,yahoo-screener
+2026-10-16,SAILIFE.NS,IN,SAI LIFE SCIENCES LIMITED,3.12,9.0,yahoo-screener
+2026-10-16,DOW.AX,AU,DOWNER EDI FPO [DOW],3.11,9.9,yahoo-screener
+2026-10-16,BRG.AX,AU,BREVILLE FPO [BRG],3.11,7.9,yahoo-screener
+2026-10-16,ACMESOLAR.NS,IN,ACME SOLAR HOLDINGS LTD,3.03,9.1,yahoo-screener
+2026-10-16,IKS.NS,IN,INVENTURUS KNOWLEDGE SO L,3.03,3.1,yahoo-screener
