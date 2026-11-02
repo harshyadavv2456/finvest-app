@@ -1019,3 +1019,26 @@ date,ticker,market,name,usd_cap_bn,turnover_usd_m,source
 2026-10-26,1911.T,JP,SUMITOMO FORESTRY CO,5.1,37.0,yahoo-screener
 2026-10-26,8952.T,JP,JAPAN REAL ESTATE INVESTMENT CO,5.08,12.5,yahoo-screener
 2026-10-26,2501.T,JP,SAPPORO BREWERIES LTD,5.05,16.5,yahoo-screener
+2026-11-02,JPL.NS,IN,JIO PLATFORMS LIMITED,137.86,1345.5,yahoo-screener
+2026-11-02,2384.HK,HK,DSBJ,20.46,78.0,yahoo-screener
+2026-11-02,688818.SS,CN,CETC LANTIAN TECHNOLOGY CO LTD,12.31,56.3,yahoo-screener
+2026-11-02,001246.SZ,CN,Lygend Resources,11.64,154.5,yahoo-screener
+2026-11-02,EVR,US,Evercore Inc.,11.17,159.3,yahoo-screener
+2026-11-02,KYMR,US,"Kymera Therapeutics, Inc.",10.81,98.1,yahoo-screener
+2026-11-02,VSAT,US,"ViaSat, Inc.",10.61,154.8,yahoo-screener
+2026-11-02,PNR,US,Pentair plc.,10.58,216.7,yahoo-screener
+2026-11-02,BAH,US,Booz Allen Hamilton Holding Cor,10.54,154.7,yahoo-screener
+2026-11-02,1548.HK,HK,GENSCRIPT B-1K,10.39,206.0,yahoo-screener
+2026-11-02,688585.SS,CN,SWANCOR ADVANCED MATERIALS CO L,10.36,129.3,yahoo-screener
+2026-11-02,TTC,US,Toro Company (The),10.22,79.3,yahoo-screener
+2026-11-02,WMS,US,"Advanced Drainage Systems, Inc.",10.21,100.1,yahoo-screener
+2026-11-02,AM,US,Antero Midstream Corporation,10.14,55.4,yahoo-screener
+2026-11-02,LTH,US,"Life Time Group Holdings, Inc.",10.13,141.7,yahoo-screener
+2026-11-02,TWST,US,Twist Bioscience Corporation,10.13,355.8,yahoo-screener
+2026-11-02,DRS,US,"Leonardo DRS, Inc.",10.05,38.2,yahoo-screener
+2026-11-02,FLS,US,Flowserve Corporation,10.02,127.7,yahoo-screener
+2026-11-02,5929.T,JP,SANWA HOLDINGS CORP,5.06,16.0,yahoo-screener
+2026-11-02,L1G.AX,AU,L1 GROUP FPO [L1G],4.19,2.1,yahoo-screener
+2026-11-02,ACUTAAS.NS,IN,ACUTAAS CHEMICALS LIMITED,3.36,19.9,yahoo-screener
+2026-11-02,PPLPHARMA.NS,IN,PIRAMAL PHARMA LIMITED,3.35,16.3,yahoo-screener
+2026-11-02,MP1.AX,AU,MEGAPORT FPO [MP1],3.02,24.2,yahoo-screener
