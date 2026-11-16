@@ -1060,3 +1060,6 @@ date,ticker,market,name,usd_cap_bn,turnover_usd_m,source
 2026-11-09,RUBICON.NS,IN,RUBICON RESEARCH LIMITED,3.12,6.0,yahoo-screener
 2026-11-09,ZETWERK.NS,IN,ZETWERK MANUFACTURING B L,3.1,45.5,yahoo-screener
 2026-11-09,SANSERA.NS,IN,SANSERA ENGINEERING LTD,3.09,12.8,yahoo-screener
+2026-11-16,ALSN,US,"Allison Transmission Holdings, ",10.41,99.5,yahoo-screener
+2026-11-16,SOLS,US,Solstice Advanced Materials Inc,10.39,169.7,yahoo-screener
+2026-11-16,3231.T,JP,NOMURA REAL ESTATE HOLDINGS INC,5.0,26.6,yahoo-screener
